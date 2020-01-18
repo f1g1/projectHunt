@@ -1,5 +1,7 @@
 {
   "name": "projectHunt",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "react"
 }

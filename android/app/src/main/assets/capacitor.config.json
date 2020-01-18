@@ -1,0 +1,19 @@
+{
+  "appId": "com.projectHunt.com",
+  "appName": "Project Hunt",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "plugins": {
+    "GoogleAuth": {
+      "scopes": [
+        "profile",
+        "email"
+      ],
+      "serverClientId": "159342158674-8h23bo1kqdbv1fn96pftkjehgas7u7qd.apps.googleusercontent.com"
+    },
+    "SplashScreen": {
+      "launchShowDuration": 12345
+    }
+  }
+}
