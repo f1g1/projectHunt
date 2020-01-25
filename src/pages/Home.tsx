@@ -1,4 +1,4 @@
-import { IonContent, IonText, IonRow, IonItem, IonThumbnail, IonLabel, IonCol, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonImg } from '@ionic/react';
+import { IonContent, IonText, IonRow, IonItem, IonThumbnail, IonLabel, IonCol, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonImg, IonList } from '@ionic/react';
 import React, { Component } from 'react';
 import './Login.css';
 import { Plugins } from '@capacitor/core';
@@ -66,10 +66,21 @@ class Home extends Component {
               </IonLabel>
             </IonItem>
           }
+          <div>
+            test
+          </div>
 
           <IonButton className="login-button" onClick={() => this.signOut()} expand="full" fill="solid" color="danger">
             Logout from Google
         </IonButton>
+          <IonList>
+            <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/create", state: "t" }) }}>
+              GO TO CREATE
+          </IonButton>
+            <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/test", state: "t " }) }}>
+              GO TO Test
+          </IonButton>
+          </IonList>
         </IonContent>
       </IonPage>
     )

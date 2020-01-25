@@ -1,4 +1,4 @@
-import { IonContent, IonText, IonRow, IonCol, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonImg } from '@ionic/react';
+import { IonContent, IonText, IonRow, IonCol, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonImg, IonList } from '@ionic/react';
 import React, { Component } from 'react';
 import './Login.css';
 import { Plugins } from '@capacitor/core';
@@ -17,6 +17,7 @@ class Login extends Component {
   }
 
   async signIn(): Promise<void> {
+    debugger;
     console.log("da")
     const { history } = this.props;
     let result;
@@ -24,10 +25,14 @@ class Login extends Component {
 
     console.info('result', result);
     if (result) {
+      console.log("I succeded,", result)
       history.push({
         pathname: '/home',
         state: { name: result.name || result.displayName, image: result.imageUrl, email: result.email }
       });
+    }
+    else {
+      console.log("I FAILEd", result)
     }
 
   }

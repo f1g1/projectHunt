@@ -1,0 +1,4 @@
+.createSideMenuContainer {
+  display: flex;
+  flex-direction: column;
+}

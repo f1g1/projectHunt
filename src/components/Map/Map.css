@@ -1,0 +1,14 @@
+.map-user-image {
+  position: relative;
+  cursor: pointer;
+  top: 100%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  transform: translate(-80%, -80%);
+  color: orange;
+}
+.marker{
+  position: absolute;
+  transform: translate(-50%, -50%);
+}

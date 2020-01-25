@@ -15,5 +15,8 @@
     "SplashScreen": {
       "launchShowDuration": 12345
     }
+  },
+  "server": {
+    "url": "http://10.139.10.250:8101"
   }
 }
