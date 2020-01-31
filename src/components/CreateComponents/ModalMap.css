@@ -11,13 +11,20 @@
   left: 5px;
 }
 .inpt{
-  width:50%;  
+  width:10%;
+  border:1px solid black  
 }
 
 .mapBox{
   width:500px !important;
   height:300px !important;
   position: relative; 
+}
+.markerFixed {
+  z-index: 10000;
+  left: 50%;
+  position: absolute;
+  top: 50%
 }
 .marker{  position: absolute;
   top: 50%;
