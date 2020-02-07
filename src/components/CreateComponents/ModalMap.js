@@ -1,43 +1,29 @@
-import React, { useState, useEffect, useRef } from "react";
-import { IonHeader, IonContent, IonButton, IonInput, IonRow, IonFooter, IonCol } from '@ionic/react';
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { IonHeader, IonContent, IonButton, IonInput, IonRow, IonFooter, IonCol, IonRange, IonGrid, IonCard } from '@ionic/react';
 import GoogleMapReact from 'google-map-react';
-// import "./Map/Map.css"
+import { AppContext } from "../../StateCreateGame";
+import "./ModalMap.scss"
 
-
-import "./ModalMap.css"
 let ModalMap = (props) => {
   const [actualCenter, setActualCenter] = useState()
-  const [center, setCenter] = useState(props.defaultLocation !== undefined ? props.defaultLocation : { lat: 0, lng: 0 })
+  const [positionSelected, setpositionSelected] = useState(true)
+  const [center, setCenter] = useState()
   const [value, setValue] = useState("");
-
-
+  const { state, dispatch } = useContext(AppContext);
   let refMap = useRef(null);
 
 
   const handleGetCenter = () => {
-
+    console.log(props.location);
     setCenter(actualCenter);
+    setpositionSelected(true);
   }
-
-  const handleBoundsChanged = () => {
-  };
-
-  let defaultProps = {
-    center: {
-      lat: 59.95,
-      lng: 30.33
-    },
-    zoom: 11
-  };
-
-
   useEffect(() => {
-    setCenter(defaultProps.center)
+    console.log("default")
   }, [])
 
+
   return <>
-
-
     <IonHeader>
       <IonRow>
 
@@ -63,25 +49,56 @@ let ModalMap = (props) => {
             key: "AIzaSyAzTj3HlinSmLhPkJWlV1Swo0rEO_MDvoU"
           }}
           onChange={x => console.log(x)}
-          defaultCenter={defaultProps.center}
-          defaultZoom={defaultProps.zoom}
-          onDragEnd={(map) => setActualCenter({ lat: map.getCenter().lat(), lng: map.getCenter().lng() })}
+          defaultCenter={{ lat: 0, lng: 0 }}
+          defaultZoom={11}
+          onDragsStart={(map) => { setActualCenter({ lat: map.getCenter().lat(), lng: map.getCenter().lng() }); setpositionSelected(false) }}
+
+          onDragEnd={(map) => { setActualCenter({ lat: map.getCenter().lat(), lng: map.getCenter().lng() }); setpositionSelected(false) }}
         >
-          {center && <div lat={center.lat} lng={center.lng}>V</div>}
+          {center && <div lat={center.lat} lng={center.lng}  ><ion-icon color="primary" name="pin" className="locationPin iconSize" ></ion-icon></div>}
         </GoogleMapReact>
 
-        <div className="markerFixed">X</div>
+        {!positionSelected && <div className="markerFixed" color="danger"><ion-icon name="locate" className="locationCrosshair iconSize" color="secondary"></ion-icon></div>}
       </div>
-      <div className="bottomContainer">
-        <IonButton color="danger" onClick={props.handleClose} >
-          X
+      <div className='bottomContainer'>
+        <IonCard color="light">
+          <IonGrid>
+            {positionSelected && <IonRow>
+              <IonCol size="8">
+                <IonRange color="primary" pin={true} />
+
+              </IonCol>
+              <IonCol className="vcentered">
+                <IonButton onClick={() => {
+                  props.save(actualCenter.lat, actualCenter.lng);
+                  props.handleClose()
+                }
+
+                }>
+                  <ion-icon name="checkmark"></ion-icon>
+
+                </IonButton>
+              </IonCol>
+            </IonRow>}
+            <IonRow>
+              <IonCol size="3">  <IonButton color="danger" onClick={props.handleClose} >
+                X
         </IonButton >
-        <IonButton onClick={handleGetCenter}>SAVE POSITION</IonButton>
-        <IonInput value={value} onChange={e => setValue(e.target.value)}></IonInput>
+
+              </IonCol>
+              <IonCol size="9">
+                <IonButton onClick={handleGetCenter} color="secondary">Select Position</IonButton>
+
+              </IonCol>
+              <IonCol>
+
+              </IonCol>
+            </IonRow>
+
+          </IonGrid>
+        </IonCard>
       </div>
     </IonContent>
-
-
   </>
 }
 

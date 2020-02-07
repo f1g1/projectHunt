@@ -8,7 +8,14 @@
   justify-content: space-between;
   position: absolute;
   bottom: 5px;
-  left: 5px;
+  left: 5px; 
+}
+.iconSize {
+  font-size: 64px;
+}
+.vcentered{
+  display: flex;
+  align-items: center;
 }
 .inpt{
   width:10%;
@@ -24,7 +31,7 @@
   z-index: 10000;
   left: 50%;
   position: absolute;
-  top: 50%
+  top: 50%;
 }
 .marker{  position: absolute;
   top: 50%;
@@ -37,3 +44,17 @@
   font-family: 'Roboto','sans-serif';
   line-height: 30px;
   padding-left: 10px;}
+
+  .locationPin{
+    transform: translate(-100%, -40%);
+    height: 40px;
+    width: 40px;
+
+  }
+  
+  .locationCrosshair{
+    transform: translate(-50%, -50%);
+    height: 40px;
+    width: 40px;
+
+  }

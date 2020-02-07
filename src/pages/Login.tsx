@@ -2,7 +2,7 @@ import { IonContent, IonText, IonRow, IonCol, IonHeader, IonPage, IonTitle, IonT
 import React, { Component } from 'react';
 import './Login.css';
 import { Plugins } from '@capacitor/core';
-
+import * as firebase from "firebase";
 import "@codetrix-studio/capacitor-google-auth";
 const INITIAL_STATE = {
 
@@ -17,15 +17,25 @@ class Login extends Component {
   }
 
   async signIn(): Promise<void> {
-    debugger;
     console.log("da")
     const { history } = this.props;
     let result;
     result = await Plugins.GoogleAuth.signIn();
-
+    debugger;
     console.info('result', result);
     if (result) {
       console.log("I succeded,", result)
+      let token = result.authentication.accessToken;
+      let credential = {
+        token,
+        secret: result.serverAuthCode,
+        provider: 'google',
+        providerId: 'google'
+      }
+      let r = await firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(result.authentication.idToken));
+      console.info("firebase Response: ", r)
+
+
       history.push({
         pathname: '/home',
         state: { name: result.name || result.displayName, image: result.imageUrl, email: result.email }

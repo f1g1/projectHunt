@@ -25,19 +25,35 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import Test from './pages/Test';
-
+import { AppContextProvider } from "./StateCreateGame";
+import firebase from 'firebase';
+import { firebaseConfig } from "./firebase"
+firebase.initializeApp(firebaseConfig);
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
         <Route path="/login" component={Login} exact={true} />
         <Route path="/home" component={Home} exact={true} />
-        <Route path="/create" component={Create} />
+
+        <Route path="/create" component={withAppContext(Create)} />
+
         <Route path="/test" component={Test} exact={true} />
         <Route exact path="/" render={() => <Redirect to="/login" />} />
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
 );
+
+
+export function withAppContext(Component: any) {
+  return function WrapperComponent(props: any) {
+    return (
+      <AppContextProvider>
+        {<Component {...props} />}
+      </AppContextProvider>
+    );
+  };
+}
 
 export default App;
