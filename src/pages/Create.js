@@ -16,14 +16,7 @@ const Create = () => {
   const [showBeginModal, setShowBeginModal] = useState(false);
   useEffect(() => {
     Geolocation.getCurrentPosition().then(x => handleReceivedLocation(x));
-    const db = firebase.firestore();
-    db.settings({
-      timestampsInSnapshots: true
-    });
-    const userRef = db.collection("games").add({
-      fullname: "Test",
-      email: "rest"
-    });
+
   }, []);
 
   const saveStart = (lat, lng) => {

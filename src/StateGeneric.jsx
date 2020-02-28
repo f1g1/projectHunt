@@ -1,44 +1,42 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useEffect } from "react";
 
 let AppContext = createContext();
 
 
 const initialState = {
-    startLat: 0,
-    startLng: 0,
-    startRadius: 1,
-    finishLat: 0,
-    finishLng: 0,
-    finishRadius: 1,
+
 }
+
+const persistedState = JSON.parse(window.localStorage['user']) || {};
 
 let reducer = (state, action) => {
     switch (action.type) {
-        case "setStartCoords": {
-            return { ...state, startLat: action.lat, startLng: action.lng }
+        case "Login": {
+            return { ...state, ...action.user }
         }
-        case "setStartRadius": {
-            return { ...state, startRadius: action.Radius }
+        case "Logout": {
+            return {}
 
-        }
-        case "setFinishCoords": {
-            return { ...state, finishLat: action.lat, finishLng: action.lng }
-        }
-        case "setStartRadius": {
-            return { ...state, finishRadius: action.Radius }
         }
     }
     return state;
 };
 
-function CreateGameContextProvider(props) {
+function AppContextProvider(props) {
     const fullInitialState = {
         ...initialState,
+        ...persistedState
+
     }
 
     let [state, dispatch] = useReducer(loggerReducer, fullInitialState)
     let value = { state, dispatch };
-
+    useEffect(() => {
+        debugger;
+        window.localStorage['user'] = JSON.stringify({
+            user: state
+        });
+    }, [state])
 
     return (
         <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
@@ -59,4 +57,4 @@ const loggerReducer = logger(reducer);
 
 let AppContextConsumer = AppContext.Consumer;
 
-export { AppContext, CreateGameContextProvider as CreateGameContextProvider, AppContextConsumer as CreateGaneContextConsumer };
+export { AppContext, AppContextProvider, AppContextConsumer };
