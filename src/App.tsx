@@ -26,10 +26,10 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import Test from './pages/Test';
 import { CreateGameContextProvider } from "./StateCreateGame";
-import firebase from 'firebase';
-import { firebaseConfig } from "./firebase"
 import { AppContextProvider } from './StateGeneric';
-firebase.initializeApp(firebaseConfig);
+import ChatBoard from './components/Chat/ChatBoard/ChatBoard';
+import Lobby from './pages/Lobby/Lobby';
+import MyGames from './pages/MyGames/MyGames';
 const App: React.FC = () => (
   <IonApp>
 
@@ -43,6 +43,9 @@ const App: React.FC = () => (
         <Route path="/create" component={withCreateContext(Create)} />
 
         <Route path="/test" component={Test} exact={true} />
+        <Route path="/chat" component={ChatBoard} exact={true} />
+        <Route path="/lobby" component={Lobby} exact={true} />
+        <Route path="/mygames" component={MyGames} exact={true} />
         <Route exact path="/" render={() => <Redirect to="/login" />} />
       </IonRouterOutlet>
     </IonReactRouter>

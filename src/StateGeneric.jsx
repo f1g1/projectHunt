@@ -7,7 +7,12 @@ const initialState = {
 
 }
 
-const persistedState = JSON.parse(window.localStorage['user']) || {};
+let persistedState;
+try {
+    persistedState = JSON.parse(window.localStorage['user'])
+} catch (ex) {
+    persistedState = {};
+}
 
 let reducer = (state, action) => {
     switch (action.type) {
@@ -33,9 +38,8 @@ function AppContextProvider(props) {
     let value = { state, dispatch };
     useEffect(() => {
         debugger;
-        window.localStorage['user'] = JSON.stringify({
-            user: state
-        });
+        window.localStorage['user'] = JSON.stringify(
+            state);
     }, [state])
 
     return (

@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
-import { IonHeader, IonContent, IonButton, IonInput, IonRow, IonFooter, IonCol, IonRange, IonGrid, IonCard } from '@ionic/react';
+import React, { useState, useEffect, useRef} from "react";
+import { IonHeader, IonContent, IonButton, IonInput, IonRow, IonCol, IonRange, IonGrid, IonCard } from '@ionic/react';
 import GoogleMapReact from 'google-map-react';
-import { AppContext } from "../../StateCreateGame";
 import "./ModalMap.scss"
 
 let ModalMap = (props) => {
   const [actualCenter, setActualCenter] = useState()
   const [positionSelected, setpositionSelected] = useState(true)
   const [center, setCenter] = useState()
-  const [value, setValue] = useState("");
-  const { state, dispatch } = useContext(AppContext);
   let refMap = useRef(null);
 
 

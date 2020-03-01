@@ -1,48 +1,70 @@
-import { IonContent, IonText, IonRow, IonCol, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonImg, IonList } from '@ionic/react';
-import React, { useContext, FunctionComponent } from 'react';
-import './Login.css';
-import { Plugins } from '@capacitor/core';
+import {
+  IonContent,
+  IonText,
+  IonRow,
+  IonCol,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonButton,
+  IonImg
+} from "@ionic/react";
+import React, { useContext, useEffect } from "react";
+import "./Login.css";
+import { Plugins } from "@capacitor/core";
 import * as firebase from "firebase";
 import "@codetrix-studio/capacitor-google-auth";
-import { AppContext } from '../StateGeneric';
+import { AppContext } from "../StateGeneric";
 
+const Login = props => {
+  const { state: userState, dispatch } = useContext(AppContext);
 
-const Login = (props) => {
-  const { state, dispatch } = useContext(AppContext);
-
-  const saveUser = (user) => {
-    debugger;
+  useEffect(() => {
+    try {
+      if (userState.authentication.idToken) doLogin(userState);
+    } catch {}
+  }, [userState]);
+  const saveUser = user => {
     dispatch({
       type: "Login",
       user
-    })
-  }
+    });
+  };
 
   const signIn = async () => {
-    console.log("da")
-    const { history } = props;
+    console.log("da");
+
     let result;
     result = await Plugins.GoogleAuth.signIn();
     debugger;
-    console.info('result', result);
+    console.info("result", result);
     if (result) {
-      console.log("I succeded,", result)
-      let token = result.authentication.accessToken;
+      console.log("I succeded,", result);
+      let token = result.authentication.idToken;
       saveUser(result);
-      let r = await firebase.auth().signInWithCredential(firebase.auth.GoogleAuthProvider.credential(result.authentication.idToken));
-      console.info("firebase Response: ", r)
-
-
-      history.push({
-        pathname: '/home',
-        state: { name: result.name || result.displayName, image: result.imageUrl, email: result.email }
-      });
+      doLogin(token);
+    } else {
+      console.log("I FAILEd", result);
     }
-    else {
-      console.log("I FAILEd", result)
-    }
+  };
+  const doLogin = async user => {
+    let token = user.authentication.idToken;
+    let r = await firebase
+      .auth()
+      .signInWithCredential(firebase.auth.GoogleAuthProvider.credential(token));
+    console.info("firebase Response: ", r);
 
-  }
+    const { history } = props;
+    history.push({
+      pathname: "/home",
+      state: {
+        name: user.name || user.displayName,
+        image: user.imageUrl,
+        email: user.email
+      }
+    });
+  };
 
   return (
     <IonPage>
@@ -54,30 +76,32 @@ const Login = (props) => {
       <IonContent className="ion-padding">
         <IonRow>
           <IonCol className="text-center">
-            <IonImg className="title-img" src="assets/capacitor.png" ></IonImg>
+            <IonImg className="title-img" src="assets/capacitor.png"></IonImg>
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol className="text-center">
-            <IonText className="title">
-              Google Login in Capacitor app
-              </IonText>
+            <IonText className="title">Google Login in Capacitor app</IonText>
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol className="text-center">
-            <IonText className="text-center">
-              By Enappd Team
-              </IonText>
+            <IonText className="text-center">By Enappd Team</IonText>
           </IonCol>
         </IonRow>
 
-        <IonButton className="login-button" onClick={() => signIn()} expand="block" fill="solid" color="danger">
+        <IonButton
+          className="login-button"
+          onClick={() => signIn()}
+          expand="block"
+          fill="solid"
+          color="danger"
+        >
           Login with Google
         </IonButton>
       </IonContent>
     </IonPage>
-  )
-}
+  );
+};
 
 export default Login;

@@ -3,9 +3,7 @@ import { IonContent, IonRow, IonCol, IonGrid, IonModal, IonButton, IonPage } fro
 import { Geolocation } from "@capacitor/core";
 import "./Create/Create.css";
 import { AppContext as CreateGameContext } from "../StateCreateGame";
-import firebase from 'firebase';
 
-// import { useDocument } from "react-firebase-hooks/firestore";
 import CreateSideMenu from "../components/CreateComponents/SideMenu";
 import ModalMap from "../components/CreateComponents/ModalMap";
 
