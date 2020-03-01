@@ -2,7 +2,8 @@
 <resources>
     <string name="app_name">Project Hunt</string>
     <string name="title_activity_main">Project Hunt</string>
-    <string name="package_name">com.projectHunt.com</string>
-    <string name="custom_url_scheme">com.projectHunt.com</string>
-<string name="server_client_id">159342158674-8h23bo1kqdbv1fn96pftkjehgas7u7qd.apps.googleusercontent.com</string>
+    <string name="package_name">app.projectHunt.com</string>
+    <string name="custom_url_scheme">app.projectHunt.com</string>
+<string name="server_client_id">735459026668-6pdua5gu4fmuh1trjqirnupudvqtjhdq.apps.googleusercontent.com</string>
 </resources>
+

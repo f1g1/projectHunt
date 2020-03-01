@@ -23,7 +23,7 @@ const Login = props => {
   useEffect(() => {
     try {
       if (userState.authentication.idToken) doLogin(userState);
-    } catch {}
+    } catch { }
   }, [userState]);
   const saveUser = user => {
     dispatch({
@@ -43,7 +43,7 @@ const Login = props => {
       console.log("I succeded,", result);
       let token = result.authentication.idToken;
       saveUser(result);
-      doLogin(token);
+      doLogin(result);
     } else {
       console.log("I FAILEd", result);
     }

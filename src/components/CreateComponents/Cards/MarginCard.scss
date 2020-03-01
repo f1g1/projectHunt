@@ -1,0 +1,23 @@
+.card {
+    --background: yellow;
+  }
+  
+  .arrow {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .toRight {
+    float: right;
+  }
+  .mapContainer {
+    height: 200px;
+    width: 100%;
+  }
+  .gmnoprint img {
+    max-width: none;
+  }
+  .gmaps * {
+    box-sizing: content-box;
+  }

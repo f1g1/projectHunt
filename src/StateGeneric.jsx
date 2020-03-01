@@ -1,15 +1,13 @@
 import React, { createContext, useReducer, useEffect } from "react";
+import { UserService } from "./services/UserSerivce";
 
 let AppContext = createContext();
 
-
-const initialState = {
-
-}
+const initialState = {};
 
 let persistedState;
 try {
-    persistedState = JSON.parse(window.localStorage['user'])
+    persistedState = UserService.getCurrentUser();
 } catch (ex) {
     persistedState = {};
 }
@@ -17,11 +15,10 @@ try {
 let reducer = (state, action) => {
     switch (action.type) {
         case "Login": {
-            return { ...state, ...action.user }
+            return { ...state, ...action.user };
         }
         case "Logout": {
-            return {}
-
+            return {};
         }
     }
     return state;
@@ -31,31 +28,36 @@ function AppContextProvider(props) {
     const fullInitialState = {
         ...initialState,
         ...persistedState
+    };
 
-    }
-
-    let [state, dispatch] = useReducer(loggerReducer, fullInitialState)
+    let [state, dispatch] = useReducer(loggerReducer, fullInitialState);
     let value = { state, dispatch };
     useEffect(() => {
-        debugger;
-        window.localStorage['user'] = JSON.stringify(
-            state);
-    }, [state])
+        UserService.setCurrentUser(state);
+    }, [state]);
 
     return (
         <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
     );
 }
 
-const logger = (reducer) => {
+const logger = reducer => {
     const reducerWithLogger = (state, action) => {
-        console.log("%cPrevious State:", "color: #9E9E9E; font-weight: 700;", state);
+        console.log(
+            "%cPrevious State:",
+            "color: #9E9E9E; font-weight: 700;",
+            state
+        );
         console.log("%cAction:", "color: #00A7F7; font-weight: 700;", action);
-        console.log("%cNext State:", "color: #47B04B; font-weight: 700;", reducer(state, action));
+        console.log(
+            "%cNext State:",
+            "color: #47B04B; font-weight: 700;",
+            reducer(state, action)
+        );
         return reducer(state, action);
     };
     return reducerWithLogger;
-}
+};
 
 const loggerReducer = logger(reducer);
 

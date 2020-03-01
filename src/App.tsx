@@ -3,7 +3,6 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
-import Create from './pages/Create';
 import Login from './pages/Login';
 
 /* Core CSS required for Ionic components to work properly */
@@ -30,6 +29,7 @@ import { AppContextProvider } from './StateGeneric';
 import ChatBoard from './components/Chat/ChatBoard/ChatBoard';
 import Lobby from './pages/Lobby/Lobby';
 import MyGames from './pages/MyGames/MyGames';
+import Create from './pages/Create/Create';
 const App: React.FC = () => (
   <IonApp>
 

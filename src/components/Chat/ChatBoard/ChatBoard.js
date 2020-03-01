@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import './ChatBoard.css'
 import { fireStore, fireStorage } from '../../../firebase'
 import { UserService } from '../../../services/UserSerivce'
-import { IonIcon } from '@ionic/react'
+import { IonIcon, IonPage, IonCol, IonContent } from '@ionic/react'
 import { images, send } from "ionicons/icons"
 export default class ChatBoard extends Component {
     constructor(props) {
@@ -169,68 +169,74 @@ export default class ChatBoard extends Component {
 
     render() {
         return (
-            <div className="viewChatBoard">
-                <div className="headerChatBoard">
-                    <img
-                        className="viewAvatarItem"
-                        src={this.currentPeerUser.id}
-                        alt="icon avatar"
-                    />
-                    <span className="textHeaderChatBoard">
-                        {this.currentPeerUser.nickname}
-                    </span>
-                </div>
-
-                <div className="viewListContentChat">
-                    {this.renderListMessage()}
-                    <div
-                        style={{ float: 'left', clear: 'both' }}
-                        ref={el => {
-                            this.messagesEnd = el
-                        }}
-                    />
-                </div>
+            <IonPage>
+                <IonContent>
 
 
-                <div className="viewBottom">
+                    <div className="viewChatBoard">
+                        <div className="headerChatBoard">
+                            <img
+                                className="viewAvatarItem"
+                                src={this.currentPeerUser.id}
+                                alt="icon avatar"
+                            />
+                            <span className="textHeaderChatBoard">
+                                {this.currentPeerUser.nickname}
+                            </span>
+                        </div>
 
-                    <IonIcon
-                        icon="images"
-                        className="icOpenGallery"
-                        alt="icon open gallery"
-                        onClick={() => this.refInput.click()}
-                    />
-                    <input
-                        ref={el => {
-                            this.refInput = el
-                        }}
-                        accept="image/*"
-                        className="viewInputGallery"
-                        type="file"
-                        onChange={this.onChoosePhoto}
-                    />
-                    <input
-                        className="viewInput"
-                        placeholder="Type your message..."
-                        value={this.state.inputValue}
-                        onChange={event => {
-                            this.setState({ inputValue: event.target.value })
-                        }}
-                        onKeyPress={this.onKeyboardPress}
-                    />
-                    <IonIcon
-                        icon="send"
-                        className="icSend"
-                        alt="icon send"
-                        onClick={() => this.onSendMessage(this.state.inputValue, 0)}
-                    />
-                </div>
-                {this.state.isLoading ? (
-                    <div className="viewLoading">
-                        send..
+                        <div className="viewListContentChat">
+                            {this.renderListMessage()}
+                            <div
+                                style={{ float: 'left', clear: 'both' }}
+                                ref={el => {
+                                    this.messagesEnd = el
+                                }}
+                            />
+                        </div>
+
+
+                        <div className="viewBottom">
+
+                            <IonIcon
+                                icon="images"
+                                className="icOpenGallery"
+                                alt="icon open gallery"
+                                onClick={() => this.refInput.click()}
+                            />
+                            <input
+                                ref={el => {
+                                    this.refInput = el
+                                }}
+                                accept="image/*"
+                                className="viewInputGallery"
+                                type="file"
+                                onChange={this.onChoosePhoto}
+                            />
+                            <input
+                                className="viewInput"
+                                placeholder="Type your message..."
+                                value={this.state.inputValue}
+                                onChange={event => {
+                                    this.setState({ inputValue: event.target.value })
+                                }}
+                                onKeyPress={this.onKeyboardPress}
+                            />
+                            <IonIcon
+                                icon="send"
+                                className="icSend"
+                                alt="icon send"
+                                onClick={() => this.onSendMessage(this.state.inputValue, 0)}
+                            />
+                        </div>
+                        {this.state.isLoading ? (
+                            <div className="viewLoading">
+                                send..
                     </div>
-                ) : null}
-            </div>
+                        ) : null}
+                    </div>
+                </IonContent>
+            </IonPage>
         )
     }
 

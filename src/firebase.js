@@ -1,15 +1,15 @@
 import firebase from 'firebase';
 
 
-export const firebaseConfig = {
-    apiKey: "AIzaSyBqc4G-r6iQmC0RBEq6XfcCDJKmGMj6_Cw",
-    authDomain: "projecthunt-3268c.firebaseapp.com",
-    databaseURL: "https://projecthunt-3268c.firebaseio.com",
-    projectId: "projecthunt-3268c",
-    storageBucket: "projecthunt-3268c.appspot.com",
-    messagingSenderId: "633870399945",
-    appId: "1:633870399945:web:1c0a42e8de96238e4f1018",
-    measurementId: "G-MR3N35GFZS"
+var firebaseConfig = {
+    apiKey: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA",
+    authDomain: "projecthunt-2644e.firebaseapp.com",
+    databaseURL: "https://projecthunt-2644e.firebaseio.com",
+    projectId: "projecthunt-2644e",
+    storageBucket: "projecthunt-2644e.appspot.com",
+    messagingSenderId: "735459026668",
+    appId: "1:735459026668:web:8184ca2004dbd2433d67c9",
+    measurementId: "G-VPQY1Q2HBB"
 };
 
 

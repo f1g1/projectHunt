@@ -1,5 +1,5 @@
 {
-  "appId": "com.projectHunt.com",
+  "appId": "app.projectHunt.com",
   "appName": "Project Hunt",
   "bundledWebRuntime": false,
   "npmClient": "npm",
@@ -10,7 +10,7 @@
         "profile",
         "email"
       ],
-      "serverClientId": "159342158674-8h23bo1kqdbv1fn96pftkjehgas7u7qd.apps.googleusercontent.com"
+      "serverClientId": "735459026668-6pdua5gu4fmuh1trjqirnupudvqtjhdq.apps.googleusercontent.com"
     },
     "SplashScreen": {
       "launchShowDuration": 12345

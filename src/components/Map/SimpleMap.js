@@ -8,5 +8,5 @@ function MapContainer(props) {
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyAzTj3HlinSmLhPkJWlV1Swo0rEO_MDvoU"
+  apiKey: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA"
 })(MapContainer);

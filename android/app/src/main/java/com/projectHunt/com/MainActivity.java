@@ -1,4 +1,4 @@
-package com.projectHunt.com;
+package app.projectHunt.com;
 import com.codetrixstudio.capacitor.GoogleAuth.GoogleAuth;
 import android.os.Bundle;
 
