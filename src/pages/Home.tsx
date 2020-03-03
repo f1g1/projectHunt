@@ -66,9 +66,6 @@ class Home extends Component {
               </IonLabel>
             </IonItem>
           }
-          <div>
-            test
-          </div>
 
           <IonButton className="login-button" onClick={() => this.signOut()} expand="full" fill="solid" color="danger">
             Logout from Google
@@ -83,7 +80,13 @@ class Home extends Component {
             <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/chat", state: "t " }) }}>
               GO TO chat
           </IonButton>
-          </IonList>
+            <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/myGames", state: "t " }) }}>
+              GO TO my games
+          </IonButton>
+            <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/lobby", state: "t " }) }}>
+              GO TO Lobby
+
+          </IonButton>          </IonList>
         </IonContent>
       </IonPage>
     )

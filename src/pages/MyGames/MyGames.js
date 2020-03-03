@@ -6,36 +6,42 @@ import {
   IonPage,
   IonList,
   IonItem,
-  IonButton
+  IonButton,
+  IonLabel,
+  IonRow
 } from "@ionic/react";
 
 export default function MyGames(props) {
   const [games, setgames] = useState();
   GamesService.getMyGames().then(x => setgames(x));
+
+
+  debugger;
   return (
     <IonPage>
       <IonContent>
-        <IonList>
-          {games &&
-            games.map(x => (
-              <IonItem>
-                <IonCol size="12">
-                  <IonButton
-                    expand="full"
-                    size="large"
-                    fill="clear"
-                    color="dark"
-                    onClick={e => {
-                      e.preventDefault();
+        <IonRow>
+          <IonCol sizeXl="4" sizeSm="12">
+            <IonList>
+              {games &&
+                games.map(x => (
+
+                  <IonItem>
+
+                    <IonLabel >
+                      {x.title}
+                    </IonLabel>
+                    <IonButton size="default" onClick={e => {
                       props.history.push({ pathname: "/lobby", state: x });
-                    }}
-                  >
-                    {x.title}
-                  </IonButton>
-                </IonCol>
-              </IonItem>
-            ))}
-        </IonList>
+                    }}>Create Game</IonButton>
+
+                    <IonButton color="danger" size="default">
+                      Delete!
+                    </IonButton>
+                  </IonItem>))}
+            </IonList>
+          </IonCol>
+        </IonRow>
       </IonContent>
     </IonPage>
   );

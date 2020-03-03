@@ -52,10 +52,14 @@
     align-items: center;
     justify-content: center;
     height: 50px;
+    background-color: #ffffff;
     border-top: 1px solid #e8e8e8;
+    position: sticky;
+    bottom: 0px;
 }
 
 .icOpenGallery {
+    z-index: inherit;
     width: 30px;
     height: 30px;
     margin-left: 10px;

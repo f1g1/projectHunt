@@ -16,16 +16,15 @@ export default class ChatBoard extends Component {
         let user = UserService.getCurrentUser();
         this.currentUserId = user.id
         this.currentUserAvatar = localStorage.getItem("PHOTO_URL")
-        this.currentUserNickname = localStorage.getItem("NICKNAME")
+        this.currentUserNickname = user.givenName + " " + user.familyName
         this.listMessage = []
-        this.currentPeerUser = { id: "1" }
-        this.groupChatId = null
+        // this.props.gameChatId = { id: "1" }
         this.removeListener = null
         this.currentPhotoFile = null
     }
 
     componentDidUpdate() {
-        this.scrollToBottom()
+        // this.scrollToBottom()
     }
 
     componentDidMount() {
@@ -46,20 +45,20 @@ export default class ChatBoard extends Component {
         }
         this.listMessage.length = 0
         this.setState({ isLoading: true })
-        if (
-            this.hashString(this.currentUserId) <=
-            this.hashString(this.currentPeerUser.id)
-        ) {
-            this.groupChatId = `${this.currentUserId}-${this.currentPeerUser.id}`
-        } else {
-            this.groupChatId = `${this.currentPeerUser.id}-${this.currentUserId}`
-        }
+        // if (
+        //     this.hashString(this.currentUserId) <=
+        //     this.hashString(this.props.gameChatId)
+        // ) {
+        //     this.props.gameChatId = `${this.currentUserId}-${this.props.gameChatId}`
+        // } else {
+        //     this.props.gameChatId = `${this.props.gameChatId}-${this.currentUserId}`
+        // }
 
         // Get history and listen new data added
         this.removeListener = fireStore
             .collection("messages")
-            .doc(this.groupChatId)
-            .collection(this.groupChatId)
+            .doc(this.props.gameChatId)
+            .collection(this.props.gameChatId)
             .onSnapshot(
                 snapshot => {
                     snapshot.docChanges().forEach(change => {
@@ -90,14 +89,14 @@ export default class ChatBoard extends Component {
 
         const itemMessage = {
             idFrom: this.currentUserId,
-            idTo: this.currentPeerUser.id,
+            idTo: this.props.gameChatId,
             timestamp: timestamp,
             content: content.trim(),
             type: type
         }
         fireStore.collection("messages")
-            .doc(this.groupChatId)
-            .collection(this.groupChatId)
+            .doc(this.props.gameChatId)
+            .collection(this.props.gameChatId)
             .doc(timestamp)
             .set(itemMessage)
             .then(() => {
@@ -169,74 +168,66 @@ export default class ChatBoard extends Component {
 
     render() {
         return (
-            <IonPage>
-                <IonContent>
 
 
-                    <div className="viewChatBoard">
-                        <div className="headerChatBoard">
-                            <img
-                                className="viewAvatarItem"
-                                src={this.currentPeerUser.id}
-                                alt="icon avatar"
-                            />
-                            <span className="textHeaderChatBoard">
-                                {this.currentPeerUser.nickname}
-                            </span>
-                        </div>
+            <div className="viewChatBoard">
+                <div className="headerChatBoard">
 
-                        <div className="viewListContentChat">
-                            {this.renderListMessage()}
-                            <div
-                                style={{ float: 'left', clear: 'both' }}
-                                ref={el => {
-                                    this.messagesEnd = el
-                                }}
-                            />
-                        </div>
+                    <span className="textHeaderChatBoard">
+                        Game chat!
+                    </span>
+                </div>
+
+                <div className="viewListContentChat">
+                    {this.renderListMessage()}
+                    <div
+                        style={{ float: 'left', clear: 'both' }}
+                        ref={el => {
+                            this.messagesEnd = el
+                        }}
+                    />
+                </div>
 
 
-                        <div className="viewBottom">
+                <div className="viewBottom">
 
-                            <IonIcon
-                                icon="images"
-                                className="icOpenGallery"
-                                alt="icon open gallery"
-                                onClick={() => this.refInput.click()}
-                            />
-                            <input
-                                ref={el => {
-                                    this.refInput = el
-                                }}
-                                accept="image/*"
-                                className="viewInputGallery"
-                                type="file"
-                                onChange={this.onChoosePhoto}
-                            />
-                            <input
-                                className="viewInput"
-                                placeholder="Type your message..."
-                                value={this.state.inputValue}
-                                onChange={event => {
-                                    this.setState({ inputValue: event.target.value })
-                                }}
-                                onKeyPress={this.onKeyboardPress}
-                            />
-                            <IonIcon
-                                icon="send"
-                                className="icSend"
-                                alt="icon send"
-                                onClick={() => this.onSendMessage(this.state.inputValue, 0)}
-                            />
-                        </div>
-                        {this.state.isLoading ? (
-                            <div className="viewLoading">
-                                send..
+                    <IonIcon
+                        icon={images}
+                        className="icOpenGallery"
+                        alt="icon open gallery"
+                        onClick={() => this.refInput.click()}
+                    />
+                    <input
+                        ref={el => {
+                            this.refInput = el
+                        }}
+                        accept="image/*"
+                        className="viewInputGallery"
+                        type="file"
+                        onChange={this.onChoosePhoto}
+                    />
+                    <input
+                        className="viewInput"
+                        placeholder="Type your message..."
+                        value={this.state.inputValue}
+                        onChange={event => {
+                            this.setState({ inputValue: event.target.value })
+                        }}
+                        onKeyPress={this.onKeyboardPress}
+                    />
+                    <IonIcon
+                        icon={send}
+                        className="icSend"
+                        alt="icon send"
+                        onClick={() => this.onSendMessage(this.state.inputValue, 0)}
+                    />
+                </div>
+                {this.state.isLoading ? (
+                    <div className="viewLoading">
+                        sending...
                     </div>
-                        ) : null}
-                    </div>
-                </IonContent>
-            </IonPage>
+                ) : null}
+            </div>
         )
     }
 
@@ -281,7 +272,7 @@ export default class ChatBoard extends Component {
                                 <div className="viewWrapItemLeft3">
                                     {this.isLastMessageLeft(index) ? (
                                         <img
-                                            src={this.currentPeerUser.photoUrl}
+                                            src={this.props.gameChatId.photoUrl}
                                             alt="avatar"
                                             className="peerAvatarLeft"
                                         />
@@ -305,7 +296,7 @@ export default class ChatBoard extends Component {
                                 <div className="viewWrapItemLeft3">
                                     {this.isLastMessageLeft(index) ? (
                                         <img
-                                            src={this.currentPeerUser.photoUrl}
+                                            src={this.props.gameChatId.photoUrl}
                                             alt="avatar"
                                             className="peerAvatarLeft"
                                         />
@@ -333,7 +324,7 @@ export default class ChatBoard extends Component {
                                 <div className="viewWrapItemLeft3">
                                     {this.isLastMessageLeft(index) ? (
                                         <img
-                                            src={this.currentPeerUser.photoUrl}
+                                            src={this.props.gameChatId.photoUrl}
                                             alt="avatar"
                                             className="peerAvatarLeft"
                                         />
@@ -371,14 +362,14 @@ export default class ChatBoard extends Component {
 
 
 
-    hashString = str => {
-        let hash = 0
-        for (let i = 0; i < str.length; i++) {
-            hash += Math.pow(str.charCodeAt(i) * 31, str.length - i)
-            hash = hash & hash // Convert to 32bit integer
-        }
-        return hash
-    }
+    // hashString = str => {
+    //     let hash = 0
+    //     for (let i = 0; i < str.length; i++) {
+    //         hash += Math.pow(str.charCodeAt(i) * 31, str.length - i)
+    //         hash = hash & hash // Convert to 32bit integer
+    //     }
+    //     return hash
+    // }
 
 
 

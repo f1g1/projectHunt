@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { IonHeader, IonContent, IonButton, IonInput, IonRow, IonCol, IonRange, IonGrid, IonCard } from '@ionic/react';
 import GoogleMapReact from 'google-map-react';
 import "./ModalMap.scss"
@@ -43,7 +43,7 @@ let ModalMap = (props) => {
         <GoogleMapReact
           ref={refMap}
           bootstrapURLKeys={{
-            key: "AIzaSyAzTj3HlinSmLhPkJWlV1Swo0rEO_MDvoU"
+            key: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA"
           }}
           onChange={x => console.log(x)}
           defaultCenter={{ lat: 0, lng: 0 }}

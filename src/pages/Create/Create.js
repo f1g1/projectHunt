@@ -18,7 +18,6 @@ import { AppContext as CreateGameContext } from "../../StateCreateGame";
 
 import ModalMap from "../../components/CreateComponents/ModalMap";
 
-import { AppContext } from "../../StateGeneric";
 import MarginCard from "../../components/CreateComponents/Cards/MarginCard";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import AddIcon from "@material-ui/icons/Add";
@@ -26,7 +25,6 @@ import ModalCardCreate from "../../components/CreateComponents/ModalCardCreate/M
 import ReorderableCards from "./ReorderableCards";
 import { GamesService } from "../../services/GameService";
 const Create = () => {
-  const { state: userState, dispatch: userDispatch } = useContext(AppContext);
 
   const { state, dispatch } = useContext(CreateGameContext);
 

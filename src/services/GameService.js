@@ -12,7 +12,7 @@ async function getMyGames() {
     .collection("createdGames");
   const snapshot = await createdGamesRef.orderBy("createdDate").get();
   return snapshot.docs.map(doc => {
-    return doc.data();
+    return { ...doc.data(), id: doc.id };
   });
 }
 function saveGame(state) {
@@ -25,6 +25,5 @@ function saveGame(state) {
     .collection("users")
     .doc(UserService.getCurrentUser().email)
     .collection("createdGames");
-  debugger;
   return createdGamesRef.add(created);
 }

@@ -19,12 +19,15 @@ import { AppContext } from "../StateGeneric";
 
 const Login = props => {
   const { state: userState, dispatch } = useContext(AppContext);
-
+  let first = true;
   useEffect(() => {
     try {
-      if (userState.authentication.idToken) doLogin(userState);
+      if (userState.authentication.idToken)
+        doLogin(userState);
     } catch { }
   }, [userState]);
+
+
   const saveUser = user => {
     dispatch({
       type: "Login",
@@ -33,21 +36,16 @@ const Login = props => {
   };
 
   const signIn = async () => {
-    console.log("da");
-
     let result;
     result = await Plugins.GoogleAuth.signIn();
-    debugger;
-    console.info("result", result);
+    console.info("resultSignIN", result);
     if (result) {
-      console.log("I succeded,", result);
-      let token = result.authentication.idToken;
       saveUser(result);
-      doLogin(result);
     } else {
       console.log("I FAILEd", result);
     }
   };
+
   const doLogin = async user => {
     let token = user.authentication.idToken;
     let r = await firebase
