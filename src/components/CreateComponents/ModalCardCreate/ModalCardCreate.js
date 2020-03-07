@@ -1,9 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
   IonHeader,
-  IonCol,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonList,
   IonItem,
@@ -42,7 +39,7 @@ export default function ModalCardCreate(props) {
     setShowToast1(true);
   };
   useEffect(() => {
-    return () => {};
+    return () => { };
   }, []);
   return (
     <>

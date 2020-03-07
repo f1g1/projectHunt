@@ -1,15 +1,10 @@
 import React from "react";
 import {
-  IonButton,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel
 } from "@ionic/react";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 export default function InnerCard(props) {

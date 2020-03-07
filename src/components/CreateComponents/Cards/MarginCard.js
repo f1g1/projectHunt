@@ -2,14 +2,8 @@ import React from "react";
 import {
   IonButton,
   IonCard,
-  IonCardContent,
   IonCardHeader,
   IonCardSubtitle,
-  IonCardTitle,
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel
 } from "@ionic/react";
 import "./MarginCard.scss";
 import MapWithLocation from "../../Map/Map";

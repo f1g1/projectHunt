@@ -10,13 +10,11 @@ import {
   IonLabel,
   IonRow
 } from "@ionic/react";
+import { VISIBILITY, LobbyService } from "../../services/LobbyService";
 
 export default function MyGames(props) {
   const [games, setgames] = useState();
   GamesService.getMyGames().then(x => setgames(x));
-
-
-  debugger;
   return (
     <IonPage>
       <IonContent>
@@ -32,7 +30,10 @@ export default function MyGames(props) {
                       {x.title}
                     </IonLabel>
                     <IonButton size="default" onClick={e => {
-                      props.history.push({ pathname: "/lobby", state: x });
+                      LobbyService.postLobby(x).then(id => {
+                        props.history.push({ pathname: "/lobby", lobbyId: id });
+
+                      })
                     }}>Create Game</IonButton>
 
                     <IonButton color="danger" size="default">

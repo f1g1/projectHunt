@@ -10,7 +10,8 @@ import {
   IonFabButton,
   IonInput,
   IonLabel,
-  IonItem
+  IonItem,
+  IonRange
 } from "@ionic/react";
 import { Geolocation } from "@capacitor/core";
 import "./Create.css";
@@ -56,6 +57,12 @@ const Create = () => {
       title
     });
   };
+  const setMaxPlayers = maxPlayers => {
+    dispatch({
+      type: "setMaxPlayers",
+      maxPlayers
+    });
+  };
   const handleClose = () => {
     setShowBeginModal(false);
   };
@@ -77,85 +84,88 @@ const Create = () => {
         <IonGrid className="fullHeight">
           <IonRow className="fullHeight">
             <IonCol sizeXs="2" sizeMd="1" sizeXl="0.5"></IonCol>
-            <IonCol
-              sizeXs="10"
-              sizeMd="11"
-              sizeXl="11.5"
-              className="fullHeight"
-            >
-              <IonContent>
-                <IonRow>
-                  <IonCol size="4">
-                    <IonItem>
-                      <IonLabel position="floating">Title</IonLabel>
-                      <IonInput
-                        onIonChange={e => setTitle(e.target.value)}
-                      ></IonInput>
-                    </IonItem>
-                  </IonCol>
-                </IonRow>
-                <IonRow>
-                  <IonCol size="4">
-                    <IonRow>
-                      <IonCol>
-                        <MarginCard
-                          title="Start location"
-                          coords={{ lat: state.startLat, lng: state.startLng }}
-                          openModal={() => setShowBeginModal(true)}
-                          lat={state.startLat}
-                          lng={state.startLng}
-                        ></MarginCard>
-                      </IonCol>
-                    </IonRow>
-                    <IonRow>
-                      <IonCol size="3">
-                        <div className="arrow">
-                          <KeyboardArrowDownIcon />
-                        </div>
-                      </IonCol>
-                    </IonRow>
-                    <ReorderableCards />
-                    <IonRow>
-                      <IonCol>
-                        <div className="arrow">
-                          <IonFabButton
-                            color="light"
-                            onClick={() => setShowAddCardModal(true)}
-                          >
-                            <AddIcon></AddIcon>
-                          </IonFabButton>
-                        </div>
-                      </IonCol>
-                    </IonRow>
-                    <IonRow>
-                      <IonCol>
-                        <div className="arrow">
-                          <KeyboardArrowDownIcon />
-                        </div>
-                      </IonCol>
-                    </IonRow>
-                    <IonRow>
-                      <IonCol>
-                        <MarginCard
-                          title="Finish location"
-                          coords={{
-                            lat: state.finishLat,
-                            lng: state.finishLng
-                          }}
-                          openModal={() => setShowEndModal(true)}
-                          lat={state.finishLat}
-                          lng={state.finishLng}
-                        ></MarginCard>
-                      </IonCol>
-                    </IonRow>
-                  </IonCol>
-                </IonRow>
-                <IonButton onClick={() => setShowBeginModal(true)}>
-                  Show Modal
+
+            <IonContent>
+              <IonRow>
+                <IonCol size="4">
+                  <IonItem>
+                    <IonLabel position="floating">Title</IonLabel>
+                    <IonInput
+                      onIonChange={e => setTitle(e.target.value)}
+                    ></IonInput>
+                  </IonItem>
+                </IonCol>
+                <IonCol size="5">
+                  <IonItem>
+                    <IonLabel>Max players/team</IonLabel>
+                    <IonRange min={1} max={12} color="secondary" snaps pin onIonChange={e => setMaxPlayers(e.target.value)} value={state.maxPlayers}>
+                      <IonLabel slot="start">1</IonLabel>
+                      <IonLabel slot="end">12</IonLabel>
+                    </IonRange>
+                  </IonItem>
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol size="4">
+                  <IonRow>
+                    <IonCol>
+                      <MarginCard
+                        title="Start location"
+                        coords={{ lat: state.startLat, lng: state.startLng }}
+                        openModal={() => setShowBeginModal(true)}
+                        lat={state.startLat}
+                        lng={state.startLng}
+                      ></MarginCard>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol size="3">
+                      <div className="arrow">
+                        <KeyboardArrowDownIcon />
+                      </div>
+                    </IonCol>
+                  </IonRow>
+                  <ReorderableCards />
+                  <IonRow>
+                    <IonCol>
+                      <div className="arrow">
+                        <IonFabButton
+                          color="light"
+                          onClick={() => setShowAddCardModal(true)}
+                        >
+                          <AddIcon></AddIcon>
+                        </IonFabButton>
+                      </div>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol>
+                      <div className="arrow">
+                        <KeyboardArrowDownIcon />
+                      </div>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol>
+                      <MarginCard
+                        title="Finish location"
+                        coords={{
+                          lat: state.finishLat,
+                          lng: state.finishLng
+                        }}
+                        openModal={() => setShowEndModal(true)}
+                        lat={state.finishLat}
+                        lng={state.finishLng}
+                      ></MarginCard>
+                    </IonCol>
+                  </IonRow>
+                </IonCol>
+              </IonRow>
+              <IonButton onClick={() => setShowBeginModal(true)}>
+                Show Modal
                 </IonButton>
-                <IonButton onClick={() => saveGame()}>SaveGame</IonButton>
-              </IonContent>
-            </IonCol>
+              <IonButton onClick={() => saveGame()}>SaveGame</IonButton>
+            </IonContent>
           </IonRow>
         </IonGrid>
         <IonModal

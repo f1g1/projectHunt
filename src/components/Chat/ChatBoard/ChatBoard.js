@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import './ChatBoard.css'
 import { fireStore, fireStorage } from '../../../firebase'
 import { UserService } from '../../../services/UserSerivce'
-import { IonIcon, IonPage, IonCol, IonContent } from '@ionic/react'
+import { IonIcon } from '@ionic/react'
 import { images, send } from "ionicons/icons"
 export default class ChatBoard extends Component {
     constructor(props) {

@@ -1,11 +1,8 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import {
-  IonRow,
-  IonCol,
   IonReorderGroup,
   IonItem,
   IonReorder,
-  IonButton
 } from "@ionic/react";
 import InnerCard from "../../components/CreateComponents/Cards/InnerCard";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";

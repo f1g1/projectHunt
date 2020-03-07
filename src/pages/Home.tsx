@@ -85,8 +85,11 @@ class Home extends Component {
           </IonButton>
             <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/lobby", state: "t " }) }}>
               GO TO Lobby
-
-          </IonButton>          </IonList>
+          </IonButton>
+            <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/lobbysearch", state: "t " }) }}>
+              GO TO Lobby search
+          </IonButton>
+          </IonList>
         </IonContent>
       </IonPage>
     )

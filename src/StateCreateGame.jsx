@@ -13,6 +13,7 @@ let AppContext = createContext();
 
 const initialState = {
     startRadius: 1,
+    maxPlayers: 4,
     finishRadius: 1,
     steps: [
         {
@@ -65,6 +66,9 @@ let reducer = (state, action) => {
         }
         case "setTitle": {
             return { ...state, title: action.title };
+        }
+        case "setMaxPlayers": {
+            return { ...state, maxPlayers: action.maxPlayers }
         }
         case "addStep": {
             return {
