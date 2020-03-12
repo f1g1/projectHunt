@@ -10,7 +10,7 @@ import {
   IonLabel,
   IonRow
 } from "@ionic/react";
-import { VISIBILITY, LobbyService } from "../../services/LobbyService";
+import { LobbyService } from "../../services/LobbyService";
 
 export default function MyGames(props) {
   const [games, setgames] = useState();
@@ -31,7 +31,7 @@ export default function MyGames(props) {
                     </IonLabel>
                     <IonButton size="default" onClick={e => {
                       LobbyService.postLobby(x).then(id => {
-                        props.history.push({ pathname: "/lobby", lobbyId: id });
+                        props.history.push({ pathname: "/lobby", lobbyId: id.id });
 
                       })
                     }}>Create Game</IonButton>

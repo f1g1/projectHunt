@@ -11,11 +11,11 @@ export default function LobbySearch(props) {
 
     }, [])
     const joinLobby = (lobbyId) => {
-        LobbyService.joinLobby(UserService.getCurrentPlayer(), lobbyId)
-            .then(x => {
-                props.history.push({ pathname: "/lobby", lobbyId });
+        // LobbyService.joinLobby(UserService.getCurrentPlayer(), lobbyId)
+        // .then(x => {
+        props.history.push({ pathname: "/lobby", lobbyId });
 
-            })
+        // })
 
     }
     return (

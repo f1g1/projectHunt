@@ -13,7 +13,6 @@ export default function ReorderableCards(props) {
 
   function doReorder(event) {
     console.log("Dragged from index", event.detail.from, "to", event.detail.to);
-    debugger;
     dispatch({
       type: "swapSteps",
       from: event.detail.from,

@@ -1,6 +1,6 @@
 import { UserService } from "./UserSerivce";
 import { fireStore } from "../firebase";
-
+import firebase from 'firebase';
 
 export const VISIBILITY = {
     public: "public",
@@ -11,20 +11,76 @@ export const LobbyService = {
     postLobby: postLobby,
     getLobbies,
     deleteLobby,
-    joinLobby,
-    getLobby
+    getLobby,
+    getCurrentLobby,
+    leaveLobby,
+    playerJoinTeam,
+    parseTeams,
+    leaveTeam,
+    addTeam
 };
 
+function addTeam(lobby, team, player) {
+    fireStore
+        .collection("lobbies")
+        .doc(lobby)
+        .collection("teams")
+        .doc("0")
+        .set({ [team]: [player] }, { merge: true });
+}
+function leaveTeam(name, lobby) {
+    // fireStore
+    //     .collection("lobbies")
+    //     .doc(lobby)
+    //     .collection("players")
+    //     .doc(name).delete();
+}
+
+function parseTeams(lobby) {
+    // let teams = [];
+    // lobby.players.forEach(element => {
+    //     if (element.team)
+    //         if (teams.filter(x => x === element.team.lenght === 0))
+    //             teams[element.team] = [element];
+    //         else teams[element.team].push(element);
+    // });
+    // return teams;
+
+}
+
+
+function playerJoinTeam(lobby, team, playerName) {
+    // fireStore
+    //     .collection("lobbies")
+    //     .doc(lobby)
+    //     .collection("teams")
+    //     .doc("0")
+    //     .update({
+    //         [team]: firebase.firestore.FieldValue.arrayUnion(playerName)
+    //     });
+
+}
+
+function leaveLobby() {
+    window.localStorage.removeItem("lobbies");
+
+}
 function postLobby(game) {
     var lobbyRef = fireStore
         .collection("lobbies")
     return lobbyRef.add({ ...game, lobbyCreatedDate: Date.now() })
 }
-function getLobby(lobbyId) {
-    var lobbyRef = fireStore
+function getCurrentLobby() {
+    return window.localStorage["currentLobby"]
+}
+async function getLobby(lobbyId) {
+    let lobbyRef = fireStore
         .collection("lobbies")
         .doc(lobbyId)
-    return lobbyRef.get().then(x => x.data());
+    return await lobbyRef.get().then(x => x.data());
+
+
+
 }
 
 function deleteLobby(id) {
@@ -33,6 +89,7 @@ function deleteLobby(id) {
         .doc(id)
     lobbyRef.delete();
 }
+
 async function getLobbies() {
     const snapshot = await fireStore
         .collection("lobbies").get();
@@ -41,14 +98,10 @@ async function getLobbies() {
     });
 }
 
-function joinLobby(player, lobby) {
-    var playersRef = fireStore
-        .collection("lobbies")
-        .doc(lobby)
-        .collection("players")
-    return playersRef.where("name", "==", player.name).get()
-        .then(x => {
-            if (x.size == 0)
-                playersRef.doc(player.name).set(player)
-        })
-}
+// function joinLobby(player, lobby) {
+//     var playersRef = fireStore
+//         .collection("lobbies")
+//         .doc(window.localStorage["currentLobby"]+"Players").set(player.name,)
+
+
+// }
