@@ -7,25 +7,31 @@ import TeamPanel from "./TeamPanel"
 import { LobbyService } from "../../services/LobbyService";
 import LobbySearch from "../LobbySearch/LobbySearch";
 import { UserService } from "../../services/UserSerivce";
+import useTeamChanges from "../../services/TeamChanges";
 
 
 
 export default function Lobby(props) {
   const [lobby, setLobby] = useState()
-  const [teams, setteams] = useState()
+  const teams = useTeamChanges();
+
   const [currentTeamDetails, setcurrentTeamDetails] = useState();
   console.log(lobby)
   // const [maxPlayers, setmaxPlayers] = useState()
   const showThisTeam = (name) => {
-    console.log("current", teams[name]);
-    setcurrentTeamDetails(teams[name])
+    setcurrentTeamDetails(teams.filter(x => x.name === name)[0])
   }
   useEffect(() => {
     console.log("lobby", props.location.lobbyId);
-    LobbyService.getLobby(LobbyService.getCurrentLobby())
+    LobbyService.getLobby(props.location.lobbyId || LobbyService.getCurrentLobby())
       .then(x => {
         setLobby(x);
       });
+    // LobbyService.getTeams(props.location.lobbyId || LobbyService.getCurrentLobby()).then(x => setteams(x))
+
+
+
+    // let unmount = LobbyService.listenTeams(props.location.lobbyId || LobbyService.getCurrentLobby(), setteams, teams);
 
   }, [])
   useEffect(() => {
@@ -41,8 +47,8 @@ export default function Lobby(props) {
     LobbyService.leaveLobby();
     props.history.push({ pathname: "/lobbysearch" });
   }
-  const leaveTeam = () => {
-    LobbyService.leaveTeam(UserService.getCurrentPlayer.name, props.location.lobbyId)
+  const leaveTeam = (lobby, player, team, teams) => {
+    LobbyService.leaveTeam(lobby, player, team)
   }
   return (
     <IonPage>
@@ -50,19 +56,25 @@ export default function Lobby(props) {
         <>
           <IonHeader>
             <IonToolbar color="primary">
-              <IonItem lines="none" color="primary">
-                <IonTitle>Lobby for {lobby.title}</IonTitle>
-                <IonButton color="danger" onClick={leaveLobby}>
-                  Leave
+              <IonGrid>
+                <IonRow>
+                  <IonCol size="6">
+                    <IonTitle>Lobby for: </IonTitle>
+                    <IonTitle color="danger">
+                      {lobby.title}
+                    </IonTitle>
+                  </IonCol>
+                  <IonCol size="3" offset="3">
+                    <IonButton color="danger" onClick={leaveLobby}>
+                      Leave
             </IonButton>
-              </IonItem>
-
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
             </IonToolbar>
-
-
           </IonHeader>
 
-          <IonContent fixed>
+          <IonContent >
 
             <IonGrid >
               <IonRow fixed>
@@ -84,11 +96,7 @@ export default function Lobby(props) {
             </IonGrid>
           </IonContent>
 
-          <IonContent>
 
-
-
-          </IonContent>
         </>
         : <IonLoading
           isOpen={lobby}

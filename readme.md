@@ -1,13 +1,7 @@
 run live reload =>
 
 //camin
-ionic capacitor run android -l --address=10.139.10.250
-
-ionic capacitor run android -l --address=10.139.0.57
-
-//home ionic capacitor run android -l --address=192.168.0.101
-
-////////////////////WIFI DEBUG
+ionic capacitor run android -l --address=0.0.0.0
 
 adb devices adb tcpip 5555 adb tcpip 5555 adb connect :5555
 

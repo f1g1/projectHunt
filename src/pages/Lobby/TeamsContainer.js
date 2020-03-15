@@ -8,35 +8,39 @@ export default function TeamsContainer(props) {
     const addTeam = () => {
         LobbyService.addTeam(LobbyService.getCurrentLobby(), newTeamName, UserService.getCurrentPlayer().name);
     }
+    console.log("object", props.teams)
     return (
-        <IonContent>
+        <Fragment>
             <h3>Teams</h3>
             <IonList>
 
-                {props.teams && Object.entries(props.teams).map(([key, player], index) => {
-                    return <Fragment key={player.team}>
-                        <IonItem detail lines="none" color="tertiary" button onClick={() => props.showThisTeam(key)} key={player.team + index + "das"}>
-                            <IonBadge color={player.length / props.max === 1 ? "danger" : "primary"}>
-                                <h5>{player.length}/{props.max}</h5>
-                            </IonBadge>
+                {props.teams && props.teams.map((team, index) => {
+                    return <Fragment key={team.name}>
+                        <IonItem detail lines="none" color="tertiary" button onClick={() => props.showThisTeam(team.name)} key={team.name + index + "das"}>
+                            <IonItem color="tertiary" lines="none">
+                                <IonBadge color={team.players.length / props.max === 1 ? "danger" : "primary"} mode="ios">
+                                    <h5>{team.players.length}/{props.max}</h5>
+                                </IonBadge>
+
+                            </IonItem>
 
                             <h1>
-                                {player[0].team}
+                                {team.name}
                             </h1>
 
 
                         </IonItem>
-                        <IonItemDivider key={player.teamName + index} />
+                        <IonItemDivider key={team.name + index} />
                     </Fragment>
                 })
                 }
                 <IonItem>
                     <IonInput placeholder="TeamName" maxlength="20" minlength="3" type="text" value={newTeamName} onIonChange={(e) => setnewTeamName(e.detail.value)}></IonInput>
-                    <IonButton onClick={addTeam}>Add new team</IonButton>
+                    <IonButton onClick={addTeam} size="default">New team!</IonButton>
 
                 </IonItem>
 
             </IonList >
-        </IonContent >
+        </Fragment>
     )
 }

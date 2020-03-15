@@ -168,8 +168,6 @@ export default class ChatBoard extends Component {
 
     render() {
         return (
-
-
             <div className="viewChatBoard">
                 <div className="headerChatBoard">
 
