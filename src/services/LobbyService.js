@@ -46,7 +46,7 @@ function addTeam(lobby, team, player) {
         })
 }
 function leaveTeam(lobbyId, playerName, teamName, stateTeams) {
-    fireStore
+    return fireStore
         .collection("lobbies")
         .doc(lobbyId)
         .collection("teams")
@@ -54,9 +54,6 @@ function leaveTeam(lobbyId, playerName, teamName, stateTeams) {
         .update({
             "players": firebase.firestore.FieldValue.arrayRemove(playerName)
         })
-        .then(x => console.log(x))
-    console.log(stateTeams);
-    return stateTeams
 }
 
 function parseTeams(lobby) {
@@ -73,7 +70,7 @@ function parseTeams(lobby) {
 
 
 function playerJoinTeam(lobby, team, playerName) {
-    fireStore
+    return fireStore
         .collection("lobbies")
         .doc(lobby)
         .collection("teams")

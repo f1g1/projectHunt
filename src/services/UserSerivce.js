@@ -10,7 +10,7 @@ function getCurrentUser() {
 
 function getCurrentPlayer() {
   let user = JSON.parse(window.localStorage["user"]) || {};
-  return { name: user.name, image: user.imageUrl }
+  return { name: user.familyName + " " + user.givenName, image: user.imageUrl }
 }
 function setCurrentUser(user) {
   window.localStorage["user"] = JSON.stringify({

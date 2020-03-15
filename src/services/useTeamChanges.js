@@ -3,10 +3,9 @@ import { fireStore } from '../firebase';
 import { LobbyService } from './LobbyService';
 
 export default function useTeamChanges() {
-    let teams = []
-    const [teamss, setteamss] = useState([])
+    const [finalteams, setTeams] = useState([]);
     useEffect(() => {
-
+        let teams = [];
         let unsubscribe = fireStore
             .collection("lobbies")
             .doc(LobbyService.getCurrentLobby())
@@ -15,18 +14,18 @@ export default function useTeamChanges() {
                 snapshot.docChanges().forEach(function (change) {
                     if (change.type === "added") {
                         teams = [...teams, { ...change.doc.data(), name: change.doc.id }];
-                        setteamss(teams);
+                        setTeams([...teams]);
+
                     }
                     if (change.type === "modified") {
-                        debugger;
-                        let filtered = teams.filter(x => x.name === change.doc.data().name)
-                        teams = [...filtered, { ...change.doc.data(), name: change.doc.id }];
-                        setteamss(teams);
+                        let modified = teams.filter(x => x.name !== change.doc.id)
+                        teams = [...modified, { ...change.doc.data(), name: change.doc.id }];
+                        setTeams([...teams]);
                     }
                     if (change.type === "removed") {
-                        let filtered = teams.filter(x => x.name === change.doc.data().name)
+                        let filtered = teams.filter(x => x.name !== change.doc.id)
                         teams = [...filtered];
-                        setteamss(teams);
+                        setTeams([...teams])
                     }
                 });
             });
@@ -34,5 +33,5 @@ export default function useTeamChanges() {
             unsubscribe();
         }
     }, [])
-    return teamss;
+    return finalteams;
 }

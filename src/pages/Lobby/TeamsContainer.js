@@ -8,13 +8,18 @@ export default function TeamsContainer(props) {
     const addTeam = () => {
         LobbyService.addTeam(LobbyService.getCurrentLobby(), newTeamName, UserService.getCurrentPlayer().name);
     }
-    console.log("object", props.teams)
+
+    console.log("RENDER TEAMS CONTAINER", props.teams)
     return (
         <Fragment>
             <h3>Teams</h3>
             <IonList>
 
-                {props.teams && props.teams.map((team, index) => {
+                {props.teams.sort((a, b) => {
+                    if (a.name < b.name) { return -1; }
+                    if (a.name > b.name) { return 1; }
+                    return 0;
+                }).map((team, index) => {
                     return <Fragment key={team.name}>
                         <IonItem detail lines="none" color="tertiary" button onClick={() => props.showThisTeam(team.name)} key={team.name + index + "das"}>
                             <IonItem color="tertiary" lines="none">

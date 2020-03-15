@@ -7,13 +7,14 @@ import TeamPanel from "./TeamPanel"
 import { LobbyService } from "../../services/LobbyService";
 import LobbySearch from "../LobbySearch/LobbySearch";
 import { UserService } from "../../services/UserSerivce";
-import useTeamChanges from "../../services/TeamChanges";
+import useTeamChanges from "../../services/useTeamChanges";
 
 
 
 export default function Lobby(props) {
   const [lobby, setLobby] = useState()
-  const teams = useTeamChanges();
+  const [canJoin, setcanJoin] = useState(true)
+  const teams = useTeamChanges()
 
   const [currentTeamDetails, setcurrentTeamDetails] = useState();
   console.log(lobby)
@@ -22,20 +23,17 @@ export default function Lobby(props) {
     setcurrentTeamDetails(teams.filter(x => x.name === name)[0])
   }
   useEffect(() => {
+
     console.log("lobby", props.location.lobbyId);
     LobbyService.getLobby(props.location.lobbyId || LobbyService.getCurrentLobby())
       .then(x => {
         setLobby(x);
+
       });
-    // LobbyService.getTeams(props.location.lobbyId || LobbyService.getCurrentLobby()).then(x => setteams(x))
-
-
-
-    // let unmount = LobbyService.listenTeams(props.location.lobbyId || LobbyService.getCurrentLobby(), setteams, teams);
 
   }, [])
   useEffect(() => {
-    console.log(teams)
+    currentTeamDetails && setcurrentTeamDetails(teams.filter(x => x.name === currentTeamDetails.name)[0])
   }, [teams])
 
 
@@ -47,8 +45,13 @@ export default function Lobby(props) {
     LobbyService.leaveLobby();
     props.history.push({ pathname: "/lobbysearch" });
   }
-  const leaveTeam = (lobby, player, team, teams) => {
-    LobbyService.leaveTeam(lobby, player, team)
+  const leaveTeam = (lobby, player, team) => {
+    LobbyService.leaveTeam(lobby, player, team).then(() => setcanJoin(true))
+  }
+  const joinTeam = (team) => {
+    debugger;
+    LobbyService.playerJoinTeam(LobbyService.getCurrentLobby(), team, UserService.getCurrentPlayer().name)
+      .then(() => setcanJoin(false))
   }
   return (
     <IonPage>
@@ -80,11 +83,11 @@ export default function Lobby(props) {
               <IonRow fixed>
 
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12" >
-                  <TeamsContainer teams={teams} players={lobby.players} max={lobby.maxPlayers} showThisTeam={showThisTeam} addPlayer></TeamsContainer>
+                  <TeamsContainer teams={teams} max={lobby.maxPlayers} showThisTeam={showThisTeam} addPlayer></TeamsContainer>
                 </IonCol>
 
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12" key="2">
-                  {currentTeamDetails && <TeamPanel team={currentTeamDetails} max={lobby.maxPlayers} leaveTeam={leaveTeam}></TeamPanel>}
+                  {currentTeamDetails && <TeamPanel team={currentTeamDetails} max={lobby.maxPlayers} leaveTeam={leaveTeam} canJoin joinTeam={joinTeam}></TeamPanel>}
                 </IonCol>
 
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12">

@@ -4,8 +4,9 @@ import { UserService } from '../../services/UserSerivce'
 import { LobbyService } from '../../services/LobbyService'
 
 export default function TeamPanel(props) {
+    console.log("rEnder panel", props.team)
     return (
-        <Fragment>
+        props.team && <Fragment>
             <h3>&nbsp;</h3>
             <IonCard color="tertiary">
                 <IonCardTitle >
@@ -21,7 +22,7 @@ export default function TeamPanel(props) {
                         </IonItem>)}
                     </IonList>
                     {!props.team.players.filter(x => x === UserService.getCurrentPlayer().name).length > 0 ?
-                        <IonButton expand="full" disabled={props.team.length / props.max === 1} onClick={() => LobbyService.playerJoinTeam(LobbyService.getCurrentLobby(), props.team.name, UserService.getCurrentPlayer().name)}>
+                        <IonButton color="primary" expand="full" disabled={props.team.length / props.max === 1 && props.canJoin} onClick={() => props.joinTeam(props.team.name)}>
                             Join!
                     </IonButton> :
                         <IonButton expand="full" color="danger" onClick={() => props.leaveTeam(LobbyService.getCurrentLobby(), UserService.getCurrentPlayer().name, props.team.name)}>Leave!</IonButton>
