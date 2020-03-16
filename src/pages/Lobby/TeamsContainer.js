@@ -21,8 +21,8 @@ export default function TeamsContainer(props) {
                     return 0;
                 }).map((team, index) => {
                     return <Fragment key={team.name}>
-                        <IonItem detail lines="none" color="tertiary" button onClick={() => props.showThisTeam(team.name)} key={team.name + index + "das"}>
-                            <IonItem color="tertiary" lines="none">
+                        <IonItem detail lines="none" color={team.name === props.joinedTeam ? "tertiary" : "primary"} button onClick={() => props.showThisTeam(team.name)} key={team.name + index + "das"}>
+                            <IonItem color="none" lines="none">
                                 <IonBadge color={team.players.length / props.max === 1 ? "danger" : "primary"} mode="ios">
                                     <h5>{team.players.length}/{props.max}</h5>
                                 </IonBadge>
@@ -41,7 +41,7 @@ export default function TeamsContainer(props) {
                 }
                 <IonItem>
                     <IonInput placeholder="TeamName" maxlength="20" minlength="3" type="text" value={newTeamName} onIonChange={(e) => setnewTeamName(e.detail.value)}></IonInput>
-                    <IonButton onClick={addTeam} size="default">New team!</IonButton>
+                    <IonButton onClick={addTeam} size="default" disabled={props.joinedTeam} >New team!</IonButton>
 
                 </IonItem>
 

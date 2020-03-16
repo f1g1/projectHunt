@@ -13,7 +13,7 @@ import useTeamChanges from "../../services/useTeamChanges";
 
 export default function Lobby(props) {
   const [lobby, setLobby] = useState()
-  const [canJoin, setcanJoin] = useState(true)
+  const [joinedTeam, setJoinedTeam] = useState()
   const teams = useTeamChanges()
 
   const [currentTeamDetails, setcurrentTeamDetails] = useState();
@@ -22,6 +22,11 @@ export default function Lobby(props) {
   const showThisTeam = (name) => {
     setcurrentTeamDetails(teams.filter(x => x.name === name)[0])
   }
+
+  useEffect(() => {
+    setJoinedTeam(LobbyService.getCurrentTeam());
+  })
+
   useEffect(() => {
 
     console.log("lobby", props.location.lobbyId);
@@ -30,10 +35,17 @@ export default function Lobby(props) {
         setLobby(x);
 
       });
-
+    return () => {
+      LobbyService.leaveLobby()
+    }
   }, [])
   useEffect(() => {
     currentTeamDetails && setcurrentTeamDetails(teams.filter(x => x.name === currentTeamDetails.name)[0])
+    if (!joinedTeam) {
+      let joined = teams.filter(x => x.players.includes(UserService.getCurrentPlayer().name));
+      if (joined.length > 0)
+        setJoinedTeam(joined[0].name)
+    }
   }, [teams])
 
 
@@ -42,16 +54,16 @@ export default function Lobby(props) {
 
   // }
   const leaveLobby = () => {
+    debugger;
     LobbyService.leaveLobby();
     props.history.push({ pathname: "/lobbysearch" });
   }
   const leaveTeam = (lobby, player, team) => {
-    LobbyService.leaveTeam(lobby, player, team).then(() => setcanJoin(true))
+    LobbyService.leaveTeam(lobby, player, team).then(() => setJoinedTeam(true))
   }
   const joinTeam = (team) => {
-    debugger;
     LobbyService.playerJoinTeam(LobbyService.getCurrentLobby(), team, UserService.getCurrentPlayer().name)
-      .then(() => setcanJoin(false))
+      .then(() => setJoinedTeam(false))
   }
   return (
     <IonPage>
@@ -83,11 +95,11 @@ export default function Lobby(props) {
               <IonRow fixed>
 
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12" >
-                  <TeamsContainer teams={teams} max={lobby.maxPlayers} showThisTeam={showThisTeam} addPlayer></TeamsContainer>
+                  <TeamsContainer teams={teams} max={lobby.maxPlayers} showThisTeam={showThisTeam} addPlayer joinedTeam={joinedTeam}></TeamsContainer>
                 </IonCol>
 
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12" key="2">
-                  {currentTeamDetails && <TeamPanel team={currentTeamDetails} max={lobby.maxPlayers} leaveTeam={leaveTeam} canJoin joinTeam={joinTeam}></TeamPanel>}
+                  {currentTeamDetails && <TeamPanel team={currentTeamDetails} max={lobby.maxPlayers} leaveTeam={leaveTeam} canJoin={joinedTeam} joinTeam={joinTeam}></TeamPanel>}
                 </IonCol>
 
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12">

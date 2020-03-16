@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import './ChatBoard.css'
 import { fireStore, fireStorage } from '../../../firebase'
 import { UserService } from '../../../services/UserSerivce'
-import { IonIcon } from '@ionic/react'
+import { IonIcon, IonButton } from '@ionic/react'
 import { images, send } from "ionicons/icons"
 export default class ChatBoard extends Component {
     constructor(props) {
@@ -269,11 +269,12 @@ export default class ChatBoard extends Component {
                             <div className="viewWrapItemLeft" key={item.timestamp}>
                                 <div className="viewWrapItemLeft3">
                                     {this.isLastMessageLeft(index) ? (
-                                        <img
-                                            src={this.props.gameChatId.photoUrl}
-                                            alt="avatar"
-                                            className="peerAvatarLeft"
-                                        />
+                                        <IonButton>s</IonButton>
+                                        // <img
+                                        //     src={this.props.gameChatId.image}
+                                        //     alt="avatar"
+                                        //     className="peerAvatarLeft"
+                                        // />
                                     ) : (
                                             <div className="viewPaddingLeft" />
                                         )}
