@@ -1,14 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Children } from "react";
 import { IonHeader, IonContent, IonButton, IonInput, IonRow, IonCol, IonRange, IonGrid, IonCard } from '@ionic/react';
-import GoogleMapReact from 'google-map-react';
+import GoogleMap from 'google-map-react';
 import "./ModalMap.scss"
+import AddLocationIcon from '@material-ui/icons/AddLocation';
+import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 
 let ModalMap = (props) => {
   const [actualCenter, setActualCenter] = useState()
   const [positionSelected, setpositionSelected] = useState(true)
+  const [polyline, setpolyline] = useState()
   const [center, setCenter] = useState()
+  const [range, setRange] = useState(1)
   let refMap = useRef(null);
-
 
   const handleGetCenter = () => {
     console.log(props.location);
@@ -18,6 +21,31 @@ let ModalMap = (props) => {
   useEffect(() => {
     console.log("default")
   }, [])
+
+  useEffect(() => {
+    //changePolyLines
+    console.log("actual??")
+    if (polyline && actualCenter) {
+      console.log("center", actualCenter)
+      polyline.setOptions({ fillColor: '#0000FF', center: actualCenter });
+    }
+  }, [actualCenter])
+
+
+  const initPolyLines = (google) => {
+    console.log("actual", actualCenter)
+    let ppolyline = new google.maps.Circle({//<--note the this
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.3,
+      strokeWeight: 1,
+      fillColor: '#FF0000',
+      fillOpacity: 1,
+      center: { lat: 45.301281341625064, lng: 28.15425781525737 },
+      radius: 100
+    });
+    ppolyline.setMap(google.map);
+    setpolyline(ppolyline)
+  }
 
 
   return <>
@@ -40,29 +68,30 @@ let ModalMap = (props) => {
     </IonHeader>
     <IonContent>
       <div style={{ height: '100%', width: '100%' }}>
-        <GoogleMapReact
+        <GoogleMap
           ref={refMap}
           bootstrapURLKeys={{
             key: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA"
           }}
           onChange={x => console.log(x)}
-          defaultCenter={{ lat: 0, lng: 0 }}
+          defaultCenter={{ lat: props.location.latitude, lng: props.location.longitude }}
           defaultZoom={11}
           onDragsStart={(map) => { setActualCenter({ lat: map.getCenter().lat(), lng: map.getCenter().lng() }); setpositionSelected(false) }}
-
+          yesIWantToUseGoogleMapApiInternals
+          onGoogleApiLoaded={x => initPolyLines(x)}
           onDragEnd={(map) => { setActualCenter({ lat: map.getCenter().lat(), lng: map.getCenter().lng() }); setpositionSelected(false) }}
         >
-          {center && <div lat={center.lat} lng={center.lng}  ><ion-icon color="primary" name="pin" className="locationPin iconSize" ></ion-icon></div>}
-        </GoogleMapReact>
+          {center && <div lat={center.lat} lng={center.lng} hover="false"><AddLocationIcon name="pin" className="locationPin " ></AddLocationIcon></div>}
+        </GoogleMap>
 
-        {!positionSelected && <div className="markerFixed" color="danger"><ion-icon name="locate" className="locationCrosshair iconSize" color="secondary"></ion-icon></div>}
+        {!positionSelected && <div hover="false"><LocationSearchingIcon className="locationCrosshair iconSize markerFixed" ></LocationSearchingIcon></div>}
       </div>
       <div className='bottomContainer'>
         <IonCard color="light">
           <IonGrid>
             {positionSelected && <IonRow>
               <IonCol size="8">
-                <IonRange color="primary" pin={true} />
+                <IonRange color="primary" pin={true} value={range} onIonChange={x => setRange(x.detail.value)} />
 
               </IonCol>
               <IonCol className="vcentered">
