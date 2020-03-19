@@ -12,9 +12,7 @@ let AppContext = createContext();
 // }
 
 const initialState = {
-    startRadius: 1,
     maxPlayers: 4,
-    finishRadius: 1,
     steps: [
         {
             clue: "",
@@ -53,16 +51,10 @@ const initialState = {
 let reducer = (state, action) => {
     switch (action.type) {
         case "setStartCoords": {
-            return { ...state, startLat: action.lat, startLng: action.lng };
-        }
-        case "setStartRadius": {
-            return { ...state, startRadius: action.Radius };
+            return { ...state, startLat: action.lat, startLng: action.lng, startRadius: action.radius };
         }
         case "setFinishCoords": {
-            return { ...state, finishLat: action.lat, finishLng: action.lng };
-        }
-        case "setFinishRadius": {
-            return { ...state, finishRadius: action.Radius };
+            return { ...state, finishLat: action.lat, finishLng: action.lng, finishRadius: action.radius };
         }
         case "setTitle": {
             return { ...state, title: action.title };

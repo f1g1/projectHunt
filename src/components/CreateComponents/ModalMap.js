@@ -6,16 +6,16 @@ import AddLocationIcon from '@material-ui/icons/AddLocation';
 import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 
 let ModalMap = (props) => {
-  const [actualCenter, setActualCenter] = useState()
+  const [mapCenter, setMapCenter] = useState()
   const [positionSelected, setpositionSelected] = useState(true)
   const [polyline, setpolyline] = useState()
-  const [center, setCenter] = useState()
-  const [range, setRange] = useState(1)
+  const [selectedPosition, setSelectedPosition] = useState()
+  const [radius, setRadius] = useState(1)
   let refMap = useRef(null);
 
   const handleGetCenter = () => {
     console.log(props.location);
-    setCenter(actualCenter);
+    setSelectedPosition(mapCenter);
     setpositionSelected(true);
   }
   useEffect(() => {
@@ -24,24 +24,22 @@ let ModalMap = (props) => {
 
   useEffect(() => {
     //changePolyLines
-    console.log("actual??")
-    if (polyline && actualCenter) {
-      console.log("center", actualCenter)
-      polyline.setOptions({ fillColor: '#0000FF', center: actualCenter });
+    console.log(radius)
+    if (polyline && selectedPosition) {
+      polyline.setOptions({ center: selectedPosition, radius });
     }
-  }, [actualCenter])
+  }, [selectedPosition, radius])
 
 
   const initPolyLines = (google) => {
-    console.log("actual", actualCenter)
+    console.log("actual", mapCenter)
     let ppolyline = new google.maps.Circle({//<--note the this
-      strokeColor: '#FF0000',
+      // strokeColor: '#FF0000',
       strokeOpacity: 0.3,
       strokeWeight: 1,
-      fillColor: '#FF0000',
-      fillOpacity: 1,
-      center: { lat: 45.301281341625064, lng: 28.15425781525737 },
-      radius: 100
+      // fillColor: '#FF0000',
+      fillOpacity: 0.2,
+      radius
     });
     ppolyline.setMap(google.map);
     setpolyline(ppolyline)
@@ -53,7 +51,7 @@ let ModalMap = (props) => {
       <IonRow>
 
         <IonCol size="5">
-          <IonInput placeholder="lat:" value={center ? center.lat : ""} onChange={(e) => { if (center && e.target.value !== center.lat) center && setCenter({ ...center, lat: e.target.value }) }}></IonInput>
+          <IonInput placeholder="lat:" value={selectedPosition ? selectedPosition.lat : ""} onChange={(e) => { if (selectedPosition && e.target.value !== selectedPosition.lat) selectedPosition && setSelectedPosition({ ...selectedPosition, lat: e.target.value }) }}></IonInput>
 
         </IonCol>
 
@@ -61,7 +59,7 @@ let ModalMap = (props) => {
           /
         </IonCol>
         <IonCol size="5">
-          <IonInput placeholder="lng:" value={center ? center.lng : ""} onChange={(e) => { if (e.target.value !== center.lng) center && setCenter({ ...center, lng: e.target.value }) }}> </IonInput>
+          <IonInput placeholder="lng:" value={selectedPosition ? selectedPosition.lng : ""} onChange={(e) => { if (e.target.value !== selectedPosition.lng) selectedPosition && setSelectedPosition({ ...selectedPosition, lng: e.target.value }) }}> </IonInput>
         </IonCol>
 
       </IonRow>
@@ -76,12 +74,12 @@ let ModalMap = (props) => {
           onChange={x => console.log(x)}
           defaultCenter={{ lat: props.location.latitude, lng: props.location.longitude }}
           defaultZoom={11}
-          onDragsStart={(map) => { setActualCenter({ lat: map.getCenter().lat(), lng: map.getCenter().lng() }); setpositionSelected(false) }}
+          onDragsStart={(map) => { setMapCenter({ lat: map.getCenter().lat(), lng: map.getCenter().lng() }); setpositionSelected(false) }}
           yesIWantToUseGoogleMapApiInternals
           onGoogleApiLoaded={x => initPolyLines(x)}
-          onDragEnd={(map) => { setActualCenter({ lat: map.getCenter().lat(), lng: map.getCenter().lng() }); setpositionSelected(false) }}
+          onDragEnd={(map) => { setMapCenter({ lat: map.getCenter().lat(), lng: map.getCenter().lng() }); setpositionSelected(false) }}
         >
-          {center && <div lat={center.lat} lng={center.lng} hover="false"><AddLocationIcon name="pin" className="locationPin " ></AddLocationIcon></div>}
+          {selectedPosition && <div lat={selectedPosition.lat} lng={selectedPosition.lng} hover="false"><AddLocationIcon name="pin" className="locationPin " ></AddLocationIcon></div>}
         </GoogleMap>
 
         {!positionSelected && <div hover="false"><LocationSearchingIcon className="locationCrosshair iconSize markerFixed" ></LocationSearchingIcon></div>}
@@ -91,12 +89,12 @@ let ModalMap = (props) => {
           <IonGrid>
             {positionSelected && <IonRow>
               <IonCol size="8">
-                <IonRange color="primary" pin={true} value={range} onIonChange={x => setRange(x.detail.value)} />
+                <IonRange color="primary" pin={true} value={radius} onIonChange={x => setRadius(x.detail.value)} />
 
               </IonCol>
               <IonCol className="vcentered">
                 <IonButton onClick={() => {
-                  props.save(actualCenter.lat, actualCenter.lng);
+                  props.save(mapCenter.lat, mapCenter.lng, radius);
                   props.handleClose()
                 }
 

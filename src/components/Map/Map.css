@@ -1,14 +1,14 @@
-/* .map-user-image {
+.map-user-image {
   position: relative;
   cursor: pointer;
   top: 100%;
   left: 50%;
   width: 30px;
   height: 30px;
-  transform: translate(-80%, -80%);
+  transform: translate(-50%, -100%);
   color: orange;
 }
-.markerBox{
+/* .markerBox{
   position: absolute;
    top: 0;
     bottom: 0;

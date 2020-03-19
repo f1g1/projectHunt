@@ -31,6 +31,7 @@ import Lobby from './pages/Lobby/Lobby';
 import MyGames from './pages/MyGames/MyGames';
 import Create from './pages/Create/Create';
 import LobbySearch from './pages/LobbySearch/LobbySearch';
+import Tabb from './pages/BarcodeTest';
 const App: React.FC = () => (
   <IonApp>
 
@@ -48,6 +49,7 @@ const App: React.FC = () => (
         <Route path="/lobby" component={Lobby} exact={true} />
         <Route path="/lobbysearch" component={LobbySearch} exact={true} />
         <Route path="/mygames" component={MyGames} exact={true} />
+        <Route path="/tab1" component={Tabb} exact={true} />
         <Route exact path="/" render={() => <Redirect to="/login" />} />
       </IonRouterOutlet>
     </IonReactRouter>

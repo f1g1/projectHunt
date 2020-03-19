@@ -4,8 +4,7 @@ import {
   IonItem,
   IonReorder,
 } from "@ionic/react";
-import InnerCard from "../../components/CreateComponents/Cards/InnerCard";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import InnerCard from "./Cards/InnerCard";
 import { AppContext } from "../../StateCreateGame";
 
 export default function ReorderableCards(props) {
@@ -28,9 +27,6 @@ export default function ReorderableCards(props) {
             <InnerCard clue={x.clue} code={x.code}>
               <div className="arrow">
                 <IonReorder slot="start" />
-              </div>
-              <div className="arrow">
-                <KeyboardArrowDownIcon />
               </div>
             </InnerCard>
           </IonItem>
