@@ -20,3 +20,15 @@
   .gmaps * {
     box-sizing: content-box;
   }
+
+  @media only screen and (min-width: 600px) {
+
+    .stickyContainer {
+    position: sticky;
+      top:30px;
+    display: block;
+    width: 100%;
+    }
+
+  }
+ 

@@ -5,9 +5,10 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardContent,
+  IonItem,
 } from "@ionic/react";
 import GoogleMap from 'google-map-react';
-import "./MarginCard.scss";
+import "./Card.scss";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 
 const LocationMarker = ({ lat, lng }) => (
@@ -31,32 +32,35 @@ export default function Card(props) {
     ppolyline.setMap(google.map);
   }
   return (
-    <IonCard color="secondary">
-      <IonCardHeader>
-        <IonCardSubtitle>{props.title}</IonCardSubtitle>
-        <IonButton onClick={props.openModal}>Modal</IonButton>
-      </IonCardHeader>
+    <IonItem lines="none">
+      <div style={{ height: '100%', width: '100%' }}>
+        <IonCard color="secondary">
+          <IonCardHeader>
+            <IonCardSubtitle>{props.title}</IonCardSubtitle>
+            <IonButton onClick={props.openModal}>Modal</IonButton>
+          </IonCardHeader>
 
-      <IonCardContent>
-        <div style={{ height: "300px" }}>
+          <IonCardContent>
+            <div style={{ height: "300px" }}>
 
-          <div style={{ height: '100%', width: '100%' }}>
+              <div style={{ height: '100%', width: '100%' }}>
 
-            {props.lat && <GoogleMap
-              bootstrapURLKeys={{ key: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA" }}
-              defaultCenter={k}
-              defaultZoom={15}
-              yesIWantToUseGoogleMapApiInternals
-              onGoogleApiLoaded={x => initPolyLines(x)}
-            >
-              <LocationMarker
-                lat={k.lat}
-                lng={k.lng}
-              />
-            </GoogleMap>}
-          </div>
-        </div>
-      </IonCardContent>
-    </IonCard >
+                {props.lat && <GoogleMap
+                  bootstrapURLKeys={{ key: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA" }}
+                  defaultCenter={k}
+                  defaultZoom={15}
+                  yesIWantToUseGoogleMapApiInternals
+                  onGoogleApiLoaded={x => initPolyLines(x)}
+                >
+                  <LocationMarker
+                    lat={k.lat}
+                    lng={k.lng}
+                  />
+                </GoogleMap>}
+              </div>
+            </div>
+          </IonCardContent>
+        </IonCard ></div>
+    </IonItem>
   );
 }

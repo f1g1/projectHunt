@@ -12,6 +12,7 @@ import {
   IonFabButton,
 } from "@ionic/react";
 import { AppContext as CreateGameContext } from "../../../StateCreateGame";
+import "./Card.scss"
 
 
 
@@ -55,7 +56,6 @@ export default function CardList() {
   const handleCloseFinish = () => {
     setShowEndModal(false);
   };
-
   return (
     <div>
       <IonCol sizeXs="2" sizeMd="1" sizeXl="0.5"></IonCol>

@@ -5,16 +5,16 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonItemOptions,
+  IonItemOption,
+  IonButton,
 } from "@ionic/react";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 export default function InnerCard(props) {
   return (
     <div style={{ height: '100%', width: '100%' }}>
-
       <IonCard color="light" className="full">
         <IonCardHeader>
-          <MoreVertIcon className="toRight"></MoreVertIcon>
-          <br></br>
+          <IonButton className="toRight" color="danger">x</IonButton>
         </IonCardHeader>
         <IonCardContent>
           {props.children[0]}

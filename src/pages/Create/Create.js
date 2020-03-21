@@ -6,32 +6,20 @@ import {
   IonGrid,
   IonButton,
   IonPage,
-  IonInput,
-  IonLabel,
-  IonItem,
-  IonRange
+  IonFooter,
+  IonToolbar,
+  IonButtons
 } from "@ionic/react";
-import "./Create.css";
 import { AppContext as CreateGameContext } from "../../StateCreateGame";
 
 
 import { GamesService } from "../../services/GameService";
 import CardList from "../../components/CreateComponents/Cards/CardList";
+import GameInformations from "../../components/CreateComponents/Cards/GameInformations";
 const Create = () => {
   const { state, dispatch } = useContext(CreateGameContext);
 
-  const setTitle = title => {
-    dispatch({
-      type: "setTitle",
-      title
-    });
-  };
-  const setMaxPlayers = maxPlayers => {
-    dispatch({
-      type: "setMaxPlayers",
-      maxPlayers
-    });
-  };
+
 
   const saveGame = () => {
     GamesService.saveGame(state);
@@ -42,28 +30,27 @@ const Create = () => {
       <IonContent>
         <IonGrid>
           <IonRow>
-            <IonCol size="5">
-              <IonItem>
-                <IonLabel position="floating">Title</IonLabel>
-                <IonInput
-                  onIonChange={e => setTitle(e.target.value)}
-                ></IonInput>
-              </IonItem>
-              <IonItem>
-                <IonLabel>Max players/team</IonLabel>
-                <IonRange min={1} max={12} color="secondary" snaps pin onIonChange={e => setMaxPlayers(e.target.value)} value={state.maxPlayers}>
-                  <IonLabel slot="start">1</IonLabel>
-                  <IonLabel slot="end">12</IonLabel>
-                </IonRange>
-              </IonItem>
+
+            <IonCol sizeXl="5" sizeSm="12" offsetXl="1" >
+              <GameInformations />
+
+
             </IonCol>
-            <IonCol size="5" offset="1">
-              <IonButton onClick={() => saveGame()}>SaveGame</IonButton>
+
+            <IonCol sizeXl="5" sizeSm="12" >
+
               <CardList></CardList>
             </IonCol>
           </IonRow>
         </IonGrid>
       </IonContent>
+      <IonFooter>
+        <IonToolbar >
+          <IonButtons slot="end">
+            <IonButton slot="end" onClick={() => saveGame()} color="primary">SaveGame</IonButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonFooter>
     </IonPage>
   );
 };

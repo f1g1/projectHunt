@@ -6,7 +6,7 @@ import {
 } from "@ionic/react";
 import InnerCard from "./Cards/InnerCard";
 import { AppContext } from "../../StateCreateGame";
-
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 export default function ReorderableCards(props) {
   const { state, dispatch } = useContext(AppContext);
 
@@ -27,6 +27,9 @@ export default function ReorderableCards(props) {
             <InnerCard clue={x.clue} code={x.code}>
               <div className="arrow">
                 <IonReorder slot="start" />
+              </div>
+              <div className="arrow">
+                <KeyboardArrowDownIcon />
               </div>
             </InnerCard>
           </IonItem>

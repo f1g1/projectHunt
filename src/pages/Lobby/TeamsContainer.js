@@ -41,11 +41,11 @@ export default function TeamsContainer(props) {
                 }
                 <IonItem>
                     <IonInput placeholder="TeamName" maxlength="20" minlength="3" type="text" value={newTeamName} onIonChange={(e) => setnewTeamName(e.detail.value)}></IonInput>
-                    <IonButton onClick={addTeam} size="default" disabled={props.joinedTeam} >New team!</IonButton>
+                    <IonButton onClick={addTeam} size="default" disabled={props.joinedTeam || !newTeamName || newTeamName.length < 3} >New team!</IonButton>
 
                 </IonItem>
 
             </IonList >
-        </Fragment>
+        </Fragment >
     )
 }

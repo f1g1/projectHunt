@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import {
   IonHeader,
   IonContent,
@@ -9,8 +9,13 @@ import {
   IonButton,
   IonInput,
   IonRow,
-  IonToast
+  IonToast,
+  IonSelect,
+  IonSelectOption,
+  IonCheckbox
 } from "@ionic/react";
+
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { AppContext } from "../../../StateCreateGame";
 
 const makeid = length => {
@@ -24,10 +29,43 @@ const makeid = length => {
   return result;
 };
 export default function ModalCardCreate(props) {
+  const refInput = useRef();
   const [code, setCode] = useState("");
   const [clue, setClue] = useState("");
   const [showToast1, setShowToast1] = useState(false);
   const { state, dispatch } = useContext(AppContext);
+  const [loadingImage, setLoadingImage] = useState(false);
+  const [currentFile, setCurrentFile] = useState()
+  const [answerType, setanswerType] = useState(0)
+  const [image, setImage] = useState()
+
+  const generateQR = (code) => {
+    console.log("generate qr")
+    BarcodeScanner.encode(BarcodeScanner.Encode.TEXT_TYPE, code, function (success) {
+      console.log("succes")
+      alert("encode success: " + success);
+    }, function (fail) {
+      console.log("failed")
+      alert("encoding failed: " + fail);
+    }
+    );
+  }
+  const onChoosePhoto = event => {
+    if (event.target.files && event.target.files[0]) {
+      setLoadingImage(true)
+      const prefixFiletype = event.target.files[0].type.toString()
+      if (prefixFiletype.indexOf('image/') === 0) {
+        setImage(URL.createObjectURL(event.target.files[0]));
+
+        setCurrentFile(URL.createObjectURL(event.target.files[0]))
+      } else {
+        setLoadingImage(false)
+        console.log('This file is not an image')
+      }
+    } else {
+      setLoadingImage(false)
+    }
+  }
 
   const saveNewStep = () => {
     dispatch({
@@ -48,6 +86,17 @@ export default function ModalCardCreate(props) {
       </IonHeader>
       <IonContent color="secondary">
         <IonList>
+          <IonButton
+            onClick={() => refInput.current.click()}
+          >Add Photo</IonButton>
+          <input
+            ref={refInput}
+            accept="image/*"
+            className="viewInputGallery"
+            type="file"
+            onChange={onChoosePhoto}
+          />
+          {currentFile && <img src={currentFile}></img>}
           <IonItem>
             <IonLabel position="stacked">Clue</IonLabel>
             <IonTextarea
@@ -55,6 +104,14 @@ export default function ModalCardCreate(props) {
               onIonChange={e => setClue(e.target.value)}
               maxlength="100"
             ></IonTextarea>
+          </IonItem>
+          <IonItem>
+            <IonLabel>Answer Type:</IonLabel>
+            <IonSelect interface="popover" onIonChange={e => setanswerType(e.detail.value)} placeholder="Choose answer type">
+              <IonSelectOption value={0}>Text</IonSelectOption>
+              <IonSelectOption value={1}>QR</IonSelectOption>
+              <IonSelectOption value={2}>Photo</IonSelectOption>
+            </IonSelect>
           </IonItem>
 
           <IonItem>
@@ -68,12 +125,18 @@ export default function ModalCardCreate(props) {
               maxlength="12"
             ></IonInput>
             <IonButton
-              onClick={() => setCode(makeid(6))}
+              onClick={() => generateQR(makeid(6))}
               disabled={code !== ""}
             >
               Generate
             </IonButton>
           </IonItem>
+          <IonItem>
+            <IonLabel>Needs Validation?</IonLabel>
+            <IonCheckbox></IonCheckbox>
+          </IonItem>
+
+
         </IonList>
         <IonRow>
           <IonButton color="danger" onClick={props.handleClose}>

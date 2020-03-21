@@ -72,7 +72,7 @@ let ModalMap = (props) => {
             key: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA"
           }}
           onChange={x => console.log(x)}
-          defaultCenter={{ lat: props.location.latitude, lng: props.location.longitude }}
+          defaultCenter={{ lat: props.location.latitude || 0, lng: props.location.longitude || 0 }}
           defaultZoom={11}
           onDragsStart={(map) => { setMapCenter({ lat: map.getCenter().lat(), lng: map.getCenter().lng() }); setpositionSelected(false) }}
           yesIWantToUseGoogleMapApiInternals

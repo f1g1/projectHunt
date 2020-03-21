@@ -92,6 +92,7 @@ class Home extends Component {
             <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/Tab1", state: "t " }) }}>
               QR
             </IonButton>
+
           </IonList>
         </IonContent>
       </IonPage>
