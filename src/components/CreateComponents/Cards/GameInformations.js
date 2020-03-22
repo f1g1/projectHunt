@@ -41,10 +41,10 @@ export default function GameInformations() {
         });
     };
 
-    const setImage = imageUrl => {
+    const setImage = image => {
         dispatch({
             type: "setImageUrl",
-            imageUrl
+            image
         });
     };
     const setMaxPlayers = maxPlayers => {
@@ -59,8 +59,8 @@ export default function GameInformations() {
             const prefixFiletype = event.target.files[0].type.toString()
             if (prefixFiletype.indexOf('image/') === 0) {
                 // uploadPhoto()
-                setCurrentFile(URL.createObjectURL(event.target.files[0]))
-                setImage(URL.createObjectURL(event.target.files[0]));
+                setCurrentFile(URL.createObjectURL(event.target.files[0]));
+                setImage(event.target.files[0]);
 
             } else {
                 setLoadingImage(false)

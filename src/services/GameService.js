@@ -16,6 +16,7 @@ async function getMyGames() {
   });
 }
 function saveGame(state) {
+  debugger;
   let created = {
     ...state,
     createdDate: Date.now(),

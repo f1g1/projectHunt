@@ -36,8 +36,10 @@ export default function ModalCardCreate(props) {
   const { state, dispatch } = useContext(AppContext);
   const [loadingImage, setLoadingImage] = useState(false);
   const [currentFile, setCurrentFile] = useState()
-  const [answerType, setanswerType] = useState(0)
-  const [image, setImage] = useState()
+  const [answerType, setAnswerType] = useState(0)
+  const [answer, setAnswer] = useState(0)
+  const [imageUrl, setImageUrl] = useState()
+  const [validateAnswer, setValidateAnswer] = useState()
 
   const generateQR = (code) => {
     console.log("generate qr")
@@ -55,9 +57,8 @@ export default function ModalCardCreate(props) {
       setLoadingImage(true)
       const prefixFiletype = event.target.files[0].type.toString()
       if (prefixFiletype.indexOf('image/') === 0) {
-        setImage(URL.createObjectURL(event.target.files[0]));
-
-        setCurrentFile(URL.createObjectURL(event.target.files[0]))
+        setImageUrl(URL.createObjectURL(event.target.files[0]));
+        setCurrentFile(event.target.files[0])
       } else {
         setLoadingImage(false)
         console.log('This file is not an image')
@@ -70,7 +71,7 @@ export default function ModalCardCreate(props) {
   const saveNewStep = () => {
     dispatch({
       type: "addStep",
-      step: { clue, code }
+      step: { clue, code, answerType, answer, image: currentFile, imageUrl, validateAnswer }
     });
     setCode("");
     setClue("");
@@ -96,7 +97,7 @@ export default function ModalCardCreate(props) {
             type="file"
             onChange={onChoosePhoto}
           />
-          {currentFile && <img src={currentFile}></img>}
+          {currentFile && <img src={imageUrl}></img>}
           <IonItem>
             <IonLabel position="stacked">Clue</IonLabel>
             <IonTextarea
@@ -107,7 +108,7 @@ export default function ModalCardCreate(props) {
           </IonItem>
           <IonItem>
             <IonLabel>Answer Type:</IonLabel>
-            <IonSelect interface="popover" onIonChange={e => setanswerType(e.detail.value)} placeholder="Choose answer type">
+            <IonSelect interface="popover" onIonChange={e => setAnswerType(e.detail.value)} placeholder="Choose answer type">
               <IonSelectOption value={0}>Text</IonSelectOption>
               <IonSelectOption value={1}>QR</IonSelectOption>
               <IonSelectOption value={2}>Photo</IonSelectOption>
@@ -133,7 +134,7 @@ export default function ModalCardCreate(props) {
           </IonItem>
           <IonItem>
             <IonLabel>Needs Validation?</IonLabel>
-            <IonCheckbox></IonCheckbox>
+            <IonCheckbox onIonChange={e => setValidateAnswer(e.detail.checked)} ></IonCheckbox>
           </IonItem>
 
 

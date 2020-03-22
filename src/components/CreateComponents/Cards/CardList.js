@@ -57,55 +57,51 @@ export default function CardList() {
     setShowEndModal(false);
   };
   return (
-    <div>
-      <IonCol sizeXs="2" sizeMd="1" sizeXl="0.5"></IonCol>
-      <IonCol size="12">
-        <IonCol size="4">
-          <IonRow>
-            <IonCol>
-              <MarginCard
-                title="Start location"
-                coords={{ lat: state.startLat, lng: state.startLng }}
-                openModal={() => setShowBeginModal(true)}
-                lat={state.startLat}
-                lng={state.startLng}
-              ></MarginCard>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <ReorderableCards />
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <div className="arrow">
-                <IonFabButton
-                  color="light"
-                  onClick={() => setShowAddCardModal(true)}
-                >
-                  <AddIcon></AddIcon>
-                </IonFabButton>
-              </div>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <MarginCard
-                title="Finish location"
-                coords={{
-                  lat: state.finishLat,
-                  lng: state.finishLng
-                }}
-                openModal={() => setShowEndModal(true)}
-                lat={state.finishLat}
-                lng={state.finishLng}
-              ></MarginCard>
-            </IonCol>
-          </IonRow>
-        </IonCol>
+    <>
+      <IonRow>
 
-      </IonCol>
+        <IonCol>
+          <MarginCard
+            title="Start location"
+            coords={{ lat: state.startLat, lng: state.startLng }}
+            openModal={() => setShowBeginModal(true)}
+            lat={state.startLat}
+            lng={state.startLng}
+          ></MarginCard>
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>
+          <ReorderableCards />
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>
+          <div className="arrow">
+            <IonFabButton
+              color="light"
+              onClick={() => setShowAddCardModal(true)}
+            >
+              <AddIcon></AddIcon>
+            </IonFabButton>
+          </div>
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>
+          <MarginCard
+            title="Finish location"
+            coords={{
+              lat: state.finishLat,
+              lng: state.finishLng
+            }}
+            openModal={() => setShowEndModal(true)}
+            lat={state.finishLat}
+            lng={state.finishLng}
+          ></MarginCard>
+        </IonCol>
+      </IonRow>
+
       <IonModal
         isOpen={showBeginModal}
         onDidDismiss={() => setShowBeginModal(false)}
@@ -140,6 +136,5 @@ export default function CardList() {
           handleClose={() => setShowAddCardModal(false)}
         ></ModalCardCreate>
       </IonModal>
-    </div>
-  )
+    </>)
 }

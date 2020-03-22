@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { IonContent, IonPage, IonHeader, IonTitle, IonCol, IonRow, IonToolbar, IonGrid, IonItem, IonLoading, IonButton } from "@ionic/react";
+import { IonContent, IonPage, IonHeader, IonTitle, IonCol, IonRow, IonToolbar, IonGrid, IonLoading, IonButton } from "@ionic/react";
 import ChatBoard from "../../components/Chat/ChatBoard/ChatBoard";
 import "./Lobby.scss"
 import TeamsContainer from "./TeamsContainer";
 import TeamPanel from "./TeamPanel"
 import { LobbyService } from "../../services/LobbyService";
-import LobbySearch from "../LobbySearch/LobbySearch";
 import { UserService } from "../../services/UserSerivce";
 import useTeamChanges from "../../services/useTeamChanges";
 

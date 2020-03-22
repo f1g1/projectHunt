@@ -63,7 +63,7 @@ let reducer = (state, action) => {
             return { ...state, description: action.description };
         }
         case "setImageUrl": {
-            return { ...state, imageUrl: action.imageUrl };
+            return { ...state, image: action.image };
         }
         case "setMaxPlayers": {
             return { ...state, maxPlayers: action.maxPlayers }

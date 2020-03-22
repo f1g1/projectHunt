@@ -19,7 +19,6 @@ import { AppContext } from "../StateGeneric";
 
 const Login = props => {
   const { state: userState, dispatch } = useContext(AppContext);
-  let first = true;
   useEffect(() => {
     try {
       if (userState.authentication.idToken)

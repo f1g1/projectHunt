@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import { IonItem, IonContent, IonCol, IonItemDivider, IonButton, IonList, IonGrid, IonRow, IonBadge, IonIcon, IonInput } from '@ionic/react'
+import { IonItem, IonItemDivider, IonButton, IonList, IonBadge, IonInput } from '@ionic/react'
 import "./Lobby.scss"
 import { LobbyService } from '../../services/LobbyService'
 import { UserService } from '../../services/UserSerivce'

@@ -5,8 +5,6 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonItemOptions,
-  IonItemOption,
   IonButton,
 } from "@ionic/react";
 export default function InnerCard(props) {
@@ -18,11 +16,11 @@ export default function InnerCard(props) {
         </IonCardHeader>
         <IonCardContent>
           {props.children[0]}
-          <img src={props.image} height="300px" width="auto"></img>
+          {props.step.imageUrl && <img src={props.step.imageUrl} height="auto" width="auto"></img>}
           <br />
-          <IonCardTitle>{props.clue}</IonCardTitle>
+          <IonCardTitle>{props.step.clue}</IonCardTitle>
           <br></br>
-        Code:<IonCardSubtitle>{props.code}</IonCardSubtitle>
+        Code:<IonCardSubtitle>{props.step.code}</IonCardSubtitle>
           {props.children[1]}
         </IonCardContent>
       </IonCard>
