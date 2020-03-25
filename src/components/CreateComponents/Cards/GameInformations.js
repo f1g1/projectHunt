@@ -53,6 +53,12 @@ export default function GameInformations() {
             maxPlayers
         });
     };
+    const setPassword = password => {
+        dispatch({
+            type: "setPassword",
+            password
+        });
+    }
     const onChoosePhoto = event => {
         if (event.target.files && event.target.files[0]) {
             setLoadingImage(true)
@@ -79,14 +85,14 @@ export default function GameInformations() {
                     <IonCardTitle>Game Informations</IonCardTitle>
                     <IonList >
 
-                        <IonItem>
+                        <IonItem lines="full">
                             <IonLabel position="floating">Title</IonLabel>
-                            <IonInput
+                            <IonInput required
                                 onIonChange={e => setTitle(e.target.value)}
                             ></IonInput>
                         </IonItem>
                         <IonItem>
-                            <IonLabel>Team Max Size</IonLabel>
+                            <IonLabel>Team Max Size:</IonLabel>
                             <IonRange min={1} max={12} color="primary" snaps pin onIonChange={e => setMaxPlayers(e.target.value)} value={state.maxPlayers}>
                                 <IonLabel slot="start">1</IonLabel>
                                 <IonLabel slot="end">12</IonLabel>
@@ -96,15 +102,18 @@ export default function GameInformations() {
                             </IonBadge>
                         </IonItem>
                         <IonItem>
-                            <IonLabel >Respect order of the challenges</IonLabel>
+                            <IonLabel >Respect order of the challenges:</IonLabel>
                             <IonCheckbox onIonChange={e => setInOrder(e.detail.checked)} slot="end" />
                         </IonItem>
                         <IonItem>
-                            <IonLabel position="floating">Description</IonLabel>
+                            <IonLabel position="floating">Description:</IonLabel>
                             <IonTextarea onIonChange={e => setDescription(e.target.value)}>
                             </IonTextarea>
                         </IonItem>
-
+                        <IonItem>
+                            <IonLabel>Password:</IonLabel>
+                            <IonInput type="text" onIonChange={e => setPassword(e.target.value)}></IonInput>
+                        </IonItem>
                         <IonButton
 
                             onClick={() => refInput.current.click()}

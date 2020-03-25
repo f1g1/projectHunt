@@ -35,6 +35,7 @@
     "google-map-react": "^1.1.6",
     "google-maps-react": "^2.0.2",
     "ionic": "^5.4.16",
+    "ionic-img-viewer": "^2.9.0",
     "ionicons": "^4.6.3",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",

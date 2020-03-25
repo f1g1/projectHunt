@@ -14,32 +14,32 @@ let AppContext = createContext();
 const initialState = {
     maxPlayers: 4,
     steps: [
-        {
-            clue: "",
-            code: "qmMohp"
-        },
-        {
-            clue: "",
-            code: "WVOs2o"
-        },
-        {
-            clue: "",
-            code: "5xN0vz"
-        }
+        // {
+        //     clue: "",
+        //     code: "qmMohp"
+        // },
+        // {
+        //     clue: "",
+        //     code: "WVOs2o"
+        // },
+        // {
+        //     clue: "",
+        //     code: "5xN0vz"
+        // }
     ],
     cloneSteps: [
-        {
-            clue: "",
-            code: "qmMohp"
-        },
-        {
-            clue: "",
-            code: "WVOs2o"
-        },
-        {
-            clue: "",
-            code: "5xN0vz"
-        }
+        // {
+        //     clue: "",
+        //     code: "qmMohp"
+        // },
+        // {
+        //     clue: "",
+        //     code: "WVOs2o"
+        // },
+        // {
+        //     clue: "",
+        //     code: "5xN0vz"
+        // }
     ]
 };
 // const initialState = {
@@ -59,6 +59,9 @@ let reducer = (state, action) => {
         case "setTitle": {
             return { ...state, title: action.title };
         }
+        case "setPassword": {
+            return { ...state, password: action.password };
+        }
         case "setDescription": {
             return { ...state, description: action.description };
         }
@@ -69,16 +72,21 @@ let reducer = (state, action) => {
             return { ...state, maxPlayers: action.maxPlayers }
         }
         case "addStep": {
+            debugger;
             return {
                 ...state,
                 steps: [...state.steps, action.step],
                 cloneSteps: [...state.cloneSteps, action.step]
             };
         }
+        case "deleteStep": {
+            state.steps = state.steps.filter(x => x.id !== action.id)
+            state.cloneSteps = state.cloneSteps.filter(x => x.id !== action.id)
+            debugger;
+        }
         case "swapSteps": {
             let arr = [...state.steps];
             [arr[action.from], arr[action.to]] = [arr[action.to], arr[action.from]];
-            debugger;
             return { ...state, steps: arr };
         }
         default: {

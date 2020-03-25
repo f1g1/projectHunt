@@ -39,7 +39,6 @@ export default function Card(props) {
             <IonCardSubtitle>{props.title}</IonCardSubtitle>
             <IonButton onClick={props.openModal}>Modal</IonButton>
           </IonCardHeader>
-
           <IonCardContent>
             <div style={{ height: "300px" }}>
 

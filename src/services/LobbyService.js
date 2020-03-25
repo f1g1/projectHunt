@@ -1,7 +1,7 @@
 import { UserService } from "./UserSerivce";
 import { fireStore } from "../firebase";
 import firebase from 'firebase';
-
+import * as _firebase from 'firebase';
 export const VISIBILITY = {
     public: "public",
     code: "code"
@@ -20,12 +20,24 @@ export const LobbyService = {
     addTeam,
     getTeams,
     joinLobby,
-    getCurrentTeam
+    getCurrentTeam,
+    setCurrentTeam,
+    startGame
 };
 
 
+function startGame(lobbyId) {
+    debugger;
+    fireStore.collection("lobbies").doc(lobbyId).set({
+        startTime: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true })
+}
+
 function getCurrentTeam() {
     return window.localStorage["joinedTeam"]
+}
+function setCurrentTeam(team) {
+    return window.localStorage["joinedTeam"] = team;
 }
 
 function addTeam(lobby, team, player) {
@@ -108,7 +120,7 @@ async function getLobby(lobbyId) {
     let lobbyRef = fireStore
         .collection("lobbies")
         .doc(lobbyId)
-    return lobbyRef.get().then(x => { return x.data() });
+    return lobbyRef.get().then(x => { return { ...x.data(), id: x.id } });
 }
 
 function getTeams(lobbyId) {

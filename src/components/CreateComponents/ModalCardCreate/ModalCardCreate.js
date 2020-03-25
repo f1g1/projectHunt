@@ -71,7 +71,7 @@ export default function ModalCardCreate(props) {
   const saveNewStep = () => {
     dispatch({
       type: "addStep",
-      step: { clue, code, answerType, answer, image: currentFile, imageUrl, validateAnswer }
+      step: { clue, code, answerType, answer, image: currentFile, imageUrl, validateAnswer, id: Date.now() }
     });
     setCode("");
     setClue("");
@@ -114,7 +114,6 @@ export default function ModalCardCreate(props) {
               <IonSelectOption value={2}>Photo</IonSelectOption>
             </IonSelect>
           </IonItem>
-
           <IonItem>
             <IonLabel>Code:</IonLabel>
             <IonInput
@@ -136,8 +135,6 @@ export default function ModalCardCreate(props) {
             <IonLabel>Needs Validation?</IonLabel>
             <IonCheckbox onIonChange={e => setValidateAnswer(e.detail.checked)} ></IonCheckbox>
           </IonItem>
-
-
         </IonList>
         <IonRow>
           <IonButton color="danger" onClick={props.handleClose}>

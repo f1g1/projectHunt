@@ -11,8 +11,8 @@ export default function InnerCard(props) {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <IonCard color="light" className="full">
-        <IonCardHeader>
-          <IonButton className="toRight" color="danger">x</IonButton>
+        <IonCardHeader slot="end">
+          <IonButton color="danger" onClick={() => props.delete(props.step.id)}>x</IonButton>
         </IonCardHeader>
         <IonCardContent>
           {props.children[0]}

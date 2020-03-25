@@ -59,7 +59,6 @@ export default function CardList() {
   return (
     <>
       <IonRow>
-
         <IonCol>
           <MarginCard
             title="Start location"
@@ -80,8 +79,7 @@ export default function CardList() {
           <div className="arrow">
             <IonFabButton
               color="light"
-              onClick={() => setShowAddCardModal(true)}
-            >
+              onClick={() => setShowAddCardModal(true)}>
               <AddIcon></AddIcon>
             </IonFabButton>
           </div>
@@ -101,7 +99,6 @@ export default function CardList() {
           ></MarginCard>
         </IonCol>
       </IonRow>
-
       <IonModal
         isOpen={showBeginModal}
         onDidDismiss={() => setShowBeginModal(false)}
@@ -111,9 +108,7 @@ export default function CardList() {
           <ModalMap
             handleClose={handleClose}
             location={geolocation}
-            save={saveStart}
-          />
-        )}
+            save={saveStart} />)}
       </IonModal>
       <IonModal
         isOpen={showEndModal}
@@ -124,9 +119,7 @@ export default function CardList() {
           <ModalMap
             handleClose={handleCloseFinish}
             location={geolocation}
-            save={saveFinish}
-          />
-        )}
+            save={saveFinish} />)}
       </IonModal>
       <IonModal
         isOpen={showAddCardModal}

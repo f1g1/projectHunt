@@ -19,12 +19,18 @@ export default function ReorderableCards(props) {
     });
     event.detail.complete();
   }
+  const deleteCard = (id) => {
+    dispatch({
+      type: "deleteStep",
+      id
+    });
+  }
   return (
     <>
       <IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
         {state.cloneSteps.map(x => (
           <IonItem lines="none">
-            <InnerCard step={x}>
+            <InnerCard step={x} delete={deleteCard}>
               <div className="arrow">
                 <IonReorder slot="start" />
               </div>
