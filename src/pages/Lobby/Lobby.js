@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { IonContent, IonPage, IonHeader, IonTitle, IonCol, IonRow, IonToolbar, IonGrid, IonLoading, IonButton, IonLabel, IonCard, IonList, IonCardContent, IonItem, IonItemDivider, IonButtons } from "@ionic/react";
 import ChatBoard from "../../components/Chat/ChatBoard/ChatBoard";
 import "./Lobby.scss"
@@ -8,6 +8,7 @@ import { LobbyService } from "../../services/LobbyService";
 import { UserService } from "../../services/UserSerivce";
 import useTeamChanges from "../../services/useTeamChanges";
 import MapWithLocation from "../../components/Map/Map";
+import { PlayContext } from "../../StatePlayGame";
 
 
 
@@ -15,16 +16,20 @@ export default function Lobby(props) {
   const [lobby, setLobby] = useState()
   const [joinedTeam, setJoinedTeam] = useState()
   const teams = useTeamChanges()
-  console.log(lobby)
   const [currentTeamDetails, setcurrentTeamDetails] = useState();
-  console.log(lobby)
+
   const showThisTeam = (name) => {
     setcurrentTeamDetails(teams.filter(x => x.name === name)[0])
   }
-  useEffect(() => {
-    setJoinedTeam(LobbyService.getCurrentTeam());
-    if (lobby && lobby.startTime)
+
+  const passGameStarted = () => {
+    if (lobby && lobby.startTime && joinedTeam)
       props.history.push({ pathname: "/play", lobby });
+  }
+
+  useEffect(() => {
+    passGameStarted()
+
   }, [lobby])
 
   useEffect(() => {
@@ -42,8 +47,12 @@ export default function Lobby(props) {
     currentTeamDetails && setcurrentTeamDetails(teams.filter(x => x.name === currentTeamDetails.name)[0])
     if (!joinedTeam) {
       let joined = teams.filter(x => x.players.includes(UserService.getCurrentPlayer().name));
-      if (joined.length > 0)
+      if (joined.length > 0) {
+        LobbyService.setCurrentTeam(joined[0].name)
         setJoinedTeam(joined[0].name)
+        debugger;
+
+      }
     }
   }, [teams])
   let startGame = () => {
@@ -51,7 +60,6 @@ export default function Lobby(props) {
     LobbyService.startGame(lobby.id);
   }
   const leaveLobby = () => {
-    debugger;
     LobbyService.leaveLobby();
     props.history.push({ pathname: "/lobbysearch" });
   }
@@ -116,7 +124,7 @@ export default function Lobby(props) {
                           {lobby.startLat && <MapWithLocation coords={{ lat: lobby.startLat, lng: lobby.startLng }}></MapWithLocation>}
                         </div>
                       </IonList>
-                      {lobby.owenr === UserService.getCurrentUser.email && <IonButton color="primary" onClick={startGame}>Start Game</IonButton>}
+                      {lobby.owner === (UserService.getCurrentUser().email) && <IonButton color="primary" onClick={startGame}>Start Game</IonButton>}
                     </IonCardContent>
                   </IonCard>
 

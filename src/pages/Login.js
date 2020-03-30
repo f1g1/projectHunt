@@ -76,16 +76,6 @@ const Login = props => {
             <IonImg className="title-img" src="assets/capacitor.png"></IonImg>
           </IonCol>
         </IonRow>
-        <IonRow>
-          <IonCol className="text-center">
-            <IonText className="title">Google Login in Capacitor app</IonText>
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="text-center">
-            <IonText className="text-center">By Enappd Team</IonText>
-          </IonCol>
-        </IonRow>
 
         <IonButton
           className="login-button"

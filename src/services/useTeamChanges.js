@@ -4,9 +4,11 @@ import { LobbyService } from './LobbyService';
 
 export default function useTeamChanges() {
     const [finalteams, setTeams] = useState([]);
+    let unsubscribe;
+    let teams = [];
     useEffect(() => {
-        let teams = [];
-        let unsubscribe = fireStore
+        teams = teams;
+        unsubscribe = fireStore
             .collection("lobbies")
             .doc(LobbyService.getCurrentLobby())
             .collection("teams")
@@ -28,7 +30,8 @@ export default function useTeamChanges() {
                         setTeams([...teams])
                     }
                 });
-            });
+            })
+
         return () => {
             unsubscribe();
         }

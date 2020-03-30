@@ -26,6 +26,7 @@ import './theme/variables.css';
 import Test from './pages/Test';
 import { CreateGameContextProvider } from "./StateCreateGame";
 import { AppContextProvider } from './StateGeneric';
+import { PlayContextProvider } from './StatePlayGame';
 import ChatBoard from './components/Chat/ChatBoard/ChatBoard';
 import Lobby from './pages/Lobby/Lobby';
 import MyGames from './pages/MyGames/MyGames';
@@ -33,13 +34,14 @@ import Create from './pages/Create/Create';
 import LobbySearch from './pages/LobbySearch/LobbySearch';
 import Tabb from './pages/BarcodeTest';
 import Play from './pages/Play/Play';
-import Clue from './pages/Play/SeeClue';
 import SeeClue from './pages/Play/SeeClue';
 const App: React.FC = () => (
   <IonApp>
 
 
+
     <IonReactRouter>
+
       <IonRouterOutlet>
 
         <Route path="/login" component={Login} exact={true} />
@@ -49,13 +51,14 @@ const App: React.FC = () => (
 
         <Route path="/test" component={Test} exact={true} />
         <Route path="/chat" component={ChatBoard} exact={true} />
-        <Route path="/lobby" component={Lobby} exact={true} />
         <Route path="/lobbysearch" component={LobbySearch} exact={true} />
         <Route path="/mygames" component={MyGames} exact={true} />
         <Route path="/tab1" component={Tabb} exact={true} />
+
+        <Route exact path="/" render={() => <Redirect to="/login" />} />
+        <Route path="/lobby" component={Lobby} exact={true} />
         <Route path="/play" component={Play} exact={true} />
         <Route path="/seeClue" component={SeeClue} exact={true} />
-        <Route exact path="/" render={() => <Redirect to="/login" />} />
       </IonRouterOutlet>
     </IonReactRouter>
 
@@ -70,6 +73,16 @@ export function withCreateContext(Component: any) {
       <CreateGameContextProvider>
         {<Component {...props} />}
       </CreateGameContextProvider>
+    );
+  };
+}
+
+export function withPlayContext(Component: any) {
+  return function WrapperComponent(props: any) {
+    return (
+      <PlayContextProvider>
+        {<Component {...props} />}
+      </PlayContextProvider>
     );
   };
 }

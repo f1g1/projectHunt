@@ -22,7 +22,7 @@ function saveGame(state) {
     createdDate: Date.now(),
     owner: UserService.getCurrentUser().email
   };
-  var createdGamesRef = fireStore
+  let createdGamesRef = fireStore
     .collection("users")
     .doc(UserService.getCurrentUser().email)
     .collection("createdGames");

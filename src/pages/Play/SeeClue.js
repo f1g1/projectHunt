@@ -1,15 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import { IonPage, IonTitle, IonHeader, IonToolbar, IonButtons, IonBackButton, IonContent, IonImg } from '@ionic/react'
+import React, { useEffect, useState, useContext } from 'react'
+import { IonPage, IonTitle, IonHeader, IonToolbar, IonButtons, IonBackButton, IonContent, IonImg, IonInput, IonItem, IonButton, } from '@ionic/react'
 import { PlayService } from '../../services/PlayService';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 export default function SeeClue(props) {
-    console.log(props.location.index)
+
+    const [code, setCode] = useState()
     const [step, setStep] = useState()
+
     useEffect(() => {
-        setStep(PlayService.getGame().steps[props.location.index])
+        setStep(props.step)
     }, [])
+
+    const handleSubmit = () => {
+        if (code && step.answer.toString().toLowerCase() === code.toLowerCase()) {
+            PlayService.submitAnswer(code, step, props.team).then(() => {
+                props.history.goBack();
+            }).catch((x) => console.log(x));
+        }
+    }
     return (
-        <IonPage>
+        <>
+
+            &nbsp;
             {step && <>
                 <IonHeader>
                     <IonToolbar>
@@ -19,16 +32,25 @@ export default function SeeClue(props) {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
-                    <img src={step.image} />
+                    <img src={step.image} style={{ maxHeight: "400px" }} onClick={() => PhotoViewer.show(step.image)} />
                     <IonTitle>
                         <h1>
                             {step.clue}
                         </h1>
                     </IonTitle>
 
+                    {step.answerType == 0 &&
+                        <IonItem>
+                            <IonInput placeholder="Code"
+                                onIonChange={e => {
+                                    setCode(e.target.value);
+                                }}>
+                            </IonInput>
+                            <IonButton size="default" onClick={handleSubmit}>Submit</IonButton>
+                        </IonItem>}
 
                 </IonContent>
             </>}
-        </IonPage>
+        </>
     )
 }

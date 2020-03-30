@@ -22,7 +22,8 @@ export const LobbyService = {
     joinLobby,
     getCurrentTeam,
     setCurrentTeam,
-    startGame
+    startGame,
+
 };
 
 
@@ -91,6 +92,7 @@ function playerJoinTeam(lobby, team, playerName) {
 
 function leaveLobby() {
     let res;
+    //leave team if joined in any
     if (getCurrentTeam())
         res = fireStore
             .collection("lobbies")
@@ -135,7 +137,7 @@ function getTeams(lobbyId) {
                 teams.push({ ...doc.data(), name: doc.id })
             })
         })
-        .then(() => { return teams })
+        .then(() => { debugger; return teams; })
 
 }
 

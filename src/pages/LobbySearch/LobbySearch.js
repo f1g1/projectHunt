@@ -44,9 +44,6 @@ export default function LobbySearch(props) {
                                                 </IonCol>
                                                 <IonCol>
                                                     <IonItem>
-
-
-
                                                         <IonButton size="default" onClick={() => joinLobby(x.lobbyId)}>Join Lobby!</IonButton>
                                                     </IonItem>
                                                 </IonCol>
@@ -71,9 +68,6 @@ export default function LobbySearch(props) {
                                 </IonCard>
                             ))}
                         </IonList>
-
-
-
                     </IonCol>
                 </IonRow>
 
