@@ -8,7 +8,11 @@ import {
   IonPage,
   IonFooter,
   IonToolbar,
-  IonButtons
+  IonButtons,
+  IonHeader,
+  IonTitle,
+  IonLabel,
+  IonBackButton
 } from "@ionic/react";
 import { AppContext as CreateGameContext } from "../../StateCreateGame";
 
@@ -16,12 +20,9 @@ import { AppContext as CreateGameContext } from "../../StateCreateGame";
 import { GamesService } from "../../services/GameService";
 import CardList from "../../components/CreateComponents/Cards/CardList";
 import GameInformations from "../../components/CreateComponents/Cards/GameInformations";
-import { person } from "ionicons/icons";
 import MediaService from "../../services/MediaService";
 const Create = () => {
   const { state, dispatch } = useContext(CreateGameContext);
-
-
 
   const saveGame = async () => {
     let objToUpdate = { ...state };
@@ -45,19 +46,27 @@ const Create = () => {
           .then(x => { debugger; objToUpdate.image = x; GamesService.saveGame(objToUpdate); })
       })
 
-
-
   };
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar color="primary">
+          <IonButtons style={{ display: "inline-block" }}>
+            <IonBackButton></IonBackButton>
+          </IonButtons>
+          <IonTitle style={{ display: "inline-block" }} >
+            Create new Treasure Hunt!
+          </IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent>
         <IonGrid>
           <IonRow>
-            <IonCol sizeXl="4" sizeSm="12" offsetXl="2" >
+            <IonCol sizeXl="4" sizeLg="6" sizeSm="12" offsetXl="2" >
               <GameInformations />
             </IonCol>
-            <IonCol sizeXl="3" sizeSm="12" >
+            <IonCol sizeXl="3" sizeLg="6" sizeSm="12" >
               <CardList />
             </IonCol>
           </IonRow>

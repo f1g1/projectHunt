@@ -3,32 +3,27 @@ import React, { Component } from 'react'
 import './ChatBoard.css'
 import { fireStore, fireStorage } from '../../../firebase'
 import { UserService } from '../../../services/UserSerivce'
-import { IonIcon, IonButton } from '@ionic/react'
-import { images, send } from "ionicons/icons"
+import { IonIcon, IonButton, IonToolbar, IonButtons } from '@ionic/react'
+import { images, send, close } from "ionicons/icons"
 export default class ChatBoard extends Component {
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
             isShowSticker: false,
-            inputValue: ''
+            inputValue: '',
+            isLoadingMessages: false
         }
         let user = UserService.getCurrentUser();
         this.currentUserId = user.id
         this.currentUserAvatar = localStorage.getItem("PHOTO_URL")
         this.currentUserNickname = user.givenName + " " + user.familyName
         this.listMessage = []
-        // this.props.gameChatId = { id: "1" }
         this.removeListener = null
         this.currentPhotoFile = null
     }
 
-    componentDidUpdate() {
-        // this.scrollToBottom()
-    }
-
     componentDidMount() {
-        // For first render, it's not go through componentWillReceiveProps
         this.getListHistory()
     }
 
@@ -45,16 +40,7 @@ export default class ChatBoard extends Component {
         }
         this.listMessage.length = 0
         this.setState({ isLoading: true })
-        // if (
-        //     this.hashString(this.currentUserId) <=
-        //     this.hashString(this.props.gameChatId)
-        // ) {
-        //     this.props.gameChatId = `${this.currentUserId}-${this.props.gameChatId}`
-        // } else {
-        //     this.props.gameChatId = `${this.props.gameChatId}-${this.currentUserId}`
-        // }
 
-        // Get history and listen new data added
         this.removeListener = fireStore
             .collection("messages")
             .doc(this.props.gameChatId)
@@ -77,12 +63,9 @@ export default class ChatBoard extends Component {
 
 
     onSendMessage = (content, type) => {
-
-
         if (content.trim() === '') {
             return
         }
-
         const timestamp = moment()
             .valueOf()
             .toString()
@@ -116,7 +99,6 @@ export default class ChatBoard extends Component {
                 this.uploadPhoto()
             } else {
                 this.setState({ isLoading: false })
-                console.log('This file is not an image')
             }
         } else {
             this.setState({ isLoading: false })
@@ -168,65 +150,74 @@ export default class ChatBoard extends Component {
 
     render() {
         return (
-            <div className="viewChatBoard">
-                <div className="headerChatBoard">
+            <>
+                <IonToolbar>
+                    <IonButtons>
+                        <IonButton onclick={this.props.handleClose}>
+                            <IonIcon icon={close} ></IonIcon>
 
-                    <span className="textHeaderChatBoard">
-                        Game chat!
+                        </IonButton>
+                    </IonButtons>
+
+                </IonToolbar>
+                <div className="viewChatBoard">
+                    <div className="headerChatBoard">
+
+                        <span className="textHeaderChatBoard">
+                            Game chat!
                     </span>
-                </div>
-
-                <div className="viewListContentChat">
-                    {this.renderListMessage()}
-                    <div
-                        style={{ float: 'left', clear: 'both' }}
-                        ref={el => {
-                            this.messagesEnd = el
-                        }}
-                    />
-                </div>
-
-
-                <div className="viewBottom">
-
-                    <IonIcon
-                        icon={images}
-                        className="icOpenGallery"
-                        alt="icon open gallery"
-                        onClick={() => this.refInput.click()}
-                    />
-                    <input
-                        ref={el => {
-                            this.refInput = el
-                        }}
-                        accept="image/*"
-                        className="viewInputGallery"
-                        type="file"
-                        onChange={this.onChoosePhoto}
-                    />
-                    <input
-                        className="viewInput"
-                        placeholder="Type your message..."
-                        value={this.state.inputValue}
-                        onChange={event => {
-                            this.setState({ inputValue: event.target.value })
-                        }}
-                        onKeyPress={this.onKeyboardPress}
-                    />
-                    <IonIcon
-                        icon={send}
-                        className="icSend"
-                        alt="icon send"
-                        onClick={() => this.onSendMessage(this.state.inputValue, 0)}
-                    />
-                </div>
-                {this.state.isLoading ? (
-                    <div className="viewLoading">
-                        sending...
                     </div>
-                ) : null}
-            </div>
-        )
+
+                    <div className="viewListContentChat">
+                        {this.renderListMessage()}
+                        <div
+                            style={{ float: 'left', clear: 'both' }}
+                            ref={el => {
+                                this.messagesEnd = el
+                            }}
+                        />
+                    </div>
+
+
+                    <div className="viewBottom">
+
+                        <IonIcon
+                            icon={images}
+                            className="icOpenGallery"
+                            alt="icon open gallery"
+                            onClick={() => this.refInput.click()}
+                        />
+                        <input
+                            ref={el => {
+                                this.refInput = el
+                            }}
+                            accept="image/*"
+                            className="viewInputGallery"
+                            type="file"
+                            onChange={this.onChoosePhoto}
+                        />
+                        <input
+                            className="viewInput"
+                            placeholder="Type your message..."
+                            value={this.state.inputValue}
+                            onChange={event => {
+                                this.setState({ inputValue: event.target.value })
+                            }}
+                            onKeyPress={this.onKeyboardPress}
+                        />
+                        <IonIcon
+                            icon={send}
+                            className="icSend"
+                            alt="icon send"
+                            onClick={() => this.onSendMessage(this.state.inputValue, 0)}
+                        />
+                    </div>
+                    {this.state.isLoading ? (
+                        <div className="viewLoading">
+                        </div>
+                    ) : null}
+                </div>
+            </>)
     }
 
     renderListMessage = () => {
@@ -352,25 +343,12 @@ export default class ChatBoard extends Component {
         } else {
             return (
                 <div className="viewWrapSayHi">
-                    <span className="textSayHi">Loading messages</span>
+                    {this.state.isLoading && <span className="textSayHi">Loading messages</span>}
 
                 </div>
             )
         }
     }
-
-
-
-    // hashString = str => {
-    //     let hash = 0
-    //     for (let i = 0; i < str.length; i++) {
-    //         hash += Math.pow(str.charCodeAt(i) * 31, str.length - i)
-    //         hash = hash & hash // Convert to 32bit integer
-    //     }
-    //     return hash
-    // }
-
-
 
     isLastMessageLeft(index) {
         if (

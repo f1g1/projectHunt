@@ -41,8 +41,11 @@ function getCompletedSteps(game, team, teams) {
     let steps = game.steps;
     debugger
     let currentTeam = teams.find(x => x.name === team);
-    if (currentTeam && currentTeam.completed)
-        return steps.filter(x => currentTeam.completed.includes(x.id));
+    if (currentTeam && currentTeam.completed) {
+        let res = steps.filter(x => currentTeam.completed.includes(x.id));
+        debugger;
+        return res;
+    }
     return steps;
 }
 

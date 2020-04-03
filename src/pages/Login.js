@@ -16,6 +16,7 @@ import { Plugins } from "@capacitor/core";
 import * as firebase from "firebase";
 import "@codetrix-studio/capacitor-google-auth";
 import { AppContext } from "../StateGeneric";
+import { UserService } from "../services/UserSerivce";
 
 const Login = props => {
   const { state: userState, dispatch } = useContext(AppContext);
@@ -53,15 +54,24 @@ const Login = props => {
     console.info("firebase Response: ", r);
 
     const { history } = props;
-    history.push({
-      pathname: "/home",
-      state: {
-        name: user.name || user.displayName,
-        image: user.imageUrl,
-        email: user.email
-      }
+
+    UserService.checkNewUser(user).then(x => {
+      x ? history.push({
+        pathname: "/username",
+        state: {
+          user
+        }
+      }) :
+        history.push({
+          pathname: "/home",
+          state: {
+            name: user.name || user.displayName,
+            image: user.imageUrl,
+            email: user.email
+          }
+        })
     });
-  };
+  }
 
   return (
     <IonPage>

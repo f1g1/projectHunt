@@ -11,7 +11,6 @@ import {
     IonTextarea,
     IonBadge,
     IonButton,
-    IonIcon,
     IonCheckbox,
 } from "@ionic/react";
 import { AppContext as CreateGameContext } from "../../../StateCreateGame";
@@ -30,14 +29,14 @@ export default function GameInformations() {
     const setInOrder = inOrder => {
         dispatch({
             type: "setinOrder",
-            inOrder
+            inOrder: inOrder || false
         });
     };
 
     const setDescription = description => {
         dispatch({
             type: "setDescription",
-            description
+            description: description || ""
         });
     };
 
@@ -50,21 +49,21 @@ export default function GameInformations() {
     const setMaxPlayers = maxPlayers => {
         dispatch({
             type: "setMaxPlayers",
-            maxPlayers
+            maxPlayers: maxPlayers || 4
         });
     };
     const setPassword = password => {
         dispatch({
             type: "setPassword",
-            password
+            password: password
         });
     }
+
     const onChoosePhoto = event => {
         if (event.target.files && event.target.files[0]) {
             setLoadingImage(true)
             const prefixFiletype = event.target.files[0].type.toString()
             if (prefixFiletype.indexOf('image/') === 0) {
-                // uploadPhoto()
                 setCurrentFile(URL.createObjectURL(event.target.files[0]));
                 setImage(event.target.files[0]);
 
@@ -86,13 +85,13 @@ export default function GameInformations() {
                     <IonList >
 
                         <IonItem lines="full">
-                            <IonLabel position="floating">Title</IonLabel>
+                            <IonLabel position="floating" style={{ fontSize: "24px" }}>Title*:</IonLabel>
                             <IonInput required
                                 onIonChange={e => setTitle(e.target.value)}
                             ></IonInput>
                         </IonItem>
                         <IonItem>
-                            <IonLabel>Team Max Size:</IonLabel>
+                            <IonLabel>Team Size:</IonLabel>
                             <IonRange min={1} max={12} color="primary" snaps pin onIonChange={e => setMaxPlayers(e.target.value)} value={state.maxPlayers}>
                                 <IonLabel slot="start">1</IonLabel>
                                 <IonLabel slot="end">12</IonLabel>
@@ -102,7 +101,7 @@ export default function GameInformations() {
                             </IonBadge>
                         </IonItem>
                         <IonItem>
-                            <IonLabel >Respect order of the challenges:</IonLabel>
+                            <IonLabel >Challenges in order:</IonLabel>
                             <IonCheckbox onIonChange={e => setInOrder(e.detail.checked)} slot="end" />
                         </IonItem>
                         <IonItem>

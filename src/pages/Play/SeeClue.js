@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { IonPage, IonTitle, IonHeader, IonToolbar, IonButtons, IonBackButton, IonContent, IonImg, IonInput, IonItem, IonButton, } from '@ionic/react'
+import { IonPage, IonTitle, IonHeader, IonToolbar, IonButtons, IonBackButton, IonContent, IonImg, IonInput, IonItem, IonButton, IonIcon, } from '@ionic/react'
 import { PlayService } from '../../services/PlayService';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { close } from "ionicons/icons"
 
 export default function SeeClue(props) {
 
@@ -15,19 +16,21 @@ export default function SeeClue(props) {
     const handleSubmit = () => {
         if (code && step.answer.toString().toLowerCase() === code.toLowerCase()) {
             PlayService.submitAnswer(code, step, props.team).then(() => {
-                props.history.goBack();
+                props.handleClose();
             }).catch((x) => console.log(x));
         }
     }
     return (
         <>
-
             &nbsp;
             {step && <>
                 <IonHeader>
                     <IonToolbar>
-                        <IonButtons slot="start">
-                            <IonBackButton />
+                        <IonButtons>
+                            <IonButton onclick={props.handleClose}>
+                                <IonIcon icon={close} ></IonIcon>
+
+                            </IonButton>
                         </IonButtons>
                     </IonToolbar>
                 </IonHeader>

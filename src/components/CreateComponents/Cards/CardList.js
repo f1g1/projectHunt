@@ -62,10 +62,11 @@ export default function CardList() {
         <IonCol>
           <MarginCard
             title="Start location"
-            coords={{ lat: state.startLat, lng: state.startLng }}
+            coords={{ lat: state.startLat, lng: state.startLng, radius: state.radius }}
             openModal={() => setShowBeginModal(true)}
             lat={state.startLat}
             lng={state.startLng}
+            radius={state.startRadius}
           ></MarginCard>
         </IonCol>
       </IonRow>

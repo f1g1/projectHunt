@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, Children } from "react";
 import { IonHeader, IonContent, IonButton, IonInput, IonRow, IonCol, IonRange, IonGrid, IonCard } from '@ionic/react';
 import GoogleMap from 'google-map-react';
 import "./ModalMap.scss"
-import AddLocationIcon from '@material-ui/icons/AddLocation';
+import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 
 let ModalMap = (props) => {
@@ -10,11 +10,10 @@ let ModalMap = (props) => {
   const [positionSelected, setpositionSelected] = useState(true)
   const [polyline, setpolyline] = useState()
   const [selectedPosition, setSelectedPosition] = useState()
-  const [radius, setRadius] = useState(1)
+  const [radius, setRadius] = useState(100)
   let refMap = useRef(null);
 
   const handleGetCenter = () => {
-    console.log(props.location);
     setSelectedPosition(mapCenter);
     setpositionSelected(true);
   }
@@ -33,11 +32,9 @@ let ModalMap = (props) => {
 
   const initPolyLines = (google) => {
     console.log("actual", mapCenter)
-    let ppolyline = new google.maps.Circle({//<--note the this
-      // strokeColor: '#FF0000',
+    let ppolyline = new google.maps.Circle({
       strokeOpacity: 0.3,
       strokeWeight: 1,
-      // fillColor: '#FF0000',
       fillOpacity: 0.2,
       radius
     });
@@ -79,7 +76,7 @@ let ModalMap = (props) => {
           onGoogleApiLoaded={x => initPolyLines(x)}
           onDragEnd={(map) => { setMapCenter({ lat: map.getCenter().lat(), lng: map.getCenter().lng() }); setpositionSelected(false) }}
         >
-          {selectedPosition && <div lat={selectedPosition.lat} lng={selectedPosition.lng} hover="false"><AddLocationIcon name="pin" className="locationPin " ></AddLocationIcon></div>}
+          {selectedPosition && <div lat={selectedPosition.lat} lng={selectedPosition.lng} hover="false"><LocationOnRoundedIcon name="pin" className="locationPin " ></LocationOnRoundedIcon></div>}
         </GoogleMap>
 
         {!positionSelected && <div hover="false"><LocationSearchingIcon className="locationCrosshair iconSize markerFixed" ></LocationSearchingIcon></div>}
@@ -89,7 +86,7 @@ let ModalMap = (props) => {
           <IonGrid>
             {positionSelected && <IonRow>
               <IonCol size="8">
-                <IonRange color="primary" pin={true} value={radius} onIonChange={x => setRadius(x.detail.value)} />
+                <IonRange color="primary" pin={true} value={radius} max="2000" onIonChange={x => setRadius(x.detail.value)} />
 
               </IonCol>
               <IonCol className="vcentered">
@@ -97,10 +94,8 @@ let ModalMap = (props) => {
                   props.save(mapCenter.lat, mapCenter.lng, radius);
                   props.handleClose()
                 }
-
                 }>
-                  <ion-icon name="checkmark"></ion-icon>
-
+                  Save
                 </IonButton>
               </IonCol>
             </IonRow>}
@@ -111,7 +106,7 @@ let ModalMap = (props) => {
 
               </IonCol>
               <IonCol size="9">
-                <IonButton onClick={handleGetCenter} color="secondary">Select Position</IonButton>
+                <IonButton onClick={handleGetCenter} >Select Position</IonButton>
 
               </IonCol>
               <IonCol>

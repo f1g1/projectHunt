@@ -1,5 +1,6 @@
 import { UserService } from "./UserSerivce";
 import { fireStore } from "../firebase";
+import { create } from "domain";
 
 export const GamesService = {
   getMyGames: getMyGames,
@@ -22,6 +23,7 @@ function saveGame(state) {
     createdDate: Date.now(),
     owner: UserService.getCurrentUser().email
   };
+  !created.image && delete created.image
   let createdGamesRef = fireStore
     .collection("users")
     .doc(UserService.getCurrentUser().email)

@@ -59,6 +59,8 @@ const App: React.FC = () => (
         <Route path="/lobby" component={Lobby} exact={true} />
         <Route path="/play" component={Play} exact={true} />
         <Route path="/seeClue" component={SeeClue} exact={true} />
+        <Route path="/username" component={UserName} exact={true} />
+
       </IonRouterOutlet>
     </IonReactRouter>
 

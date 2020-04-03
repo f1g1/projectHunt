@@ -3,9 +3,9 @@ import {
   IonButton,
   IonCard,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardContent,
   IonItem,
+  IonCardTitle,
 } from "@ionic/react";
 import GoogleMap from 'google-map-react';
 import "./Card.scss";
@@ -17,16 +17,16 @@ const LocationMarker = ({ lat, lng }) => (
   }} className="map-user-image" lat={lat} lng={lng} />
 );
 
-export default function Card(props) {
+export default function MarginCard(props) {
   console.log(props.lat, props.lng)
   let k = { lat: props.lat, lng: props.lng }
   const initPolyLines = (google) => {
-    let ppolyline = new google.maps.Circle({//<--note the this
+    let ppolyline = new google.maps.Circle({
       strokeOpacity: 0.3,
       strokeWeight: 1,
       fillOpacity: 0.2,
       center: { lat: props.lat, lng: props.lng },
-      radius: 100
+      radius: props.radius
 
     });
     ppolyline.setMap(google.map);
@@ -34,14 +34,13 @@ export default function Card(props) {
   return (
     <IonItem lines="none">
       <div style={{ height: '100%', width: '100%' }}>
-        <IonCard color="secondary">
+        <IonCard >
           <IonCardHeader>
-            <IonCardSubtitle>{props.title}</IonCardSubtitle>
-            <IonButton onClick={props.openModal}>Modal</IonButton>
+            <IonCardTitle>{props.title}</IonCardTitle>
+            <IonButton onClick={props.openModal} fill="outline">Location</IonButton>
           </IonCardHeader>
           <IonCardContent>
             <div style={{ height: "300px" }}>
-
               <div style={{ height: '100%', width: '100%' }}>
 
                 {props.lat && <GoogleMap
