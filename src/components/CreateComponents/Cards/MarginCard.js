@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   IonButton,
   IonCard,
@@ -18,8 +18,13 @@ const LocationMarker = ({ lat, lng }) => (
 );
 
 export default function MarginCard(props) {
+  const [polyline, setpolyline] = useState()
   console.log(props.lat, props.lng)
   let k = { lat: props.lat, lng: props.lng }
+
+  useEffect(() => {
+    polyline && polyline.setOptions({ center: { lat: props.lat, lng: props.lng }, radius: props.radius });
+  })
   const initPolyLines = (google) => {
     let ppolyline = new google.maps.Circle({
       strokeOpacity: 0.3,
@@ -30,6 +35,7 @@ export default function MarginCard(props) {
 
     });
     ppolyline.setMap(google.map);
+    setpolyline(ppolyline);
   }
   return (
     <IonItem lines="none">
@@ -46,6 +52,7 @@ export default function MarginCard(props) {
                 {props.lat && <GoogleMap
                   bootstrapURLKeys={{ key: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA" }}
                   defaultCenter={k}
+                  center={{ lat: props.lat, lng: props.lng }}
                   defaultZoom={15}
                   yesIWantToUseGoogleMapApiInternals
                   onGoogleApiLoaded={x => initPolyLines(x)}

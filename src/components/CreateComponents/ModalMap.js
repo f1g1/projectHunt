@@ -31,7 +31,6 @@ let ModalMap = (props) => {
 
 
   const initPolyLines = (google) => {
-    console.log("actual", mapCenter)
     let ppolyline = new google.maps.Circle({
       strokeOpacity: 0.3,
       strokeWeight: 1,

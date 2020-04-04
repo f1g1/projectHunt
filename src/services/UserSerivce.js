@@ -4,30 +4,46 @@ export const UserService = {
   getCurrentUser: getCurrentUser,
   setCurrentUser: setCurrentUser,
   getCurrentPlayer,
-  checkNewUser
+  checkNewUser,
+  SaveNewUser,
+  logout
 };
+
+function logout() {
+  window.localStorage.clear("user");
+}
+
+function SaveNewUser(user) {
+  window.localStorage["user"] = JSON.stringify({
+    ...user
+  });
+  return fireStore
+    .collection("users")
+    .doc(user.email)
+    .set(user)
+}
 
 function getCurrentUser() {
   return JSON.parse(window.localStorage["user"]) || {};
 }
 
-let checkNewUser = (user) => {
+function checkNewUser(user) {
   let ref = fireStore
     .collection("users")
     .doc(user.email)
 
-  ref.get().then(x => {
+  return ref.get().then(x => {
     if (!x.exists || !x.username) {
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 
   )
 }
 function getCurrentPlayer() {
   let user = JSON.parse(window.localStorage["user"]) || {};
-  return { name: user.familyName + " " + user.givenName, image: user.imageUrl }
+  return { name: user.userName, image: user.imageUrl }
 }
 function setCurrentUser(user) {
   window.localStorage["user"] = JSON.stringify({

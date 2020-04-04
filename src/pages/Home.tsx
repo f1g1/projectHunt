@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './Login.css';
 import { Plugins } from '@capacitor/core';
 import "@codetrix-studio/capacitor-google-auth";
+import { UserService } from '../services/UserSerivce';
 
 const INITIAL_STATE = {
   loggedIn: true,
@@ -24,7 +25,9 @@ class Home extends Component {
   async signOut(): Promise<void> {
     const { history } = this.props;
     await Plugins.GoogleAuth.signOut();
-    history.goBack();
+    UserService.logout();
+
+    history.goRoot("/login");
   }
 
   async getUserInfo() {
@@ -50,7 +53,7 @@ class Home extends Component {
           <IonRow>
             <IonCol className="text-center">
               <IonText className="title">
-                You are logged in !
+                You are logged in {UserService.getCurrentPlayer().name}!
               </IonText>
             </IonCol>
           </IonRow>

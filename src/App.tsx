@@ -35,6 +35,7 @@ import LobbySearch from './pages/LobbySearch/LobbySearch';
 import Tabb from './pages/BarcodeTest';
 import Play from './pages/Play/Play';
 import SeeClue from './pages/Play/SeeClue';
+import UserName from './pages/Username/UserName';
 const App: React.FC = () => (
   <IonApp>
 

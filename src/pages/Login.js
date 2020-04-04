@@ -58,9 +58,7 @@ const Login = props => {
     UserService.checkNewUser(user).then(x => {
       x ? history.push({
         pathname: "/username",
-        state: {
-          user
-        }
+        user
       }) :
         history.push({
           pathname: "/home",
