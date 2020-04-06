@@ -3,8 +3,8 @@ import AddIcon from "@material-ui/icons/Add";
 import ModalCardCreate from "../ModalCardCreate/ModalCardCreate";
 import ModalMap from "../ModalMap";
 import MarginCard from "./MarginCard"
-import { Geolocation } from "@capacitor/core";
 import ReorderableCards from "../ReorderableCards";
+import MiscService from "../../../services/MiscService"
 import {
   IonRow,
   IonCol,
@@ -24,14 +24,11 @@ export default function CardList() {
   const [showAddCardModal, setShowAddCardModal] = useState(false);
 
   useEffect(() => {
-    Geolocation.getCurrentPosition().then(x => handleReceivedLocation(x));
+    handleReceivedLocation()
   }, []);
 
-  let handleReceivedLocation = location => {
-    console.log(location);
-
-    setGeolocation(location.coords);
-    console.log("set");
+  let handleReceivedLocation = () => {
+    MiscService.getCachedGeolocation().then(x => setGeolocation(x));
   };
 
   const saveStart = (lat, lng, radius) => {

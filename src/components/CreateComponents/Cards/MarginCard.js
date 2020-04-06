@@ -19,7 +19,6 @@ const LocationMarker = ({ lat, lng }) => (
 
 export default function MarginCard(props) {
   const [polyline, setpolyline] = useState()
-  console.log(props.lat, props.lng)
   let k = { lat: props.lat, lng: props.lng }
 
   useEffect(() => {
