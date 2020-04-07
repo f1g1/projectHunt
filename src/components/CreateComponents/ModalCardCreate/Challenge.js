@@ -5,42 +5,14 @@ import {
     IonLabel,
     IonTextarea,
     IonButton,
-    IonInput,
     IonSelect,
     IonSelectOption,
-    IonCheckbox,
-    IonContent,
-    IonItemDivider,
 } from "@ionic/react";
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-import MiscService from '../../../services/MiscService';
+import ChallengeInput from './ChallengeInput';
 
-
-const makeid = length => {
-    var result = "";
-    var characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-};
 export default function Challenge(props) {
-    const [code, setCode] = useState()
-    const [qr, setQr] = useState()
     const [loadingImage, setLoadingImage] = useState(false);
     const refInput = useRef();
-    useEffect(() => {
-    })
-
-
-    const generateQR = (code) => {
-        setCode(code);
-        MiscService.getQr(code).then(x => { debugger; setQr(x.url) })
-    }
-
-
     const onChoosePhoto = event => {
         debugger;
         if (event.target.files && event.target.files[0]) {
@@ -87,32 +59,7 @@ export default function Challenge(props) {
                     <IonSelectOption value={2}>Photo</IonSelectOption>
                 </IonSelect>
             </IonItem>
-            <IonItem>
-                <IonLabel>Code:</IonLabel>
-                <IonInput
-                    value={props.step.code}
-                    onIonChange={e => {
-                        props.setStep({ ...props.step, code: e.target.value })
-                        console.log(e.target.value);
-                    }}
-                    maxlength="12"
-                ></IonInput>
-
-                {qr && <img src={qr}></img>}
-                <p>
-                    {qr && <a href={qr} download>Click to download</a>}
-
-                </p>
-                <IonButton
-                    onClick={() => generateQR(makeid(6))}
-                >
-                    Generate
-            </IonButton>
-            </IonItem>
-            <IonItem>
-                <IonLabel>Needs Validation?</IonLabel>
-                <IonCheckbox onIonChange={e => props.setStep({ ...props.step, needsValidation: e.detail.checked })} value={props.step.needsValidation} ></IonCheckbox>
-            </IonItem>
+            <ChallengeInput {...props} />
         </IonList>
     )
 }

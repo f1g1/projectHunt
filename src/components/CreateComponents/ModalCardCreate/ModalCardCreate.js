@@ -30,8 +30,7 @@ export default function ModalCardCreate(props) {
   const [answer, setAnswer] = useState(0)
   const [imageUrl, setImageUrl] = useState()
   const [segmentOn, setSegmentOn] = useState("challenge")
-  const [validateAnswer, setValidateAnswer] = useState()
-  const [step, setStep] = useState({ points: 100 })
+  const [step, setStep] = useState({ points: 100, answerType: 0, validateAnswer: false })
 
 
   const RenderSegment = () => {
@@ -54,7 +53,7 @@ export default function ModalCardCreate(props) {
   const saveNewStep = () => {
     dispatch({
       type: "addStep",
-      step: { clue, code, answerType, answer, image: currentFile, imageUrl, validateAnswer, id: Date.now() }
+      step: { step, id: Date.now() }
     });
     setShowToast1(true);
   };
@@ -94,10 +93,6 @@ export default function ModalCardCreate(props) {
             {RenderSegment()}
           </IonCol>
         </IonRow>
-
-
-
-
       </IonContent >
       <IonToast
         isOpen={showToast1}

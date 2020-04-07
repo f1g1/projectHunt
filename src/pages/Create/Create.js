@@ -11,7 +11,6 @@ import {
   IonButtons,
   IonHeader,
   IonTitle,
-  IonLabel,
   IonBackButton
 } from "@ionic/react";
 import { AppContext as CreateGameContext } from "../../StateCreateGame";
@@ -28,7 +27,6 @@ const Create = () => {
     let objToUpdate = { ...state };
     delete objToUpdate.cloneSteps;
     delete objToUpdate.image;
-    //todo we need to wait for all images to upload
     let promises = [];
     objToUpdate.steps.forEach(element => {
       delete element.imageUrl;
@@ -38,12 +36,12 @@ const Create = () => {
     Promise.allSettled(promises)
       .then(v => {
         v.forEach((image, i) => {
-          debugger;
-          if (image)
+          if (image.value)
             objToUpdate.steps[i].image = image.value
+          else { delete objToUpdate.image }
         })
         MediaService.SaveImageStep(state.image)
-          .then(x => { debugger; objToUpdate.image = x; GamesService.saveGame(objToUpdate); })
+          .then(x => { if (x) objToUpdate.image = x; GamesService.saveGame(objToUpdate); })
       })
 
   };

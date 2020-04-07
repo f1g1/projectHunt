@@ -27,7 +27,7 @@ class Home extends Component {
     await Plugins.GoogleAuth.signOut();
     UserService.logout();
 
-    history.goRoot("/login");
+    history.goBack();
   }
 
   async getUserInfo() {
