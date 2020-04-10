@@ -13,6 +13,12 @@ let AppContext = createContext();
 
 const initialState = {
     maxPlayers: 4,
+    description: null,
+    title: null,
+    inOrder: true,
+    password: null,
+    image: null,
+
     steps: [
         // {
         //     clue: "",
@@ -50,6 +56,10 @@ const initialState = {
 
 let reducer = (state, action) => {
     switch (action.type) {
+
+        case "setGame": {
+            return action.game
+        }
         case "setStartCoords": {
             return { ...state, startLat: action.lat, startLng: action.lng, startRadius: action.radius };
         }
@@ -59,20 +69,30 @@ let reducer = (state, action) => {
         case "setTitle": {
             return { ...state, title: action.title };
         }
+        case "setInOrder": {
+            return { ...state, inOrder: action.inOrder };
+        }
         case "setPassword": {
             return { ...state, password: action.password };
         }
         case "setDescription": {
             return { ...state, description: action.description };
         }
-        case "setImageUrl": {
-            return { ...state, image: action.image };
+        case "setImage": {
+            return { ...state, image: URL.createObjectURL(action.image), imageFile: action.image };
         }
         case "setMaxPlayers": {
             return { ...state, maxPlayers: action.maxPlayers }
         }
-        case "addStep": {
+        case "setSteps": {
             debugger;
+            return {
+                ...state,
+                steps: [...action.steps],
+                cloneSteps: [...action.steps]
+            };
+        }
+        case "addStep": {
             return {
                 ...state,
                 steps: [...state.steps, action.step],
@@ -80,9 +100,9 @@ let reducer = (state, action) => {
             };
         }
         case "deleteStep": {
-            state.steps = state.steps.filter(x => x.id !== action.id)
-            state.cloneSteps = state.cloneSteps.filter(x => x.id !== action.id)
-            debugger;
+            state.steps = state.steps.filter(x => x.id !== action.id) || []
+            state.cloneSteps = state.cloneSteps.filter(x => x.id !== action.id) || []
+            return { ...state }
         }
         case "swapSteps": {
             let arr = [...state.steps];

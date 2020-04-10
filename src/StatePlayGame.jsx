@@ -16,9 +16,6 @@ let reducer = (state, action) => {
         case "setMyTeam": {
             return { ...state, myTeam: action.value };
         }
-        case "testt": {
-            return { ...state, testValuee: "TIGSAKDAFKSKFSKF" };
-        }
         case "setCurrentStepIndex": {
             return { ...state, currentStepIndex: action.value };
 
@@ -46,7 +43,6 @@ function PlayContextProvider(props) {
     let [state, dispatch] = useReducer(loggerReducer, fullInitialState);
     let value = { state, dispatch };
     useEffect(() => {
-        debugger;
         if (state && state !== {})
             window.localStorage['persistedPlaytate'] = JSON.stringify({
                 myTeam: state.myTeam
