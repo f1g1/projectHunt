@@ -1,26 +1,14 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
-import {
-  IonHeader,
-  IonContent,
-  IonLabel,
-  IonButton,
-  IonRow,
-  IonToast,
-  IonToolbar,
-  IonTitle,
-  IonSegment,
-  IonSegmentButton,
-  IonCol,
-  IonButtons
-} from "@ionic/react";
+import "./ModalCard.scss";
 
+import { IonButton, IonButtons, IonCol, IonContent, IonHeader, IonLabel, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToast, IonToolbar } from "@ionic/react";
+import React, { useContext, useEffect, useState } from "react";
+
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import { AppContext } from "../../../StateCreateGame";
 import Challenge from "./Challenge";
+import EditIcon from '@material-ui/icons/Edit';
 import Misc from "./Misc";
 import Response from "./Response";
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import EditIcon from '@material-ui/icons/Edit';
-import "./ModalCard.scss";
 
 export default function ModalCardCreate(props) {
   const [showToast1, setShowToast1] = useState(false);

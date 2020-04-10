@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { IonHeader, IonPage, IonToolbar, IonLabel, IonContent, IonList, IonItem, IonThumbnail, IonImg, IonCard, IonCardContent, IonCol, IonRow, IonGrid, IonCardSubtitle, IonTitle, IonChip, IonToast, IonModal, IonFooter, IonButtons, IonButton } from '@ionic/react'
-import { PlayService } from '../../services/PlayService'
-import { LobbyService } from '../../services/LobbyService'
+import { IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonModal, IonPage, IonToolbar } from '@ionic/react'
+import React, { useEffect, useState } from 'react'
+
 import ChatBoard from '../../components/Chat/ChatBoard/ChatBoard'
 import ClueList from './ClueList'
 import LeaderBoard from './LeaderBoard'
+import { LobbyService } from '../../services/LobbyService'
+import { PlayService } from '../../services/PlayService'
 import useTeamChanges from '../../services/useTeamChanges'
-
 
 export default function Play(props) {
     const [game, setGame] = useState()

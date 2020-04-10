@@ -1,12 +1,7 @@
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from "@ionic/react";
+
 import React from "react";
-import {
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonButton,
-} from "@ionic/react";
+
 export default function InnerCard(props) {
 
   console.log(props.step);

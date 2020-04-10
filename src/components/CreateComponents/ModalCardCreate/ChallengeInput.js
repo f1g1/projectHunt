@@ -1,11 +1,7 @@
-import React, { useState } from 'react'
-import { IonButton, IonLabel, IonInput, IonItem, IonCheckbox } from '@ionic/react';
+import { IonButton, IonCheckbox, IonInput, IonItem, IonLabel } from '@ionic/react';
+import React, { useState } from 'react';
+
 import MiscService from '../../../services/MiscService';
-
-
-
-
-
 
 const makeid = length => {
     var result = "";

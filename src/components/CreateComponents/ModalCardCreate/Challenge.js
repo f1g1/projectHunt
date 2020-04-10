@@ -1,13 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react'
-import {
-    IonList,
-    IonItem,
-    IonLabel,
-    IonTextarea,
-    IonButton,
-    IonSelect,
-    IonSelectOption,
-} from "@ionic/react";
+import { IonButton, IonItem, IonLabel, IonList, IonSelect, IonSelectOption, IonTextarea } from "@ionic/react";
+import React, { useRef, useState } from 'react';
+
 import ChallengeInput from './ChallengeInput';
 
 export default function Challenge(props) {
@@ -47,12 +40,13 @@ export default function Challenge(props) {
                 <IonLabel position="stacked">Clue</IonLabel>
                 <IonTextarea
                     onIonChange={e => props.setStep({ ...props.step, clue: e.target.value })}
+                    value={props.step.clue}
                     maxlength="500"
                 ></IonTextarea>
             </IonItem>
             <IonItem>
                 <IonLabel>Answer Type:</IonLabel>
-                <IonSelect interface="popover" onIonChange={e => props.setStep({ ...props.step, answerType: e.target.value })} value={props.step.answerType} placeholder="Choose answer type">
+                <IonSelect interface="popover" value={props.step.answerType} onIonChange={e => props.setStep({ ...props.step, answerType: e.target.value })} value={props.step.answerType} placeholder="Choose answer type">
                     <IonSelectOption value={0}>Text</IonSelectOption>
                     <IonSelectOption value={1}>QR</IonSelectOption>
                     <IonSelectOption value={2}>Photo</IonSelectOption>

@@ -1,6 +1,5 @@
 import { Geolocation } from "@capacitor/core";
 
-
 const MiscService = {
     getCachedGeolocation,
     getQr

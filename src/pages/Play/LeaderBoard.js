@@ -1,6 +1,8 @@
-import React from 'react'
-import { IonHeader, IonToolbar, IonTitle, IonLabel, IonGrid, IonRow, IonCol, IonCardContent, IonCard, IonButton, IonIcon } from '@ionic/react'
-import { close } from "ionicons/icons"
+import { IonButton, IonCard, IonCardContent, IonCol, IonGrid, IonHeader, IonIcon, IonLabel, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+
+import React from 'react';
+import { close } from "ionicons/icons";
+
 var moment = require('moment');
 
 export default function LeaderBoard(props) {

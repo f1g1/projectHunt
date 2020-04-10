@@ -1,21 +1,13 @@
-import {
-  IonContent,
-  IonText,
-  IonRow,
-  IonCol,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonButton,
-  IonImg
-} from "@ionic/react";
-import React, { useContext, useEffect } from "react";
-import "./Login.css";
-import { Plugins } from "@capacitor/core";
-import * as firebase from "firebase";
 import "@codetrix-studio/capacitor-google-auth";
+import "./Login.css";
+
+import * as firebase from "firebase";
+
+import { IonButton, IonCol, IonContent, IonHeader, IonImg, IonPage, IonRow, IonTitle, IonToolbar } from "@ionic/react";
+import React, { useContext, useEffect } from "react";
+
 import { AppContext } from "../StateGeneric";
+import { Plugins } from "@capacitor/core";
 import { UserService } from "../services/UserSerivce";
 
 const Login = props => {
@@ -38,9 +30,9 @@ const Login = props => {
   const signIn = async () => {
     let result;
     result = await Plugins.GoogleAuth.signIn();
-    console.info("resultSignIN", result);
     if (result) {
-      saveUser(result);
+
+      UserService.getUserFirebase(result.email).then(x => saveUser({ ...result, ...x.data() }))
     } else {
       console.log("I FAILEd", result);
     }
@@ -51,7 +43,6 @@ const Login = props => {
     let r = await firebase
       .auth()
       .signInWithCredential(firebase.auth.GoogleAuthProvider.credential(token));
-    console.info("firebase Response: ", r);
 
     const { history } = props;
 

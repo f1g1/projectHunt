@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from "react";
-import {
-  IonButton,
-  IonCard,
-  IonCardHeader,
-  IonCardContent,
-  IonItem,
-  IonCardTitle,
-} from "@ionic/react";
-import GoogleMap from 'google-map-react';
 import "./Card.scss";
+
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem } from "@ionic/react";
+import React, { useEffect, useState } from "react";
+
+import GoogleMap from 'google-map-react';
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 
 const LocationMarker = ({ lat, lng }) => (

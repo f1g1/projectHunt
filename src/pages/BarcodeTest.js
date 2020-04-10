@@ -1,6 +1,8 @@
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useState } from "react";
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonPage } from '@ionic/react';
+
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+
 const Tabb = () => {
     const [value, setvalue] = useState()
     const openScanner = async () => {

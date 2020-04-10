@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef, Children } from "react";
-import { IonHeader, IonContent, IonButton, IonInput, IonRow, IonCol, IonRange, IonGrid, IonCard } from '@ionic/react';
+import "./ModalMap.scss";
+
+import { IonButton, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonRange, IonRow } from '@ionic/react';
+import React, { useEffect, useRef, useState } from "react";
+
 import GoogleMap from 'google-map-react';
-import "./ModalMap.scss"
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 

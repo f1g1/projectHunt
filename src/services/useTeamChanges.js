@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { fireStore } from '../firebase';
-import { LobbyService } from './LobbyService';
+import { useEffect, useState } from 'react';
 
-export default function useTeamChanges() {
+import { LobbyService } from './LobbyService';
+import { fireStore } from '../firebase';
+
+export default function useTeamChanges(lobby) {
     const [finalteams, setTeams] = useState([]);
     let unsubscribe;
     let teams = [];
@@ -10,7 +11,7 @@ export default function useTeamChanges() {
         teams = teams;
         unsubscribe = fireStore
             .collection("lobbies")
-            .doc(LobbyService.getCurrentLobby())
+            .doc(lobby || LobbyService.getCurrentLobby())
             .collection("teams")
             .onSnapshot(function (snapshot) {
                 snapshot.docChanges().forEach(function (change) {

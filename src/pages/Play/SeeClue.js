@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { IonPage, IonTitle, IonHeader, IonToolbar, IonButtons, IonBackButton, IonContent, IonImg, IonInput, IonItem, IonButton, IonIcon, } from '@ionic/react'
-import { PlayService } from '../../services/PlayService';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonTitle, IonToolbar } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+
 import { PhotoViewer } from '@ionic-native/photo-viewer';
-import { close } from "ionicons/icons"
+import { PlayService } from '../../services/PlayService';
+import { close } from "ionicons/icons";
 
 export default function SeeClue(props) {
 

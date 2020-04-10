@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { IonButton, IonRange, IonItem, IonLabel, IonCheckbox, IonModal, IonRow, IonCol } from '@ionic/react';
+import { IonButton, IonCheckbox, IonCol, IonItem, IonLabel, IonModal, IonRange, IonRow } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+
 import GoogleMap from 'google-map-react';
-
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import ModalCardCreate from './ModalCardCreate';
-import ModalMap from '../ModalMap';
 import MiscService from '../../../services/MiscService';
-
+import ModalMap from '../ModalMap';
 
 const LocationMarker = ({ lat, lng }) => (
     <LocationOnRoundedIcon style={{

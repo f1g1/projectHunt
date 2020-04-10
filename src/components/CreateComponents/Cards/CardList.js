@@ -1,20 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
+import "./Card.scss";
+
+import { IonCol, IonFabButton, IonModal, IonRow } from "@ionic/react";
+import React, { useContext, useEffect, useState } from "react";
+
 import AddIcon from "@material-ui/icons/Add";
+import { AppContext as CreateGameContext } from "../../../StateCreateGame";
+import MarginCard from "./MarginCard";
+import MiscService from "../../../services/MiscService";
 import ModalCardCreate from "../ModalCardCreate/ModalCardCreate";
 import ModalMap from "../ModalMap";
-import MarginCard from "./MarginCard"
 import ReorderableCards from "../ReorderableCards";
-import MiscService from "../../../services/MiscService"
-import {
-  IonRow,
-  IonCol,
-  IonModal,
-  IonFabButton,
-} from "@ionic/react";
-import { AppContext as CreateGameContext } from "../../../StateCreateGame";
-import "./Card.scss"
-
-
 
 export default function CardList() {
   const { state, dispatch } = useContext(CreateGameContext);

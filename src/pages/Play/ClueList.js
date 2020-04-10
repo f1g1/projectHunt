@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { PlayService } from '../../services/PlayService'
+import { IonChip, IonItem, IonLabel, IonList, IonModal, IonThumbnail, IonTitle } from '@ionic/react'
+import React, { useEffect, useState } from 'react'
+
 import { LobbyService } from '../../services/LobbyService'
-import { UserService } from '../../services/UserSerivce'
+import { PlayService } from '../../services/PlayService'
 import SeeClue from './SeeClue'
-import { IonLabel, IonList, IonItem, IonThumbnail, IonTitle, IonChip, IonModal } from '@ionic/react'
-
-
-
-
+import { UserService } from '../../services/UserSerivce'
 
 const showStatus = {
     ACTIVE: 0,

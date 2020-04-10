@@ -6,13 +6,16 @@ export const UserService = {
   getCurrentPlayer,
   checkNewUser,
   SaveNewUser,
-  logout
+  logout,
+  getUserFirebase
 };
 
 function logout() {
   window.localStorage.clear("user");
 }
-
+function getUserFirebase(email) {
+  return fireStore.collection("users").doc(email).get()
+}
 function SaveNewUser(user) {
   window.localStorage["user"] = JSON.stringify({
     ...user

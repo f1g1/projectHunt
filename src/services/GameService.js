@@ -1,7 +1,6 @@
+import MediaService from "./MediaService";
 import { UserService } from "./UserSerivce";
 import { fireStore } from "../firebase";
-import { create } from "domain";
-import MediaService from "./MediaService";
 
 export const GamesService = {
   getMyGames,

@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useContext } from "react";
-import { IonContent, IonPage, IonHeader, IonTitle, IonCol, IonRow, IonToolbar, IonGrid, IonLoading, IonButton, IonLabel, IonCard, IonList, IonCardContent, IonItem, IonItemDivider, IonButtons, IonFooter, IonModal } from "@ionic/react";
+import "./Lobby.scss";
+
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonItem, IonLabel, IonList, IonLoading, IonModal, IonPage, IonRow, IonTitle, IonToolbar } from "@ionic/react";
+import React, { useEffect, useState } from "react";
+
 import ChatBoard from "../../components/Chat/ChatBoard/ChatBoard";
-import "./Lobby.scss"
-import TeamsContainer from "./TeamsContainer";
-import TeamPanel from "./TeamPanel"
 import { LobbyService } from "../../services/LobbyService";
+import MapWithLocation from "../../components/Map/Map";
+import TeamPanel from "./TeamPanel";
+import TeamsContainer from "./TeamsContainer";
 import { UserService } from "../../services/UserSerivce";
 import useTeamChanges from "../../services/useTeamChanges";
-import MapWithLocation from "../../components/Map/Map";
-
-
 
 export default function Lobby(props) {
   const [lobby, setLobby] = useState()
   const [joinedTeam, setJoinedTeam] = useState()
-  const teams = useTeamChanges()
+  const teams = useTeamChanges(props.location.lobbyId)
   const [currentTeamDetails, setcurrentTeamDetails] = useState();
   const [showChatModal, setShowChatModal] = useState(false)
 
@@ -34,6 +34,7 @@ export default function Lobby(props) {
 
   useEffect(() => {
     console.log("lobby", props.location.lobbyId);
+    LobbyService.setLobby(props.location.lobbyId)
     LobbyService.getLobby(props.location.lobbyId || LobbyService.getCurrentLobby())
       .then(x => {
         setLobby(x);
@@ -47,7 +48,6 @@ export default function Lobby(props) {
       if (joined.length > 0) {
         LobbyService.setCurrentTeam(joined[0].name)
         setJoinedTeam(joined[0].name)
-        debugger;
 
       }
     }
@@ -122,7 +122,7 @@ export default function Lobby(props) {
                         Nr. of Challenges
                         <IonItem>
                           <IonLabel>
-                            {lobby.steps.length}
+                            {lobby.steps.length || 0}
                           </IonLabel>
                         </IonItem>
                         Start Location

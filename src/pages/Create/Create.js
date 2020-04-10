@@ -1,24 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
-import {
-  IonContent,
-  IonRow,
-  IonCol,
-  IonGrid,
-  IonButton,
-  IonPage,
-  IonFooter,
-  IonToolbar,
-  IonButtons,
-  IonHeader,
-  IonTitle,
-  IonBackButton
-} from "@ionic/react";
-import { AppContext as CreateGameContext } from "../../StateCreateGame";
+import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from "@ionic/react";
+import React, { useContext, useEffect, useState } from "react";
 
-
-import { GamesService } from "../../services/GameService";
 import CardList from "../../components/CreateComponents/Cards/CardList";
+import { AppContext as CreateGameContext } from "../../StateCreateGame";
 import GameInformations from "../../components/CreateComponents/Cards/GameInformations";
+import { GamesService } from "../../services/GameService";
+
 const Create = (props) => {
   const { state, dispatch } = useContext(CreateGameContext);
   const [isEdit, setisEdit] = useState(false)

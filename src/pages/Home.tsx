@@ -1,8 +1,10 @@
-import { IonContent, IonText, IonRow, IonItem, IonThumbnail, IonLabel, IonCol, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonImg, IonList } from '@ionic/react';
-import React, { Component } from 'react';
-import './Login.css';
-import { Plugins } from '@capacitor/core';
 import "@codetrix-studio/capacitor-google-auth";
+import './Login.css';
+
+import { IonButton, IonCol, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonRow, IonText, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
+import React, { Component } from 'react';
+
+import { Plugins } from '@capacitor/core';
 import { UserService } from '../services/UserSerivce';
 
 const INITIAL_STATE = {

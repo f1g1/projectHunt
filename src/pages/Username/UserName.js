@@ -1,5 +1,6 @@
+import { IonButton, IonCol, IonContent, IonGrid, IonInput, IonItem, IonPage, IonRow, IonToast } from '@ionic/react'
 import React, { useState } from 'react'
-import { IonContent, IonInput, IonPage, IonRow, IonCol, IonGrid, IonLabel, IonItem, IonButton, IonToast } from '@ionic/react'
+
 import { UserService } from '../../services/UserSerivce'
 
 export default function UserName(props) {

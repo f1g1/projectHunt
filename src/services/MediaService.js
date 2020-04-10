@@ -1,5 +1,5 @@
-import moment from 'moment'
 import { fireStorage } from '../firebase';
+import moment from 'moment';
 
 const MediaService = {
     SaveImage

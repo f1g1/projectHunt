@@ -1,5 +1,5 @@
-import React from "react";
 import Flag from "./SideMenuItems/Flag";
+import React from "react";
 
 function CreateSideMenu(props) {
   return (

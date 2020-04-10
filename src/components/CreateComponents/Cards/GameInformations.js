@@ -1,19 +1,8 @@
+import { IonBadge, IonButton, IonCard, IonCardContent, IonCardTitle, IonCheckbox, IonInput, IonItem, IonLabel, IonList, IonRange, IonTextarea } from "@ionic/react";
 import React, { useContext, useRef, useState } from "react";
-import {
-    IonInput,
-    IonLabel,
-    IonItem,
-    IonRange,
-    IonList,
-    IonCard,
-    IonCardContent,
-    IonCardTitle,
-    IonTextarea,
-    IonBadge,
-    IonButton,
-    IonCheckbox,
-} from "@ionic/react";
+
 import { AppContext as CreateGameContext } from "../../../StateCreateGame";
+
 export default function GameInformations() {
     const refInput = useRef();
     const { state, dispatch } = useContext(CreateGameContext);

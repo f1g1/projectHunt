@@ -1,12 +1,10 @@
+import { IonItem, IonReorder, IonReorderGroup } from "@ionic/react";
 import React, { useContext } from "react";
-import {
-  IonReorderGroup,
-  IonItem,
-  IonReorder,
-} from "@ionic/react";
-import InnerCard from "./Cards/InnerCard";
+
 import { AppContext } from "../../StateCreateGame";
+import InnerCard from "./Cards/InnerCard";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+
 export default function ReorderableCards(props) {
   const { state, dispatch } = useContext(AppContext);
 

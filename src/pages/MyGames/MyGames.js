@@ -1,20 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonRow, IonTitle, IonToolbar } from "@ionic/react";
+import React, { useEffect, useState } from "react";
+
 import { GamesService } from "../../services/GameService";
-import {
-  IonCol,
-  IonContent,
-  IonPage,
-  IonList,
-  IonItem,
-  IonButton,
-  IonLabel,
-  IonRow,
-  IonTitle,
-  IonHeader,
-  IonToolbar,
-  IonBackButton,
-  IonButtons
-} from "@ionic/react";
 import { LobbyService } from "../../services/LobbyService";
 
 export default function MyGames(props) {
@@ -65,10 +52,11 @@ export default function MyGames(props) {
                     </IonLabel>
                     <IonButton size="default" onClick={e => {
                       LobbyService.postLobby(x).then(id => {
+                        LobbyService.setLobby(id)
                         props.history.push({ pathname: "/lobby", lobbyId: id.id });
 
                       })
-                    }}>Create Game</IonButton>
+                    }}>Create Lobby</IonButton>
                     <IonButton color="dark" onClick={() => handleEdit(x)}>Edit</IonButton>
 
                     <IonButton color="danger" size="default" onClick={() => handleDelete(x.gameId)}>

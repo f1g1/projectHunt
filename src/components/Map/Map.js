@@ -1,7 +1,8 @@
-import React from "react";
-import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import "./Map.css";
+
 import GoogleMap from 'google-map-react';
+import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
+import React from "react";
 
 const LocationMarker = ({ lat, lng }) => (
   <LocationOnRoundedIcon className="map-user-image" lat={lat} lng={lng} />

@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react'
-import { IonButton, IonRow, IonCol, IonInput, IonLabel, IonItem, IonTextarea, IonCardContent, IonCardTitle, IonCard } from '@ionic/react'
+import { IonButton, IonCard, IonCardContent, IonCardTitle, IonCol, IonInput, IonItem, IonLabel, IonRow, IonTextarea } from '@ionic/react';
+import React, { useRef, useState } from 'react';
 
 export default function Response(props) {
     const refSuccesInput = useRef();

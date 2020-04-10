@@ -1,8 +1,11 @@
-import React, { Fragment, useState } from 'react'
-import { IonItem, IonItemDivider, IonButton, IonList, IonBadge, IonInput, IonCard, IonCardContent, IonTitle, IonCardTitle } from '@ionic/react'
 import "./Lobby.scss"
+
+import { IonBadge, IonButton, IonCard, IonCardContent, IonCardTitle, IonInput, IonItem, IonItemDivider, IonList } from '@ionic/react'
+import React, { Fragment, useState } from 'react'
+
 import { LobbyService } from '../../services/LobbyService'
 import { UserService } from '../../services/UserSerivce'
+
 export default function TeamsContainer(props) {
     const [newTeamName, setnewTeamName] = useState()
     const addTeam = () => {

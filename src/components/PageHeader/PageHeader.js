@@ -1,11 +1,6 @@
+import { IonAvatar, IonHeader, IonItem, IonNote, IonToolbar } from "@ionic/react";
+
 import React from "react";
-import {
-  IonHeader,
-  IonToolbar,
-  IonItem,
-  IonAvatar,
-  IonNote
-} from "@ionic/react";
 
 const PageHeader = props => {
   console.log("pageHeader", props.user);

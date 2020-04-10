@@ -1,7 +1,7 @@
-import { fireStore } from "../firebase";
 import { LobbyService } from "./LobbyService";
-import firebase from 'firebase';
 import { UserService } from "./UserSerivce";
+import { fireStore } from "../firebase";
+import firebase from 'firebase';
 
 export const PlayService = {
     setGame,

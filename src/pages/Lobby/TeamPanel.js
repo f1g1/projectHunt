@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react'
-import { IonCardTitle, IonCardContent, IonCard, IonButton, IonLabel, IonList, IonItem, IonCardHeader } from '@ionic/react'
-import { UserService } from '../../services/UserSerivce'
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonList } from '@ionic/react'
+
 import { LobbyService } from '../../services/LobbyService'
+import React from 'react'
+import { UserService } from '../../services/UserSerivce'
 
 export default function TeamPanel(props) {
     console.log("rEnder panel", props.team)
