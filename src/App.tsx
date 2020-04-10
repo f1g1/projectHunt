@@ -48,7 +48,7 @@ const App: React.FC = () => (
         <Route path="/login" component={Login} exact={true} />
         <Route path="/home" component={Home} exact={true} />
 
-        <Route path="/create" component={withCreateContext(Create)} />
+        <Route path="/game" component={withCreateContext(Create)} />
 
         <Route path="/test" component={Test} exact={true} />
         <Route path="/chat" component={ChatBoard} exact={true} />
