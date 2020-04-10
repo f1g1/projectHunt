@@ -19,7 +19,7 @@ export default function Challenge(props) {
             setLoadingImage(true)
             const prefixFiletype = event.target.files[0].type.toString()
             if (prefixFiletype.indexOf('image/') === 0) {
-                props.setStep({ ...props.step, imageUrl: URL.createObjectURL(event.target.files[0]), currentFile: event.target.files[0] });
+                props.setStep({ ...props.step, image: URL.createObjectURL(event.target.files[0]), imageFile: event.target.files[0] });
             } else {
                 setLoadingImage(false)
                 console.log('This file is not an image')
@@ -30,8 +30,8 @@ export default function Challenge(props) {
     }
     return (
         <IonList >
-            {props.step.currentFile && <>
-                <img className="ion-justify-content-center ion-align-self-center" src={props.step.imageUrl} />
+            {props.step.image && <>
+                <img className="ion-justify-content-center ion-align-self-center" src={props.step.image} />
 
             </>}
             <IonButton
@@ -46,7 +46,6 @@ export default function Challenge(props) {
             />  <IonItem>
                 <IonLabel position="stacked">Clue</IonLabel>
                 <IonTextarea
-                    value={props.step.clue}
                     onIonChange={e => props.setStep({ ...props.step, clue: e.target.value })}
                     maxlength="500"
                 ></IonTextarea>

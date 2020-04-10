@@ -2,11 +2,11 @@ import moment from 'moment'
 import { fireStorage } from '../firebase';
 
 const MediaService = {
-    SaveImageStep
+    SaveImage
 
 }
 
-async function SaveImageStep(image) {
+async function SaveImage(image) {
     debugger;
     if (!image) return;
     const timestamp = moment()

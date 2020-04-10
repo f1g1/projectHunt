@@ -18,7 +18,7 @@ export default function GameInformations() {
     const refInput = useRef();
     const { state, dispatch } = useContext(CreateGameContext);
     const [loadingImage, setLoadingImage] = useState(false);
-    const [currentFile, setCurrentFile] = useState()
+    const [image, setImage] = useState()
 
     const setTitle = title => {
         dispatch({
@@ -40,9 +40,9 @@ export default function GameInformations() {
         });
     };
 
-    const setImage = image => {
+    const setImageState = image => {
         dispatch({
-            type: "setImageUrl",
+            type: "setImage",
             image
         });
     };
@@ -64,8 +64,8 @@ export default function GameInformations() {
             setLoadingImage(true)
             const prefixFiletype = event.target.files[0].type.toString()
             if (prefixFiletype.indexOf('image/') === 0) {
-                setCurrentFile(URL.createObjectURL(event.target.files[0]));
-                setImage(event.target.files[0]);
+                setImage(URL.createObjectURL(event.target.files[0]));
+                setImageState(event.target.files[0]);
 
             } else {
                 setLoadingImage(false)
@@ -87,6 +87,7 @@ export default function GameInformations() {
                         <IonItem lines="full">
                             <IonLabel position="floating" style={{ fontSize: "24px" }}>Title*:</IonLabel>
                             <IonInput required
+                                value={state.title}
                                 onIonChange={e => setTitle(e.target.value)}
                             ></IonInput>
                         </IonItem>
@@ -102,16 +103,16 @@ export default function GameInformations() {
                         </IonItem>
                         <IonItem>
                             <IonLabel >Challenges in order:</IonLabel>
-                            <IonCheckbox onIonChange={e => setInOrder(e.detail.checked)} slot="end" />
+                            <IonCheckbox onIonChange={e => setInOrder(e.detail.checked)} slot="end" value={state.inOrder} />
                         </IonItem>
                         <IonItem>
                             <IonLabel position="floating">Description:</IonLabel>
-                            <IonTextarea onIonChange={e => setDescription(e.target.value)}>
+                            <IonTextarea onIonChange={e => setDescription(e.target.value)} value={state.description}>
                             </IonTextarea>
                         </IonItem>
                         <IonItem>
                             <IonLabel>Password:</IonLabel>
-                            <IonInput type="text" onIonChange={e => setPassword(e.target.value)}></IonInput>
+                            <IonInput type="text" onIonChange={e => setPassword(e.target.value)} value={state.password} ></IonInput>
                         </IonItem>
                         <IonButton
 
@@ -124,7 +125,7 @@ export default function GameInformations() {
                             type="file"
                             onChange={onChoosePhoto}
                         />
-                        {currentFile && <img src={currentFile}></img>}
+                        {state.image && <img src={state.image}></img>}
                     </IonList>
                 </IonCardContent>
             </IonCard>

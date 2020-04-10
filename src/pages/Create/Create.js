@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   IonContent,
   IonRow,
@@ -19,42 +19,35 @@ import { AppContext as CreateGameContext } from "../../StateCreateGame";
 import { GamesService } from "../../services/GameService";
 import CardList from "../../components/CreateComponents/Cards/CardList";
 import GameInformations from "../../components/CreateComponents/Cards/GameInformations";
-import MediaService from "../../services/MediaService";
-const Create = () => {
+const Create = (props) => {
   const { state, dispatch } = useContext(CreateGameContext);
+  const [isEdit, setisEdit] = useState(false)
 
-  const saveGame = async () => {
-    let objToUpdate = { ...state };
-    delete objToUpdate.cloneSteps;
-    delete objToUpdate.image;
-    let promises = [];
-    objToUpdate.steps.forEach(element => {
-      delete element.imageUrl;
-      promises.push(MediaService.SaveImageStep(element.image))
-    });
-    debugger;
-    Promise.allSettled(promises)
-      .then(v => {
-        v.forEach((image, i) => {
-          if (image.value)
-            objToUpdate.steps[i].image = image.value
-          else { delete objToUpdate.image }
-        })
-        MediaService.SaveImageStep(state.image)
-          .then(x => { if (x) objToUpdate.image = x; GamesService.saveGame(objToUpdate); })
-      })
+  useEffect(() => {
+    if (props.location.game) {
+      dispatch({
+        type: "setGame",
+        game: { ...props.location.game, cloneSteps: props.location.game.steps }
+      });
+      setisEdit(true)
+    }
+  }, [])
 
-  };
+  const saveGame = () => {
+    GamesService.saveGame(state)
+  }
+
+
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons style={{ display: "inline-block" }}>
-            <IonBackButton></IonBackButton>
+            <IonBackButton defaultHref='/home'></IonBackButton>
           </IonButtons>
           <IonTitle style={{ display: "inline-block" }} >
-            Create new Treasure Hunt!
+            {isEdit ? "Edit" : "Create new"} Treasure Hunt!
           </IonTitle>
         </IonToolbar>
       </IonHeader>

@@ -74,7 +74,7 @@ class Home extends Component {
             Logout from Google
         </IonButton>
           <IonList>
-            <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/create", state: "t" }) }}>
+            <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/game", state: "t" }) }}>
               GO TO CREATE
           </IonButton>
             <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/test", state: "t " }) }}>

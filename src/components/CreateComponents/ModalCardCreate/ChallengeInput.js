@@ -79,6 +79,8 @@ export default function ChallengeInput(props) {
             case 2:
                 return (<ImageInput {...props} />)
             default:
+                return (<TextInput {...props} />)
+
                 break;
         }
     }

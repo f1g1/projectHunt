@@ -8,22 +8,27 @@ import {
   IonButton,
 } from "@ionic/react";
 export default function InnerCard(props) {
+
+  console.log(props.step);
   return (
     <div style={{ height: '100%', width: '100%' }}>
-      <IonCard color="light" className="full">
-        <IonCardHeader slot="end">
-          <IonButton color="danger" onClick={() => props.delete(props.step.id)}>x</IonButton>
-        </IonCardHeader>
-        <IonCardContent>
-          {props.children[0]}
-          {props.step.imageUrl && <img src={props.step.imageUrl} height="auto" width="auto"></img>}
-          <br />
-          <IonCardTitle>{props.step.clue}</IonCardTitle>
-          <br></br>
+      {props.step &&
+        <IonCard color="light" className="full">
+          <IonCardHeader slot="end">
+            <IonButton color="danger" onClick={() => props.delete(props.step.id)}>x</IonButton>
+            <IonButton onClick={() => { props.edit(props.step) }}>Edit</IonButton>
+          </IonCardHeader>
+          <IonCardContent>
+            {props.children[0]}
+            {props.step.image && <img src={props.step.image} height="auto" width="auto"></img>}
+            <br />
+            <IonCardTitle>{props.step.clue}</IonCardTitle>
+            <br></br>
         Code:<IonCardSubtitle>{props.step.code}</IonCardSubtitle>
-          {props.children[1]}
-        </IonCardContent>
-      </IonCard>
+            {props.children[1]}
+          </IonCardContent>
+        </IonCard>
+      }
     </div>
   );
 }

@@ -8,7 +8,7 @@ export const VISIBILITY = {
 }
 
 export const LobbyService = {
-    postLobby: postLobby,
+    postLobby,
     getLobbies,
     deleteLobby,
     getLobby,

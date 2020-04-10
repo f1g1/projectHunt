@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GamesService } from "../../services/GameService";
 import {
   IonCol,
@@ -8,23 +8,57 @@ import {
   IonItem,
   IonButton,
   IonLabel,
-  IonRow
+  IonRow,
+  IonTitle,
+  IonHeader,
+  IonToolbar,
+  IonBackButton,
+  IonButtons
 } from "@ionic/react";
 import { LobbyService } from "../../services/LobbyService";
 
 export default function MyGames(props) {
   const [games, setgames] = useState();
-  GamesService.getMyGames().then(x => setgames(x));
+  useEffect(() => {
+    GamesService.getMyGames().then(x => setgames(x));
+
+  }, [])
+  console.log(games);
+
+  const handleDelete = (id) => {
+    GamesService.deleteGame(id).then(() => {
+      let filtered = games.filter(x => x.gameId !== id);
+      debugger;
+      setgames(filtered);
+    })
+  }
+  const handleEdit = (game) => {
+    props.history.push({ pathname: "/game", game });
+
+  }
+
   return (
-    <IonPage>
+
+    < IonPage >
+      <IonHeader>
+        <IonToolbar color="primary">
+          <IonButtons>
+            <IonBackButton defaultHref="/home"></IonBackButton>
+
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
       <IonContent>
-        <IonRow>
-          <IonCol sizeXl="4" sizeSm="12">
+        <IonRow className="ion-padding-top">
+          <IonCol sizeXl="4" sizeSm="12" offsetXl="3">
+            <IonTitle>
+              My games
+            </IonTitle>
             <IonList>
               {games &&
                 games.map(x => (
 
-                  <IonItem>
+                  <IonItem key={x.gameId}>
 
                     <IonLabel >
                       {x.title}
@@ -35,8 +69,9 @@ export default function MyGames(props) {
 
                       })
                     }}>Create Game</IonButton>
+                    <IonButton color="dark" onClick={() => handleEdit(x)}>Edit</IonButton>
 
-                    <IonButton color="danger" size="default">
+                    <IonButton color="danger" size="default" onClick={() => handleDelete(x.gameId)}>
                       Delete!
                     </IonButton>
                   </IonItem>))}
@@ -44,6 +79,6 @@ export default function MyGames(props) {
           </IonCol>
         </IonRow>
       </IonContent>
-    </IonPage>
+    </IonPage >
   );
 }

@@ -21,8 +21,8 @@ export default function CardList() {
   const [geolocation, setGeolocation] = useState({ lat: 0, lng: 0 });
   const [showBeginModal, setShowBeginModal] = useState(false);
   const [showEndModal, setShowEndModal] = useState(false);
-  const [showAddCardModal, setShowAddCardModal] = useState(false);
-
+  const [showInnerCardModal, setShowAddCardModal] = useState(false);
+  const [edit, setEdit] = useState()
   useEffect(() => {
     handleReceivedLocation()
   }, []);
@@ -47,12 +47,23 @@ export default function CardList() {
       radius
     });
   };
+
+  const handleEditStep = (step) => {
+    setEdit(step);
+    setShowAddCardModal(true);
+  }
+
   const handleClose = () => {
     setShowBeginModal(false);
   };
   const handleCloseFinish = () => {
     setShowEndModal(false);
   };
+  const handleCloseModalCreate = () => {
+    setEdit();
+    setShowAddCardModal(false);
+  }
+
   return (
     <>
       <IonRow>
@@ -69,7 +80,7 @@ export default function CardList() {
       </IonRow>
       <IonRow>
         <IonCol>
-          <ReorderableCards />
+          <ReorderableCards edit={handleEditStep} />
         </IonCol>
       </IonRow>
       <IonRow>
@@ -120,11 +131,13 @@ export default function CardList() {
             save={saveFinish} />)}
       </IonModal>
       <IonModal
-        isOpen={showAddCardModal}
-        onDidDismiss={() => setShowAddCardModal(false)}
+        isOpen={showInnerCardModal}
+        onDidDismiss={() => handleCloseModalCreate()}
       >
         <ModalCardCreate
-          handleClose={() => setShowAddCardModal(false)}
+          handleClose={() => handleCloseModalCreate()}
+          edit={edit}
+
         ></ModalCardCreate>
       </IonModal>
     </>)

@@ -18,20 +18,19 @@ import { AppContext } from "../../../StateCreateGame";
 import Challenge from "./Challenge";
 import Misc from "./Misc";
 import Response from "./Response";
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import EditIcon from '@material-ui/icons/Edit';
 import "./ModalCard.scss";
 
 export default function ModalCardCreate(props) {
-  const [code, setCode] = useState("");
-  const [clue, setClue] = useState("");
   const [showToast1, setShowToast1] = useState(false);
   const { state, dispatch } = useContext(AppContext);
-  const [currentFile, setCurrentFile] = useState()
-  const [answerType, setAnswerType] = useState(0)
-  const [answer, setAnswer] = useState(0)
-  const [imageUrl, setImageUrl] = useState()
   const [segmentOn, setSegmentOn] = useState("challenge")
-  const [step, setStep] = useState({ points: 100, answerType: 0, validateAnswer: false })
-
+  const [step, setStep] = useState({ points: 100, answerType: 0, validateAnswer: false, clue: null })
+  useEffect(() => {
+    if (props.edit)
+      setStep(props.edit)
+  }, [])
 
   const RenderSegment = () => {
     switch (segmentOn) {
@@ -51,11 +50,30 @@ export default function ModalCardCreate(props) {
     }
   }
   const saveNewStep = () => {
-    dispatch({
-      type: "addStep",
-      step: { step, id: Date.now() }
-    });
-    setShowToast1(true);
+    debugger;
+    if (props.edit) {
+      let steps = state.steps;
+      steps.forEach((element, i) => {
+        if (element.id === step.id)
+          steps[i] = step;
+      });
+      dispatch({
+        type: "setSteps",
+        steps
+      });
+    } else {
+
+
+      //this is for create
+      dispatch({
+        type: "addStep",
+        step: { ...step, id: Date.now() }
+      });
+      setShowToast1(true);
+    }
+
+    props.handleClose();
+
   };
   useEffect(() => {
     return () => { };
@@ -65,13 +83,13 @@ export default function ModalCardCreate(props) {
       <IonHeader color="secondary">
         <IonToolbar color="primary">
           <IonTitle>
-            Create a new step in your adventure!
-        </IonTitle>
+            {props.edit ? <EditIcon /> : <AddBoxIcon />}
+          </IonTitle>
           <IonButtons slot="end">
             <IonButton color="danger" onClick={props.handleClose}>
               X
           </IonButton>
-            <IonButton onClick={saveNewStep}>Save Step!</IonButton>
+            <IonButton onClick={saveNewStep}>Save!</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
