@@ -7,8 +7,13 @@ export const UserService = {
   checkNewUser,
   SaveNewUser,
   logout,
-  getUserFirebase
+  getUserFirebase,
+  checkUserName
 };
+
+function checkUserName(username) {
+  return fireStore.collection("users").where("lowerUserName", "==", username.toLowerCase()).get();
+}
 
 function logout() {
   window.localStorage.clear("user");
@@ -36,7 +41,8 @@ function checkNewUser(user) {
     .doc(user.email)
 
   return ref.get().then(x => {
-    if (!x.exists || !x.username) {
+    debugger;
+    if (x.exists && x.data().username) {
       return false;
     }
     return true;

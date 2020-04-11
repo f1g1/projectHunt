@@ -10,7 +10,6 @@ import useTeamChanges from '../../services/useTeamChanges'
 
 export default function Play(props) {
     const [game, setGame] = useState()
-    const [showToast1, setShowToast1] = useState()
     const [showChatModal, setShowChatModal] = useState(false)
     const [showLeaderBoardModal, setShowLeaderBoardModal] = useState(false)
     const teams = useTeamChanges()

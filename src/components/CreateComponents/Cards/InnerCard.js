@@ -15,7 +15,7 @@ export default function InnerCard(props) {
           </IonCardHeader>
           <IonCardContent>
             {props.children[0]}
-            {props.step.image && <img src={props.step.image} height="auto" width="auto"></img>}
+            {props.step.image && <img src={props.step.image} alt="step image" height="auto" width="auto"></img>}
             <br />
             <IonCardTitle>{props.step.clue}</IonCardTitle>
             <br></br>

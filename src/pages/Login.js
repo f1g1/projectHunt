@@ -40,13 +40,14 @@ const Login = props => {
 
   const doLogin = async user => {
     let token = user.authentication.idToken;
-    let r = await firebase
+    await firebase
       .auth()
       .signInWithCredential(firebase.auth.GoogleAuthProvider.credential(token));
 
     const { history } = props;
-
+    debugger;
     UserService.checkNewUser(user).then(x => {
+      debugger;
       x ? history.push({
         pathname: "/username",
         user

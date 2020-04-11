@@ -7,17 +7,40 @@ export default function UserName(props) {
     const [name, setName] = useState()
     const [showToast, setShowToast] = useState(false)
     let handleSubmit = () => {
-        let userName = name.trim()
-        if (!userName || userName.length < 3 || userName.includes(" "))
+        let userName = (name && name.trim()) || ""
+        debugger;
+        if (!userName || userName.length < 3 || userName.includes(" ")) {
             setShowToast(true)
-        UserService.SaveNewUser({ ...props.location.user, userName }).then(props.history.push({
-            pathname: "/home",
-            state: {
-                name: props.location.username || props.location.userdisplayName,
-                image: props.location.userimageUrl,
-                email: props.location.useremail
-            }
-        }));
+            return;
+        }
+        else {
+
+            UserService.checkUserName(userName)
+                .then((qs) => {
+                    let exists = false;
+                    qs.forEach(doc => { exists = true; })
+                    if (!exists) {
+                        console.log("exists");
+                        debugger;
+                        UserService.SaveNewUser({ ...props.location.user, userName, lowerUserName: userName.toLowerCase() })
+                            .then(() => props.history.push({
+                                pathname: "/home",
+                                state: {
+                                    name: props.location.username || props.location.userdisplayName,
+                                    image: props.location.userimageUrl,
+                                    email: props.location.useremail
+                                }
+                            }));
+                    }
+                    else { console.log("user already exists") }
+                })
+                .catch((x) => {
+                    console.log(x)
+                    console.log("failed to check if username already exists")
+                })
+        }
+
+
     }
     return (
         <IonPage >

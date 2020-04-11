@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { IonButton, IonContent, IonItem, IonLabel, IonList, IonListHeader, IonPage, IonRow, IonCol, IonItemGroup, IonAvatar, IonCard, IonThumbnail, IonCardContent, IonGrid, IonCardTitle, IonCardHeader } from '@ionic/react';
+import "./LobbySearch.scss";
+
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonItem, IonLabel, IonList, IonListHeader, IonPage, IonRow, IonThumbnail } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+
 import { LobbyService } from '../../services/LobbyService';
 import { UserService } from '../../services/UserSerivce';
-import "./LobbySearch.scss"
+import moment from 'moment';
 
 export default function LobbySearch(props) {
     const [lobbies, setlobbies] = useState([])
@@ -11,7 +14,7 @@ export default function LobbySearch(props) {
 
     }, [])
     const joinLobby = (lobbyId) => {
-        LobbyService.joinLobby(UserService.getCurrentPlayer(), lobbyId)
+        LobbyService.setLobby(UserService.getCurrentPlayer(), lobbyId)
         props.history.push({ pathname: "/lobby", lobbyId });
 
     }
@@ -28,7 +31,7 @@ export default function LobbySearch(props) {
                         </IonListHeader>
                         <IonList>
 
-                            {lobbies.map(x => (
+                            {lobbies && lobbies.map(x => (
                                 <IonCard>
                                     <IonCardHeader color="primary   ">
                                         <IonCardTitle>
@@ -56,7 +59,8 @@ export default function LobbySearch(props) {
                                         <IonItem lines="none">
 
                                             <IonLabel>
-                                                <p> Created 5 minutes ago </p>
+                                                {moment(x.lobbyCreatedDate).diff(moment(Date.now()).seconds)}
+                                                {/* <p> Created {moment.duration(moment(Date.now()).diff(moment(x.lobbyCreatedDate)))} minutes ago </p> */}
                                             </IonLabel>
                                             <IonLabel slot="end">
                                                 <p>

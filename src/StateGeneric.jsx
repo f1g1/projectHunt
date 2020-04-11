@@ -21,8 +21,9 @@ let reducer = (state, action) => {
         case "Logout": {
             return {};
         }
+        default:
+            return {};
     }
-    return state;
 };
 
 function AppContextProvider(props) {
@@ -65,3 +66,4 @@ const loggerReducer = logger(reducer);
 let AppContextConsumer = AppContext.Consumer;
 
 export { AppContext, AppContextProvider, AppContextConsumer };
+
