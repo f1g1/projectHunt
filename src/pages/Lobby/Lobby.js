@@ -143,7 +143,7 @@ export default function Lobby(props) {
           <IonFooter className="ion-no-border">
             <IonToolbar>
               <IonButtons >
-                {lobby.owner === (UserService.getCurrentUser().email) && <IonButton color="primary" onClick={startGame}>Start Game</IonButton>}
+                {lobby.owner === (UserService.getCurrentUser().userName) && <IonButton color="primary" onClick={startGame}>Start Game</IonButton>}
 
                 <IonButton full onClick={() => setShowChatModal(true)}>
                   Chat

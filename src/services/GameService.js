@@ -90,7 +90,7 @@ function saveGameInternal(state) {
   let created = {
     ...state,
     createdDate: Date.now(),
-    owner: UserService.getCurrentUser().email
+    owner: UserService.getCurrentUser().userName
   };
   !created.image && delete created.image
 

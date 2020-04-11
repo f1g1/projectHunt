@@ -1,7 +1,7 @@
 import "@codetrix-studio/capacitor-google-auth";
 import './Login.css';
 
-import { IonButton, IonCol, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonRow, IonText, IonThumbnail, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonCol, IonContent, IonHeader, IonList, IonPage, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import React, { Component } from 'react';
 
 import { Plugins } from '@capacitor/core';
@@ -21,7 +21,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.getUserInfo();
+    // this.getUserInfo();
   }
 
   async signOut(): Promise<void> {
@@ -33,13 +33,17 @@ class Home extends Component {
   }
 
   async getUserInfo() {
-    this.setState({
-      user: {
-        name: this.props.location.state.name,
-        image: this.props.location.state.image,
-        email: this.props.location.state.email
-      }
-    })
+    // this.props.location.state &&
+    // this.setState({
+    //   user: {
+    //     name: this.props.location.state.name,
+    //     image: this.props.location.state.image,
+    //     email: this.props.location.state.email
+    //   }
+    // })
+    // this.setState({
+    //   user:
+    // })    
   }
 
   render() {
@@ -59,7 +63,7 @@ class Home extends Component {
               </IonText>
             </IonCol>
           </IonRow>
-
+          {/* 
           {this.state.user.name &&
             <IonItem>
               <IonThumbnail slot="start">
@@ -70,7 +74,7 @@ class Home extends Component {
                 <p>{this.state.user.email}</p>
               </IonLabel>
             </IonItem>
-          }
+          } */}
 
           <IonButton className="login-button" onClick={() => this.signOut()} expand="full" fill="solid" color="danger">
             Logout from Google
