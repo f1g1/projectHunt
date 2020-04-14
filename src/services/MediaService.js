@@ -7,7 +7,6 @@ const MediaService = {
 }
 
 async function SaveImage(image) {
-    debugger;
     if (!image) return;
     const timestamp = moment()
         .valueOf()

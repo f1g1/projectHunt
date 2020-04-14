@@ -14,9 +14,9 @@ export default function Response(props) {
             const prefixFiletype = event.target.files[0].type.toString()
             if (prefixFiletype.indexOf('image/') === 0) {
                 if (succes)
-                    props.setStep({ ...props.step, succesResponseImage: URL.createObjectURL(event.target.files[0]), succesResponseCurrentFile: event.target.files[0] });
+                    props.setStep({ ...props.step, succesResponseImage: URL.createObjectURL(event.target.files[0]), succesResponseImageFile: event.target.files[0] });
                 else
-                    props.setStep({ ...props.step, wrongResponseImage: URL.createObjectURL(event.target.files[0]), wrongResponseCurrentFile: event.target.files[0] });
+                    props.setStep({ ...props.step, wrongResponseImage: URL.createObjectURL(event.target.files[0]), wrongResponseImageFile: event.target.files[0] });
             } else {
                 setLoadingImage(false)
                 console.log('This file is not an image')
@@ -54,6 +54,7 @@ export default function Response(props) {
                                         props.setStep({ ...props.step, succesResponseTitle: e.target.value })
                                     }}
                                     maxlength="50"
+                                    value={props.step.succesResponseTitle}
                                 ></IonInput>
                             </IonItem>
                             <IonItem>
@@ -63,6 +64,7 @@ export default function Response(props) {
                                     onIonChange={e => {
                                         props.setStep({ ...props.step, succesResponseAdditionalInfo: e.target.value })
                                     }}
+                                    value={props.step.succesResponseAdditionalInfo}
                                     maxlength="500"
                                 ></IonTextarea>
                             </IonItem>
@@ -93,6 +95,8 @@ export default function Response(props) {
                                         props.setStep({ ...props.step, wrongResponseTitle: e.target.value })
                                     }}
                                     maxlength="50"
+                                    value={props.step.wrongResponseTitle}
+
                                 ></IonInput>
                             </IonItem>
                             <IonItem color="danger" >
@@ -103,6 +107,8 @@ export default function Response(props) {
                                         props.setStep({ ...props.step, wrongResponseAdditionalInfo: e.target.value })
                                     }}
                                     maxlength="500"
+                                    value={props.step.wrongResponseAdditionalInfo}
+
                                 ></IonTextarea>
                             </IonItem>
 

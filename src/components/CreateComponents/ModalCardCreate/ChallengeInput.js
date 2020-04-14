@@ -1,5 +1,5 @@
 import { IonButton, IonCheckbox, IonInput, IonItem, IonLabel } from '@ionic/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import MiscService from '../../../services/MiscService';
 
@@ -29,11 +29,15 @@ function TextInput(props) {
     )
 }
 function QrInput(props) {
-
     const [qr, setQr] = useState()
+
+    useEffect(() => {
+        MiscService.getQr(props.step.code).then(x => { setQr(x.url) })
+
+    }, [])
+
     const generateQR = (code) => {
         props.setStep({ ...props.step, code: code });
-        MiscService.getQr(code).then(x => { setQr(x.url) })
     }
     return (
         <>

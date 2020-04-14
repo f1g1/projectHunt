@@ -85,7 +85,7 @@ let reducer = (state, action) => {
             return { ...state, maxPlayers: action.maxPlayers }
         }
         case "setSteps": {
-            debugger;
+
             return {
                 ...state,
                 steps: [...action.steps],
@@ -150,8 +150,5 @@ const loggerReducer = logger(reducer);
 
 let AppContextConsumer = AppContext.Consumer;
 
-export {
-    AppContext,
-    CreateGameContextProvider,
-    AppContextConsumer as CreateGaneContextConsumer
-};
+export { AppContext, CreateGameContextProvider, AppContextConsumer as CreateGaneContextConsumer };
+

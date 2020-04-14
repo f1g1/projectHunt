@@ -74,7 +74,7 @@ export default function ClueList(props) {
                                 )}
                             < br ></br>
                             {/* <p> Submitted by: {props.teams.find(y => y.name === LobbyService.getCurrentTeam())[x.id].submitedBy}  at {(moment(teams.find(y => y.name === LobbyService.getCurrentTeam())[x.id].time.date).format("hh:mm"))} </p> */}
-                            < p style={{ float: "right" }}>Requieres photo proof!</p>
+                            < p style={{ float: "right" }}> {x.answerType == 2 && "Requieres photo proof!"}</p>
                         </IonLabel>
                     </IonItem>
                 ))}

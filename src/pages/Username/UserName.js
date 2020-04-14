@@ -39,30 +39,23 @@ export default function UserName(props) {
                     console.log("failed to check if username already exists")
                 })
         }
-
-
     }
     return (
         <IonPage >
-
             <IonContent color="primary">
                 <IonGrid style={{ marginTop: "200px" }}>
                     <IonRow>
                         <IonCol size="5" offset="3">
-
                             <h1>Choose your adventurer name:</h1>
                             <IonItem>
                                 <IonInput onIonChange={e => setName(e.target.value)} type="text" maxlength="25" minlength="3" />
                                 <IonButton onClick={handleSubmit} size="large">
                                     Save!
                                 </IonButton>
-
                             </IonItem>
-
                         </IonCol>
                     </IonRow>
                 </IonGrid>
-
             </IonContent>
             <IonToast
                 color="danger"

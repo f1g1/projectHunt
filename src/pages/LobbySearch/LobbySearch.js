@@ -9,9 +9,10 @@ import moment from 'moment';
 
 export default function LobbySearch(props) {
     const [lobbies, setlobbies] = useState([])
+    const [date, setdate] = useState()
     useEffect(() => {
         LobbyService.getLobbies().then(x => { console.log(x); setlobbies(x); })
-
+        setdate(new Date());
     }, [])
     const joinLobby = (lobbyId) => {
         LobbyService.setLobby(UserService.getCurrentPlayer(), lobbyId)
@@ -22,17 +23,14 @@ export default function LobbySearch(props) {
         <IonPage>
             <IonContent>
                 <IonRow>
-                    <IonCol sizeXl="4" sizeSm="12" offsetXl="4">
-                        {/*-- Default List Header --*/}
-
+                    <IonCol sizeXl="5" sizeSm="12" offsetXl="3.5">
                         <IonListHeader>
                             <h2>Choose a Lobby for a game
                             </h2>
                         </IonListHeader>
                         <IonList>
-
                             {lobbies && lobbies.map(x => (
-                                <IonCard>
+                                <IonCard key={x.owner + x.lobbyCreatedDate}>
                                     <IonCardHeader color="primary   ">
                                         <IonCardTitle>
                                             {x.title} </IonCardTitle>
@@ -51,17 +49,13 @@ export default function LobbySearch(props) {
                                                     </IonItem>
                                                 </IonCol>
                                             </IonRow>
-
-
                                         </IonGrid>
-
-
                                         <IonItem lines="none">
-
-                                            <IonLabel>
-                                                {moment(x.lobbyCreatedDate).diff(moment(Date.now()).seconds)}
-                                                {/* <p> Created {moment.duration(moment(Date.now()).diff(moment(x.lobbyCreatedDate)))} minutes ago </p> */}
-                                            </IonLabel>
+                                            {x.lobbyCreatedDate &&
+                                                <p>
+                                                    Created {(moment(date).diff(moment(x.lobbyCreatedDate), "minutes"))} minutes ago
+                                                </p>
+                                            }
                                             <IonLabel slot="end">
                                                 <p>
                                                     by    {x.owner}

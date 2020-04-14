@@ -122,7 +122,7 @@ export default function Lobby(props) {
                         Nr. of Challenges
                         <IonItem>
                           <IonLabel>
-                            {lobby.steps.length || 0}
+                            {lobby.steps ? lobby.steps.length : 0}
                           </IonLabel>
                         </IonItem>
                         Start Location

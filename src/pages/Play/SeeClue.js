@@ -1,8 +1,9 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonInput, IonItem, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { PlayService } from '../../services/PlayService';
+import SeeClueInput from './SeeClueInput';
 import { close } from "ionicons/icons";
 
 export default function SeeClue(props) {
@@ -15,7 +16,7 @@ export default function SeeClue(props) {
     }, [])
 
     const handleSubmit = () => {
-        if (code && step.answer.toString().toLowerCase() === code.toLowerCase()) {
+        if (code && step.code.toString().toLowerCase() === code.toLowerCase()) {
             PlayService.submitAnswer(code, step, props.team).then(() => {
                 props.handleClose();
             }).catch((x) => console.log(x));
@@ -26,11 +27,10 @@ export default function SeeClue(props) {
             &nbsp;
             {step && <>
                 <IonHeader>
-                    <IonToolbar>
+                    <IonToolbar color="primary">
                         <IonButtons>
                             <IonButton onclick={props.handleClose}>
                                 <IonIcon icon={close} ></IonIcon>
-
                             </IonButton>
                         </IonButtons>
                     </IonToolbar>
@@ -42,17 +42,7 @@ export default function SeeClue(props) {
                             {step.clue}
                         </h1>
                     </IonTitle>
-
-                    {step.answerType == 0 &&
-                        <IonItem>
-                            <IonInput placeholder="Code"
-                                onIonChange={e => {
-                                    setCode(e.target.value);
-                                }}>
-                            </IonInput>
-                            <IonButton size="default" onClick={handleSubmit}>Submit</IonButton>
-                        </IonItem>}
-
+                    <SeeClueInput answerType={props.answerType} step={step} />
                 </IonContent>
             </>}
         </>

@@ -40,7 +40,7 @@ export default function MarginCard(props) {
             <IonButton onClick={props.openModal} fill="outline">Location</IonButton>
           </IonCardHeader>
           <IonCardContent>
-            <div style={{ height: "300px" }}>
+            <div style={{ height: "220px" }}>
               <div style={{ height: '100%', width: '100%' }}>
 
                 {props.lat && <GoogleMap

@@ -16,6 +16,7 @@ try {
 let reducer = (state, action) => {
     switch (action.type) {
         case "Login": {
+            delete action.user.authentication
             return { ...state, ...action.user };
         }
         case "Logout": {

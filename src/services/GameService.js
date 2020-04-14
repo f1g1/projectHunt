@@ -20,39 +20,47 @@ function saveGame(state) {
     succesAnswerImage.push(MediaService.SaveImage(element.succesResponseImageFile))
     wrongAnswerImage.push(MediaService.SaveImage(element.wrongResponseImageFile))
   });
+  debugger;
 
-  Promise.allSettled(succesAnswerImage)
+  Promise.allSettled(wrongAnswerImage)
     .then(v => {
+      debugger;
       v.forEach((image, i) => {
-
-        delete objToUpdate.steps[i].succesResponseImageFile
-        delete objToUpdate.steps[i].succesResponseImage
-        if (image.value) {
-          objToUpdate.steps[i].succesResponseImage = image.value
+        if (objToUpdate.steps[i].wrongResponseImageFile && objToUpdate.steps[i].wrongResponseImage) {
+          delete objToUpdate.steps[i].wrongResponseImageFile
+          delete objToUpdate.steps[i].wrongResponseImage
         }
-
+        if (image.value) {
+          objToUpdate.steps[i].wrongResponseImage = image.value
+        }
       })
-    }).then(() => {
-      Promise.allSettled(wrongAnswerImage)
+    })
+    .then(() => {
+      debugger;
+      Promise.allSettled(succesAnswerImage)
         .then(v => {
           v.forEach((image, i) => {
-
-            delete objToUpdate.steps[i].wrongResponseImageFile
-            delete objToUpdate.steps[i].wrongResponseImage
+            //delete only if a new file is provided
+            if (objToUpdate.steps[i].succesResponseImageFile && objToUpdate.steps[i].succesResponseImageFile) {
+              delete objToUpdate.steps[i].succesResponseImageFile
+              delete objToUpdate.steps[i].succesResponseImage
+            }
             if (image.value) {
-              objToUpdate.steps[i].wrongResponseimage = image.value
+              objToUpdate.steps[i].succesResponseImage = image.value
             }
 
-
           })
-
         })
+
     }).then(() => {
+      debugger;
       Promise.allSettled(stepImage)
         .then(v => {
           v.forEach((image, i) => {
-            delete objToUpdate.steps[i].imageFile
-            delete objToUpdate.steps[i].image
+            if (objToUpdate.steps[i].imageFile && objToUpdate.steps[i].image) {
+              delete objToUpdate.steps[i].imageFile
+              delete objToUpdate.steps[i].image
+            }
             if (image.value) {
               objToUpdate.steps[i].image = image.value
             }
@@ -85,7 +93,15 @@ async function getMyGames() {
     return { ...doc.data(), gameId: doc.id };
   });
 }
+
+
+function setIndexesTosteps(steps) {
+  steps.forEach((x, i) => steps[i].index = i)
+
+}
+
 function saveGameInternal(state) {
+  setIndexesTosteps(state.steps);
   debugger;
   let created = {
     ...state,

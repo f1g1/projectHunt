@@ -31,8 +31,8 @@ const Login = props => {
     let result;
     result = await Plugins.GoogleAuth.signIn();
     if (result) {
+      doLogin(result);
 
-      UserService.getUserFirebase(result.email).then(x => saveUser({ ...result, ...x.data() }))
     } else {
       console.log("I FAILEd", result);
     }
@@ -45,22 +45,25 @@ const Login = props => {
       .signInWithCredential(firebase.auth.GoogleAuthProvider.credential(token));
 
     const { history } = props;
-    debugger;
-    UserService.checkNewUser(user).then(x => {
-      debugger;
-      x ? history.push({
-        pathname: "/username",
-        user
-      }) :
-        history.push({
-          pathname: "/home",
-          state: {
-            name: user.name || user.displayName,
-            image: user.imageUrl,
-            email: user.email
-          }
-        })
-    });
+    UserService.getUserFirebase(user.email)
+      .then(u => {
+        let userFromDb = u.data();
+        debugger;
+        saveUser({ ...userFromDb, ...u.data() })
+        let x = u.exists && userFromDb.userName;
+        !x ? history.push({
+          pathname: "/username",
+          user
+        }) :
+          history.push({
+            pathname: "/home",
+            state: {
+              name: userFromDb.name || userFromDb.displayName,
+              image: userFromDb.imageUrl,
+              email: userFromDb.email
+            }
+          })
+      })
   }
 
   return (

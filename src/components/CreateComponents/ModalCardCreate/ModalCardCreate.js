@@ -14,7 +14,10 @@ export default function ModalCardCreate(props) {
   const [showToast1, setShowToast1] = useState(false);
   const { state, dispatch } = useContext(AppContext);
   const [segmentOn, setSegmentOn] = useState("challenge")
-  const [step, setStep] = useState({ points: 100, answerType: 0, validateAnswer: false, clue: null })
+  const [step, setStep] = useState({
+    points: 100, answerType: 0, validateAnswer: false, clue: null,
+    wrongResponseTitle: null, wrongResponseAdditionalInfo: null, succesResponseTitle: null, succesResponseAdditionalInfo: null
+  })
   useEffect(() => {
     if (props.edit)
       setStep(props.edit)
@@ -50,8 +53,6 @@ export default function ModalCardCreate(props) {
         steps
       });
     } else {
-
-
       //this is for create
       dispatch({
         type: "addStep",

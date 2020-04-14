@@ -51,7 +51,11 @@ function checkNewUser(user) {
   )
 }
 function getCurrentPlayer() {
-  let user = JSON.parse(window.localStorage["user"]) || {};
+  let user;
+  try {
+    user = { ...JSON.parse(window.localStorage["user"]) }
+  }
+  catch { user = {} };
   return { name: user.userName, image: user.imageUrl }
 }
 function setCurrentUser(user) {
