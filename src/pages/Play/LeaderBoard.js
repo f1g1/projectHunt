@@ -10,11 +10,9 @@ export default function LeaderBoard(props) {
 	return (
 		<>
 			<IonToolbar>
-
 				<IonHeader ion-no-padding color="light">
 					<IonButton onclick={props.handleClose}>
 						<IonIcon icon={close} ></IonIcon></IonButton>
-
 					<IonTitle className="ion-text-center " color="primary">
 						LeaderBoard
 					</IonTitle>
@@ -23,8 +21,6 @@ export default function LeaderBoard(props) {
 			<IonGrid fixed full>
 				<IonCard color="light" style={{ marginBottom: "30px" }}>
 					<IonCardContent>
-
-
 						<IonRow color="priamry">
 							<IonCol>
 								<h2 style={{ textDecoration: "bold" }}>

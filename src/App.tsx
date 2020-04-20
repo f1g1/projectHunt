@@ -1,41 +1,36 @@
-import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
-import Login from './pages/Login';
-
-/* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
-
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
+import '@ionic/react/css/display.css';
+import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/float-elements.css';
+import '@ionic/react/css/normalize.css';
+import '@ionic/react/css/padding.css';
+import '@ionic/react/css/structure.css';
 import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
-
-/* Theme variables */
+import '@ionic/react/css/typography.css';
 import './theme/variables.css';
-import Test from './pages/Test';
-import { CreateGameContextProvider } from "./StateCreateGame";
-import { AppContextProvider } from './StateGeneric';
-import { PlayContextProvider } from './StatePlayGame';
+
+import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { Redirect, Route } from 'react-router-dom';
+
 import ChatBoard from './components/Chat/ChatBoard/ChatBoard';
-import Lobby from './pages/Lobby/Lobby';
-import MyGames from './pages/MyGames/MyGames';
 import Create from './pages/Create/Create';
+import { CreateGameContextProvider } from "./StateCreateGame";
+import Dashboard from './pages/GameDashobard/Dashboard';
+import Home from './pages/Home';
+import { IonReactRouter } from '@ionic/react-router';
+import Lobby from './pages/Lobby/Lobby';
 import LobbySearch from './pages/LobbySearch/LobbySearch';
-import Tabb from './pages/BarcodeTest';
+import Login from './pages/Login';
+import MyGames from './pages/MyGames/MyGames';
 import Play from './pages/Play/Play';
-import SeeClue from './pages/Play/SeeClue';
+import { PlayContextProvider } from './StatePlayGame';
+import React from 'react';
+import SeeClue from './pages/Play/SeeClueChallenge';
+import Tabb from './pages/BarcodeTest';
+import Test from './pages/Test';
 import UserName from './pages/Username/UserName';
+
 const App: React.FC = () => (
   <IonApp>
 
@@ -61,6 +56,7 @@ const App: React.FC = () => (
         <Route path="/play" component={Play} exact={true} />
         <Route path="/seeClue" component={SeeClue} exact={true} />
         <Route path="/username" component={UserName} exact={true} />
+        <Route path="/gameDashboard" component={Dashboard} exact={true} />
 
       </IonRouterOutlet>
     </IonReactRouter>

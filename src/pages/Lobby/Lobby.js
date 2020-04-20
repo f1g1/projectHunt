@@ -86,31 +86,22 @@ export default function Lobby(props) {
 
             </IonToolbar>
           </IonHeader>
-
           <IonContent >
-
             <IonGrid >
-
               <IonRow fixed>
-
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12" offsetXl="1.5" >
                   <TeamsContainer teams={teams} max={lobby.maxPlayers} showThisTeam={showThisTeam} addPlayer joinedTeam={joinedTeam}></TeamsContainer>
                 </IonCol>
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12" key="2">
                   {currentTeamDetails && <TeamPanel team={currentTeamDetails} max={lobby.maxPlayers} leaveTeam={leaveTeam} canJoin={joinedTeam} joinTeam={joinTeam}></TeamPanel>}
                 </IonCol>
-
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12">
                   <IonCard>
                     <IonCardContent>
                       <img src={lobby.image} imageViewer ></img>
-
                     </IonCardContent>
-
                   </IonCard>
-
                   <IonCard>
-
                     <IonCardContent>
                       <IonList>
                         <IonLabel>
@@ -132,12 +123,8 @@ export default function Lobby(props) {
                       </IonList>
                     </IonCardContent>
                   </IonCard>
-
                 </IonCol>
-
-
               </IonRow>
-
             </IonGrid>
           </IonContent>
           <IonFooter className="ion-no-border">
@@ -151,9 +138,6 @@ export default function Lobby(props) {
               </IonButtons>
             </IonToolbar>
           </IonFooter>
-
-
-
         </>
         : <IonLoading
           isOpen={lobby}

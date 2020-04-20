@@ -1,14 +1,27 @@
-import { IonButton, IonInput, IonItem, IonItemDivider, IonLabel } from '@ionic/react'
-import React, { useState } from 'react'
+import { IonButton, IonInput, IonItem, IonLabel } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
 
-import MiscService from '../../services/MiscService'
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { PlayService } from '../../services/PlayService';
 
 function TextInput(props) {
     const [input, setinput] = useState()
-
+    const handleSubmit = () => {
+        if (input) {
+            if (props.step.code.toString().toLowerCase() === input.toLowerCase()) {
+                PlayService.submitAnswer(input, props.step, props.team).then(() => {
+                    props.handleClose();
+                }).catch((x) => console.log(x));
+                props.handleSucces();
+            }
+            else {
+                props.handleWrong();
+            }
+        }
+    }
     return (
         <>
-            <IonItem>
+            <IonItem className="ion-margin-bottom">
                 <IonLabel>Code:</IonLabel>
                 <IonInput
                     value={input}
@@ -18,24 +31,43 @@ function TextInput(props) {
                     maxlength="12"
                 ></IonInput>
             </IonItem>
-            <IonItemDivider lines="none" />
-            <IonButton expand="full">Submit</IonButton>
+            <IonButton className="ion-margin-top" expand="full" onClick={handleSubmit}>Submit</IonButton>
         </>)
 }
 function QrInput(props) {
+    console.log("render qrinptu")
+    const [input, setInput] = useState()
+    const openScanner = async () => {
 
-    const [qr, setQr] = useState()
-    const generateQR = (code) => {
-        props.setStep({ ...props.step, code: code });
-        MiscService.getQr(code).then(x => { setQr(x.url) })
-    }
+
+        BarcodeScanner.scan().then(barcodeData => {
+            setInput(barcodeData.text);
+
+        }).catch(err => {
+            console.log("Qr scan failed");
+        });
+    };
+    useEffect(() => {
+
+        if (input) {
+            if (props.step.code.toString() === input) {
+                PlayService.submitAnswer(input, props.step, props.team).then(() => {
+                    props.handleClose();
+                }).catch((x) => console.log(x));
+                props.handleSucces();
+            }
+            else {
+                props.handleWrong();
+            }
+
+        }
+    }, [input])
+
+
     return (
         <>
-            {qr && <img src={qr}></img>}
-            <p>
-                {qr && <a href={qr} download>Click to open on new page</a>}
-
-            </p>
+            {input}
+            <IonButton size="largest" color="tertiary" expand="full" onClick={openScanner} style={{ minHieght: "50px" }}>Scan!</IonButton>
         </>
     )
 }

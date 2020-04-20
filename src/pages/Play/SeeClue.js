@@ -1,50 +1,101 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonToolbar } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 
-import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { PlayService } from '../../services/PlayService';
-import SeeClueInput from './SeeClueInput';
+import SeeClueChallenge from './SeeClueChallenge';
+import SeeClueSucces from './SeeClueSucces';
+import SeeClueWrong from './SeeClueWrong';
 import { close } from "ionicons/icons";
+import moment from 'moment';
 
 export default function SeeClue(props) {
-
-    const [code, setCode] = useState()
+    const [status, setStatus] = useState(props.status || 0)
     const [step, setStep] = useState()
+    const [timer, setTimer] = useState()
 
     useEffect(() => {
-        setStep(props.step)
-    }, [])
+        debugger;
+        if (props.status && props.status !== status)
+            setStatus(props.status)
+    })
 
-    const handleSubmit = () => {
-        if (code && step.code.toString().toLowerCase() === code.toLowerCase()) {
-            PlayService.submitAnswer(code, step, props.team).then(() => {
-                props.handleClose();
-            }).catch((x) => console.log(x));
+    const startTimer = () => {
+        let timerr = PlayService.getTimeOut(props.step).diff(Date.now());
+        timerr -= 1000;
+        const c = setInterval(() => {
+            console.log(timerr)
+            if (timerr <= 0)
+                clearInterval(c)
+            setTimer(moment.utc(timerr).format('mm:ss'))
+            timerr -= 1000;
+
+        }, 1000)
+    }
+    const handleSuccesScreen = () => {
+        setStatus(1);
+    }
+    const handleWrong = () => {
+        setStatus(2);
+        PlayService.setTimeOut(step, 0.3);
+        handleTimeout();
+    }
+    const handleSuccesOk = () => {
+        props.handleClose();
+    }
+    const handleTimeout = () => {
+
+        PlayService.getTimeOut(props.step) && console.log("hanlde Timeout", PlayService.getTimeOut(props.step).diff(Date.now()))
+        if (PlayService.getTimeOut(props.step) && status != 2) {
+            setStatus(2);
+            setTimeout(function () { setStatus(0); PlayService.deleteTimeOut(props.step) }, PlayService.getTimeOut(props.step).diff(Date.now()));
+            setTimer(moment.utc(PlayService.getTimeOut(props.step).diff(Date.now())).format('mm:ss'))
+            startTimer();
+        }
+    }
+
+
+    useEffect(() => {
+        handleTimeout();
+        setStep(props.step)
+        console.log("completed", props.completed)
+    }, [])
+    const handleStatus = () => {
+        switch (status) {
+            case 0:
+                return <SeeClueChallenge step={step} team={props.team} handleSucces={handleSuccesScreen} handleWrong={handleWrong} />
+            case 1:
+                return <SeeClueSucces step={step} handleSucces={handleSuccesOk} />
+            case 2:
+                return <SeeClueWrong step={props.step} timer={timer} />
+            default:
+                break;
         }
     }
     return (
         <>
-            &nbsp;
-            {step && <>
-                <IonHeader>
-                    <IonToolbar color="primary">
-                        <IonButtons>
-                            <IonButton onclick={props.handleClose}>
-                                <IonIcon icon={close} ></IonIcon>
-                            </IonButton>
-                        </IonButtons>
-                    </IonToolbar>
-                </IonHeader>
-                <IonContent>
-                    <img src={step.image} style={{ maxHeight: "400px" }} onClick={() => PhotoViewer.show(step.image)} />
-                    <IonTitle>
-                        <h1>
-                            {step.clue}
-                        </h1>
-                    </IonTitle>
-                    <SeeClueInput answerType={props.answerType} step={step} />
-                </IonContent>
-            </>}
+            <IonHeader>
+                <IonToolbar color={status !== 2 ? "primary" : "danger"}>
+                    <IonButtons>
+                        <IonButton onclick={props.handleClose}>
+                            <IonIcon icon={close} ></IonIcon>
+                        </IonButton>
+                        <IonLabel className="ion-padding-start">
+                            Challenge #{props.step.index + 1}
+                        </IonLabel>
+                    </IonButtons>
+                </IonToolbar>
+            </IonHeader>
+            <IonContent>
+                <IonLabel className="ion-text-center">
+                    {status == 0 && <p>
+                        {props.step.answerType === 0 && "(type your answer)"}
+                        {props.step.answerType === 1 && "(scan the qr)"}
+                        {props.step.answerType === 2 && "(take a photo)"}
+
+                    </p>}
+                </IonLabel>
+                {handleStatus()}
+            </IonContent>
         </>
     )
 }

@@ -14,9 +14,14 @@ export default function LobbySearch(props) {
         LobbyService.getLobbies().then(x => { console.log(x); setlobbies(x); })
         setdate(new Date());
     }, [])
-    const joinLobby = (lobbyId) => {
-        LobbyService.setLobby(UserService.getCurrentPlayer(), lobbyId)
-        props.history.push({ pathname: "/lobby", lobbyId });
+    const joinLobby = (lobby) => {
+
+        LobbyService.setLobby(UserService.getCurrentPlayer(), lobby.lobbyId)
+        // if (!lobby.startTime)
+        props.history.push({ pathname: "/lobby", lobbyId: lobby.lobbyId });
+        // else {
+
+        // }
 
     }
     return (
@@ -31,7 +36,7 @@ export default function LobbySearch(props) {
                         <IonList>
                             {lobbies && lobbies.map(x => (
                                 <IonCard key={x.owner + x.lobbyCreatedDate}>
-                                    <IonCardHeader color="primary   ">
+                                    <IonCardHeader color="primary">
                                         <IonCardTitle>
                                             {x.title} </IonCardTitle>
                                     </IonCardHeader>
@@ -45,7 +50,7 @@ export default function LobbySearch(props) {
                                                 </IonCol>
                                                 <IonCol>
                                                     <IonItem>
-                                                        <IonButton size="default" onClick={() => joinLobby(x.lobbyId)}>Join Lobby!</IonButton>
+                                                        <IonButton size="default" onClick={() => joinLobby(x)}>Join Lobby!</IonButton>
                                                     </IonItem>
                                                 </IonCol>
                                             </IonRow>

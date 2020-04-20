@@ -63,19 +63,6 @@ class Home extends Component {
               </IonText>
             </IonCol>
           </IonRow>
-          {/* 
-          {this.state.user.name &&
-            <IonItem>
-              <IonThumbnail slot="start">
-                <img src={this.state.user.image} />
-              </IonThumbnail>
-              <IonLabel>
-                <h3>{this.state.user.name}</h3>
-                <p>{this.state.user.email}</p>
-              </IonLabel>
-            </IonItem>
-          } */}
-
           <IonButton className="login-button" onClick={() => this.signOut()} expand="full" fill="solid" color="danger">
             Logout from Google
         </IonButton>
@@ -100,6 +87,10 @@ class Home extends Component {
           </IonButton>
             <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/Tab1", state: "t " }) }}>
               QR
+            </IonButton>
+
+            <IonButton onClick={(e) => { e.preventDefault(); this.props.history.push({ pathname: "/gameDashboard", state: "" }) }}>
+              Dashboard
             </IonButton>
 
           </IonList>
