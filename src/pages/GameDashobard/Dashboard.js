@@ -1,6 +1,6 @@
 import "./Dashboard.scss";
 
-import { IonBackButton, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonItem, IonLabel, IonModal, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButtons, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonItem, IonLabel, IonModal, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 
 import { PlayService } from '../../services/PlayService';
@@ -22,12 +22,16 @@ export default function Dashboard(props) {
   return (
     <>
       <IonPage>
-        <IonToolbar color="primary">
-          <IonBackButton defaultHref="/home" />
-          <IonTitle >
-            Dashboard
-					</IonTitle>
-        </IonToolbar>
+        <IonHeader>
+          <IonToolbar color="primary">
+            <IonButtons style={{ display: "inline-block" }}>
+              <IonBackButton defaultHref='/home'></IonBackButton>
+            </IonButtons>
+            <IonTitle style={{ display: "inline-block" }} >
+              Dashboard
+          </IonTitle>
+          </IonToolbar>
+        </IonHeader>
         <IonContent>
           <IonGrid  >
             <IonRow className="ion-padding-top">
