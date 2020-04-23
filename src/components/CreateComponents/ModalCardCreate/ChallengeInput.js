@@ -55,12 +55,16 @@ function QrInput(props) {
     )
 }
 function ImageInput(props) {
+
+
     return (
         <>
             <IonItem>
                 <IonLabel>Needs Validation?</IonLabel>
                 <IonCheckbox onIonChange={e => props.setStep({ ...props.step, needsValidation: e.detail.checked })} value={props.step.needsValidation} ></IonCheckbox>
             </IonItem>
+
+
         </>
     )
 }

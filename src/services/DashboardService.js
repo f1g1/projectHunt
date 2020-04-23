@@ -7,8 +7,25 @@ export const DashboardService = {
     revokeChallenge,
     completeChallenge,
     adjustPoints,
-    deleteAdjustment
+    deleteAdjustment,
+    getToBeValidated,
 }
+
+function getToBeValidated(teams, steps) {
+    let needsValidation = [];
+    teams.forEach(element => {
+        element.toBeValidated &&
+
+            element.toBeValidated.forEach(x => {
+                let step = steps.find(z => z.id === x)
+                needsValidation.push({ ...x, ...step, name: element.name, ...element[x] });
+            })
+    });
+    debugger
+
+    return needsValidation
+}
+
 function deleteAdjustment(team, adjustment) {
     return fireStore
         .collection("lobbies")

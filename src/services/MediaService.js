@@ -20,19 +20,7 @@ async function SaveImage(image) {
             console.log(url);
             return url;
         })
-    // const uploadTask = fireStorage
-    //     .ref()
-    //     .child(timestamp)
-    //     .put(image)
-    // let zz;
 
-
-    // await uploadTask.on(
-    //     "state_changed",
-    //     null,
-    //     err => {
-    //     },
-    //     async () => uploadTask.snapshot.ref.getDownloadURL());
 }
 
 export default MediaService

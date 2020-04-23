@@ -19,6 +19,7 @@ export default function SeeClueChallenge(props) {
                     <SeeClueInput answerType={props.step.answerType} {...props} />
 
                 </div>
+
             </>}
         </>
     )

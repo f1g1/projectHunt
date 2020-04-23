@@ -1,4 +1,5 @@
 import { LobbyService } from "./LobbyService";
+import MediaService from "./MediaService";
 import { UserService } from "./UserSerivce";
 import { fireStore } from "../firebase";
 import firebase from 'firebase';
@@ -15,12 +16,48 @@ export const PlayService = {
     deleteTimeOut,
     getAdjustmentPoints,
     getTotalPoints,
-    getChallengesPoints
+    getChallengesPoints,
+    submitAnswerImage
 }
 
+function submitAnswerImage(image, step, team) {
+    debugger;
+    MediaService.SaveImage(image).then(x => {
+        debugger;
+        !step.needsValidation ?
+            fireStore
+                .collection("lobbies")
+                .doc(LobbyService.getCurrentLobby())
+                .collection("teams")
+                .doc(team)
+                .update({
+                    completed: firebase.firestore.FieldValue.arrayUnion(step.id),
+                    [step.id]: {
+                        image: x,
+                        time: firebase.firestore.FieldValue.serverTimestamp(),
+                        submitedBy: UserService.getCurrentPlayer().name
+                    }
+                }) : fireStore
+                    .collection("lobbies")
+                    .doc(LobbyService.getCurrentLobby())
+                    .collection("teams")
+                    .doc(team)
+                    .update({
+                        toBeValidated: firebase.firestore.FieldValue.arrayUnion(step.id),
+                        [step.id]: {
+                            image: x,
+                            time: firebase.firestore.FieldValue.serverTimestamp(),
+                            submitedBy: UserService.getCurrentPlayer().name
+                        }
+                    })
+
+    })
+}
 
 function getAdjustmentPoints(team) {
-    return team.adjustments.reduce((x, y) => x += parseInt(y.value), 0);
+    if (team.adjustments)
+        return team.adjustments.reduce((x, y) => x += parseInt(y.value), 0);
+    return 0
 }
 
 function getChallengesPoints(team, game) {
@@ -63,16 +100,17 @@ function getTimeOut(step) {
 
 function getActiveSteps(game, team, teams) {
     let steps = game.steps;
-    debugger
     let currentTeam = teams.find(x => x.name === team);
-    if (currentTeam && currentTeam.completed)
-        return steps.filter(x => !currentTeam.completed.includes(x.id));
-
+    if (currentTeam && currentTeam.completed) {
+        let z = steps.filter(x => !currentTeam.completed.includes(x.id) && !currentTeam.toBeValidated.includes(x.id));
+        debugger;
+        return z;
+    }
     return steps;
 }
 function getCompletedSteps(game, team, teams) {
     let steps = game.steps;
-    debugger
+    debugger;
     let currentTeam = teams.find(x => x.name === team);
     if (currentTeam && currentTeam.completed) {
         let res = steps.filter(x => currentTeam.completed.includes(x.id));

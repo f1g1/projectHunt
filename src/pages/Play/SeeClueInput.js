@@ -1,5 +1,5 @@
 import { IonButton, IonInput, IonItem, IonLabel } from '@ionic/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { PlayService } from '../../services/PlayService';
@@ -38,11 +38,8 @@ function QrInput(props) {
     console.log("render qrinptu")
     const [input, setInput] = useState()
     const openScanner = async () => {
-
-
         BarcodeScanner.scan().then(barcodeData => {
             setInput(barcodeData.text);
-
         }).catch(err => {
             console.log("Qr scan failed");
         });
@@ -59,11 +56,8 @@ function QrInput(props) {
             else {
                 props.handleWrong();
             }
-
         }
     }, [input])
-
-
     return (
         <>
             {input}
@@ -72,11 +66,49 @@ function QrInput(props) {
     )
 }
 function ImageInput(props) {
+    const refInput = useRef();
+    const [loadingImage, setLoadingImage] = useState(false);
+    const [image, setImage] = useState();
+    const [imageFile, setImageFile] = useState();
+    const onChoosePhoto = event => {
+        if (event.target.files && event.target.files[0]) {
+            setLoadingImage(true)
+            const prefixFiletype = event.target.files[0].type.toString()
+            if (prefixFiletype.indexOf('image/') === 0) {
+                setImage(URL.createObjectURL(event.target.files[0]));
+                setImageFile(event.target.files[0]);
+
+            } else {
+                setLoadingImage(false)
+                console.log('This file is not an image')
+            }
+        } else {
+            setLoadingImage(false)
+        }
+    }
+    const handleSend = () => {
+        debugger;
+        PlayService.submitAnswerImage(imageFile, props.step, props.team);
+    }
     return (
         <>
-            <IonItem>
-                <IonLabel>Needs </IonLabel>
-            </IonItem>
+            <IonButton
+                onClick={() => refInput.current.click()}
+            >Add Photo</IonButton>
+            <input
+                ref={refInput}
+                accept="image/*"
+                className="viewInputGallery"
+                type="file"
+                onChange={onChoosePhoto}
+            />
+            {image &&
+                <><img src={image} style={{ maxHeight: "350px" }} />
+                    <IonButton onClick={handleSend}>Save</IonButton> </>}
+            <div style={{ position: "absolute", bottom: "0px" }} className="ion-padding ion-text-center">
+                {props.step.needsValidation && <IonLabel><p>Note: Because this photo proof will still be credited at the time of submission not approval</p></IonLabel>}
+            </div>
+
         </>
     )
 }
