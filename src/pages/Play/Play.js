@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 import ChatBoard from '../../components/Chat/ChatBoard/ChatBoard'
 import ClueList from './ClueList'
+import Dashboard from '../GameDashobard/Dashboard'
 import LeaderBoard from './LeaderBoard'
 import { LobbyService } from '../../services/LobbyService'
 import { PlayService } from '../../services/PlayService'
@@ -33,7 +34,8 @@ export default function Play(props) {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
-                    <ClueList game={game} teams={teams} />
+                    {!PlayService.ImAdmin() ? <ClueList game={game} teams={teams} /> :
+                        <Dashboard />}
                 </IonContent>
                 <IonFooter>
                     <IonToolbar>

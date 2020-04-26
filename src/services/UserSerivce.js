@@ -11,6 +11,8 @@ export const UserService = {
   checkUserName
 };
 
+
+
 function checkUserName(username) {
   return fireStore.collection("users").where("lowerUserName", "==", username.toLowerCase()).get();
 }

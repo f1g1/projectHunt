@@ -5,6 +5,8 @@ import { fireStore } from "../firebase";
 import firebase from 'firebase';
 import moment from 'moment';
 
+const axios = require('axios').default;
+
 export const PlayService = {
     setGame,
     getGame,
@@ -17,7 +19,12 @@ export const PlayService = {
     getAdjustmentPoints,
     getTotalPoints,
     getChallengesPoints,
-    submitAnswerImage
+    submitAnswerImage,
+    ImAdmin
+}
+
+function ImAdmin() {
+    return UserService.getCurrentPlayer().name === getGame().owner;
 }
 
 function submitAnswerImage(image, step, team, finished) {
@@ -86,7 +93,19 @@ function submitAnswer(answer, step, team, finished) {
             finished
 
         });
-
+    // return axios.post('https://us-central1-projecthunt-2644e.cloudfunctions.net/helloWorld', {
+    //     answer,
+    //     step,
+    //     team,
+    //     finished
+    // })
+    //     // .then(function (response) {
+    //     //     debugger;
+    //     //     console.log(response);
+    //     // })
+    //     .catch(function (error) {
+    //         console.log(error);
+    //     });
 }
 function deleteTimeOut(step) {
     window.localStorage.removeItem(step.id + "timeout");

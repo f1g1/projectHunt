@@ -10,9 +10,8 @@ function TextInput(props) {
         if (input) {
             if (props.step.code.toString().toLowerCase() === input.toLowerCase()) {
                 PlayService.submitAnswer(input, props.step, props.team, props.finished || false).then(() => {
-                    props.handleClose();
+                    props.handleSucces();
                 }).catch((x) => console.log(x));
-                props.handleSucces();
             }
             else {
                 props.handleWrong();

@@ -18,7 +18,10 @@ const Login = props => {
         doLogin(userState);
     } catch { }
   }, [userState]);
-
+  useEffect(() => {
+    let user = UserService.getCurrentUser();
+    user && user.authentication && doLogin(user);
+  }, [])
 
   const saveUser = user => {
     dispatch({
