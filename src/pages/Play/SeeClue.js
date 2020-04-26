@@ -1,11 +1,10 @@
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonLabel, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonContent, IonHeader, IonLabel, IonToolbar } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 
 import { PlayService } from '../../services/PlayService';
 import SeeClueChallenge from './SeeClueChallenge';
 import SeeClueSucces from './SeeClueSucces';
 import SeeClueWrong from './SeeClueWrong';
-import { close } from "ionicons/icons";
 import moment from 'moment';
 
 export default function SeeClue(props) {
@@ -62,7 +61,7 @@ export default function SeeClue(props) {
     const handleStatus = () => {
         switch (status) {
             case 0:
-                return <SeeClueChallenge step={step} team={props.team} handleSucces={handleSuccesScreen} handleWrong={handleWrong} />
+                return <SeeClueChallenge step={step} team={props.team} finished={props.finished} handleSucces={handleSuccesScreen} handleWrong={handleWrong} />
             case 1:
                 return <SeeClueSucces step={step} handleSucces={handleSuccesOk} />
             case 2:
@@ -76,8 +75,8 @@ export default function SeeClue(props) {
             <IonHeader>
                 <IonToolbar color={status !== 2 ? "primary" : "danger"}>
                     <IonButtons>
-                        <IonButton onclick={props.handleClose}>
-                            <IonIcon icon={close} ></IonIcon>
+                        <IonButton onclick={props.handleClose} color="danger">
+                            X
                         </IonButton>
                         <IonLabel className="ion-padding-start">
                             Challenge #{props.step.index + 1}

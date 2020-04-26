@@ -15,25 +15,30 @@ export default function ClueList(props) {
     const [showClueModal, setShowClueModal] = useState(false)
     const [clueInfo, setClueInfo] = useState()
     const [showSteps, setShowSteps] = useState(0)
-    const hanldeStepClick = (id) => {
-        setShowClueModal(true);
-        let status
-        if (showStatus.COMPLETED == showSteps)
-            status = 1;
-        setClueInfo({ step: props.game.steps.find(x => x.id === id), team: LobbyService.getCurrentTeam(), status: status });
+    const [finished, setfinished] = useState(false)
+    const [currentTeamObj, setCurrentTeamObj] = useState({})
+    const [showPendingToast, setshowPendingToast] = useState(false)
 
+    const hanldeStepClick = (id) => {
+
+        if (!currentTeamObj.toBeValidated || !currentTeamObj.toBeValidated.find(z => z === id)) {
+            setShowClueModal(true);
+            let status
+            if (showStatus.COMPLETED == showSteps)
+                status = 1;
+            setClueInfo({ step: props.game.steps.find(x => x.id === id), team: LobbyService.getCurrentTeam(), status: status });
+        }
     }
+    useEffect(() => {
+        props.teams.length && setCurrentTeamObj(props.teams.find(y => y.name === LobbyService.getCurrentTeam()) || {})
+    })
 
     useEffect(() => {
-        console.log(props.teams, "TEAMSS")
-        props.teams.length > 0 && console.log(props.teams.find(y => y.name === LobbyService.getCurrentTeam())[1586791937998], 'hsadf')
-    })
-    const setShowStepsCompleted = () => {
-        setShowSteps(showStatus.COMPLETED);
-    }
-    const setShowStepsActive = () => {
-        setShowSteps(showStatus.ACTIVE);
-    }
+        debugger;
+        let teamFinished = currentTeamObj.completed && currentTeamObj.completed.length >= props.game.steps.length - 1;
+        teamFinished && setfinished(teamFinished)
+    }, [props.teams])
+
     useEffect(() => {
 
         if (!LobbyService.getCurrentTeam() && props.teams) {
@@ -57,10 +62,10 @@ export default function ClueList(props) {
                 <IonCol sizeLg={6} offsetLg={3}>
 
                     <p className="ion-text-center">
-                        <IonChip outline={showSteps === showStatus.ACTIVE} onClick={setShowStepsActive} mode="ios" color={showSteps !== showStatus.ACTIVE && "light"}>
+                        <IonChip outline={showSteps === showStatus.ACTIVE} onClick={() => setShowSteps(showStatus.ACTIVE)} mode="ios" color={showSteps !== showStatus.ACTIVE && "light"}>
                             <IonLabel>Active!</IonLabel>
                         </IonChip>
-                        <IonChip outline={showSteps === showStatus.COMPLETED} onClick={setShowStepsCompleted} mode="ios" color={showSteps !== showStatus.COMPLETED && "light"} >
+                        <IonChip outline={showSteps === showStatus.COMPLETED} onClick={() => setShowSteps(showStatus.COMPLETED)} mode="ios" color={showSteps !== showStatus.COMPLETED && "light"} >
                             <IonLabel>Completed!</IonLabel>
                         </IonChip>
                     </p>
@@ -74,30 +79,32 @@ export default function ClueList(props) {
                                     <img src={x.image} />
                                 </IonThumbnail>
                                 <IonLabel>
-                                    {props.teams.find(y => y.name === LobbyService.getCurrentTeam()).toBeValidated.find(z => z === x.id) &&
+                                    {currentTeamObj.toBeValidated && currentTeamObj.toBeValidated.find(z => z === x.id) &&
                                         <p style={{ float: "right" }}>
                                             Pending validation
                                    </p>}
-                                    <h2>#{index + 1}</h2>
+                                    <h2>#{x.index + 1}</h2>
                                     <h3>{x.clue}</h3>
                                         &nbsp;
-                                        <h2 color="danger">Answer:</h2>
                                     {showSteps === showStatus.COMPLETED &&
                                         (
 
                                             //for text/qr we show the answer as label
-                                            props.teams.find(y => y.name === LobbyService.getCurrentTeam())[x.id] && (x.answerType < 2 ?
-                                                <IonLabel color="danger">
-                                                    {console.log(filtered, x.id, "fff")}
-                                                    {props.teams.find(y => y.name === LobbyService.getCurrentTeam())[x.id].answer}
-                                                </IonLabel>
+                                            currentTeamObj[x.id] && (x.answerType < 2 ?
+                                                <>
+                                                    <h2 color="danger">Answer:</h2>
 
+                                                    <IonLabel color="danger">
+                                                        {console.log(filtered, x.id, "fff")}
+                                                        {currentTeamObj[x.id].answer}
+                                                    </IonLabel>
+                                                </>
                                                 : <IonThumbnail slot="end" className="ion-float-right">
-                                                    <IonImg src={props.teams.find(y => y.name === LobbyService.getCurrentTeam())[x.id].image}></IonImg></IonThumbnail>)
+                                                    <IonImg src={currentTeamObj[x.id].imageAnswer}></IonImg></IonThumbnail>)
 
 
                                         )}
-                                    {/* <p> Submitted by: {props.teams.find(y => y.name === LobbyService.getCurrentTeam())[x.id].submitedBy}  at {(moment(teams.find(y => y.name === LobbyService.getCurrentTeam())[x.id].time.date).format("hh:mm"))} </p> */}
+                                    {/* <p> Submitted by: {currentTeamObj[x.id].submitedBy}  at {(moment(teams.find(y => y.name === LobbyService.getCurrentTeam())[x.id].time.date).format("hh:mm"))} </p> */}
 
                                     {/* <p>
                                         <br></br>
@@ -115,6 +122,8 @@ export default function ClueList(props) {
                 <SeeClue
                     handleClose={() => setShowClueModal(false)}
                     game
+                    finished={finished}
+
                     {...clueInfo} />
             </IonModal>
         </>

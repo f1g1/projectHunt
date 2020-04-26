@@ -10,7 +10,7 @@ export const PlayService = {
     getGame,
     submitAnswer,
     getActiveSteps,
-    getCompletedSteps,
+    getCompletedSteps: getInactiveSteps,
     setTimeOut,
     getTimeOut,
     deleteTimeOut,
@@ -20,7 +20,7 @@ export const PlayService = {
     submitAnswerImage
 }
 
-function submitAnswerImage(image, step, team) {
+function submitAnswerImage(image, step, team, finished) {
     debugger;
     MediaService.SaveImage(image).then(x => {
         debugger;
@@ -33,10 +33,12 @@ function submitAnswerImage(image, step, team) {
                 .update({
                     completed: firebase.firestore.FieldValue.arrayUnion(step.id),
                     [step.id]: {
-                        image: x,
+                        imageAnswer: x,
                         time: firebase.firestore.FieldValue.serverTimestamp(),
-                        submitedBy: UserService.getCurrentPlayer().name
-                    }
+                        submitedBy: UserService.getCurrentPlayer().name,
+                    },
+                    finished
+
                 }) : fireStore
                     .collection("lobbies")
                     .doc(LobbyService.getCurrentLobby())
@@ -45,7 +47,7 @@ function submitAnswerImage(image, step, team) {
                     .update({
                         toBeValidated: firebase.firestore.FieldValue.arrayUnion(step.id),
                         [step.id]: {
-                            image: x,
+                            imageAnswer: x,
                             time: firebase.firestore.FieldValue.serverTimestamp(),
                             submitedBy: UserService.getCurrentPlayer().name
                         }
@@ -68,7 +70,7 @@ function getTotalPoints(team, game) {
     return getAdjustmentPoints(team) + getChallengesPoints(team, game);
 }
 
-function submitAnswer(answer, step, team) {
+function submitAnswer(answer, step, team, finished) {
     return fireStore
         .collection("lobbies")
         .doc(LobbyService.getCurrentLobby())
@@ -79,8 +81,10 @@ function submitAnswer(answer, step, team) {
             [step.id]: {
                 answer,
                 time: firebase.firestore.FieldValue.serverTimestamp(),
-                submitedBy: UserService.getCurrentPlayer().name
-            }
+                submitedBy: UserService.getCurrentPlayer().name,
+            },
+            finished
+
         });
 
 }
@@ -102,19 +106,19 @@ function getActiveSteps(game, team, teams) {
     let steps = game.steps;
     let currentTeam = teams.find(x => x.name === team);
     if (currentTeam && currentTeam.completed) {
-        let z = steps.filter(x => !currentTeam.completed.includes(x.id) && !currentTeam.toBeValidated.includes(x.id));
-        debugger;
+        let z = currentTeam.toBeValidated ? steps.filter(x => !currentTeam.completed.includes(x.id) && !currentTeam.toBeValidated.includes(x.id)) :
+            steps.filter(x => !currentTeam.completed.includes(x.id))
         return z;
     }
     return steps;
 }
-function getCompletedSteps(game, team, teams) {
+function getInactiveSteps(game, team, teams) {
     let steps = game.steps;
-    debugger;
     let currentTeam = teams.find(x => x.name === team);
     if (currentTeam && currentTeam.completed) {
-        let res = steps.filter(x => currentTeam.completed.includes(x.id));
+        let res = currentTeam.toBeValidated ? steps.filter(x => currentTeam.completed.includes(x.id) || currentTeam.toBeValidated.includes(x.id)) : steps.filter(x => currentTeam.completed.includes(x.id))
         res = res.map(x => ({ ...x, ...currentTeam[x.id] }))
+
         debugger;
         return res;
     }
@@ -122,6 +126,22 @@ function getCompletedSteps(game, team, teams) {
 
     return steps;
 }
+function getCompletedSteps(game, team, teams) {
+    let steps = game.steps;
+    let currentTeam = teams.find(x => x.name === team);
+    if (currentTeam && currentTeam.completed) {
+        let res = steps.filter(x => currentTeam.completed.includes(x.id))
+        res = res.map(x => ({ ...x, ...currentTeam[x.id] }))
+
+        debugger;
+        return res;
+    }
+
+
+    return steps;
+}
+
+
 
 function setGame(game) {
     window.localStorage["game"] = JSON.stringify(game)

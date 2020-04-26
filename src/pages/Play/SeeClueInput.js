@@ -9,7 +9,7 @@ function TextInput(props) {
     const handleSubmit = () => {
         if (input) {
             if (props.step.code.toString().toLowerCase() === input.toLowerCase()) {
-                PlayService.submitAnswer(input, props.step, props.team).then(() => {
+                PlayService.submitAnswer(input, props.step, props.team, props.finished || false).then(() => {
                     props.handleClose();
                 }).catch((x) => console.log(x));
                 props.handleSucces();
@@ -48,7 +48,7 @@ function QrInput(props) {
 
         if (input) {
             if (props.step.code.toString() === input) {
-                PlayService.submitAnswer(input, props.step, props.team).then(() => {
+                PlayService.submitAnswer(input, props.step, props.team, props.finished || false).then(() => {
                     props.handleClose();
                 }).catch((x) => console.log(x));
                 props.handleSucces();
@@ -87,8 +87,7 @@ function ImageInput(props) {
         }
     }
     const handleSend = () => {
-        debugger;
-        PlayService.submitAnswerImage(imageFile, props.step, props.team);
+        PlayService.submitAnswerImage(imageFile, props.step, props.team, props.finished || false);
     }
     return (
         <>

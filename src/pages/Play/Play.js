@@ -57,9 +57,10 @@ export default function Play(props) {
                     handleClose={() => setShowChatModal(false)} />
             </IonModal>
             <IonModal
+
                 isOpen={showLeaderBoardModal}
                 onDidDismiss={() => setShowLeaderBoardModal(false)}>
-                <LeaderBoard handleClose={() => setShowLeaderBoardModal(false)} teams={teams} />
+                <LeaderBoard handleClose={() => setShowLeaderBoardModal(false)} teams={teams} game={game} />
             </IonModal>
         </IonPage >
 

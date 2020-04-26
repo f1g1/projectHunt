@@ -1,10 +1,15 @@
-import moment from 'moment'
-import React, { Component } from 'react'
 import './ChatBoard.css'
-import { fireStore, fireStorage } from '../../../firebase'
+
+import { IonButton, IonButtons, IonToolbar } from '@ionic/react'
+import React, { Component } from 'react'
+import { fireStorage, fireStore } from '../../../firebase'
+
+import CloseIcon from '@material-ui/icons/Close'
+import PermMediaIcon from '@material-ui/icons/PermMedia'
+import SendIcon from '@material-ui/icons/Send'
 import { UserService } from '../../../services/UserSerivce'
-import { IonIcon, IonButton, IonToolbar, IonButtons } from '@ionic/react'
-import { images, send, close } from "ionicons/icons"
+import moment from 'moment'
+
 export default class ChatBoard extends Component {
     constructor(props) {
         super(props)
@@ -154,8 +159,7 @@ export default class ChatBoard extends Component {
                 <IonToolbar>
                     <IonButtons>
                         <IonButton onclick={this.props.handleClose}>
-                            <IonIcon icon={close} ></IonIcon>
-
+                            <CloseIcon />
                         </IonButton>
                     </IonButtons>
 
@@ -181,8 +185,7 @@ export default class ChatBoard extends Component {
 
                     <div className="viewBottom">
 
-                        <IonIcon
-                            icon={images}
+                        <PermMediaIcon
                             className="icOpenGallery"
                             alt="icon open gallery"
                             onClick={() => this.refInput.click()}
@@ -205,8 +208,7 @@ export default class ChatBoard extends Component {
                             }}
                             onKeyPress={this.onKeyboardPress}
                         />
-                        <IonIcon
-                            icon={send}
+                        <SendIcon
                             className="icSend"
                             alt="icon send"
                             onClick={() => this.onSendMessage(this.state.inputValue, 0)}

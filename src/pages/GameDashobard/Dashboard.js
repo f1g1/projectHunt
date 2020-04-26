@@ -3,6 +3,7 @@ import "./Dashboard.scss";
 import { IonBackButton, IonButtons, IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonItem, IonLabel, IonModal, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 
+import ApproveModal from "./ApproveModal";
 import { DashboardService } from "../../services/DashboardService";
 import { LobbyService } from "../../services/LobbyService";
 import { PlayService } from '../../services/PlayService';
@@ -16,7 +17,9 @@ export default function Dashboard(props) {
   const teams = useTeamChanges(LobbyService.getCurrentLobby())
   const [showTeamDashboard, setShowTeamDashboard] = useState(false)
   const [currentTeam, setCurrentTeam] = useState()
+  const [currentTeamName, setCurrentTeamName] = useState()
   const [game, setGame] = useState()
+  const [showApproveModal, setShowApproveModal] = useState()
   useEffect(() => {
     debugger;
     setGame(PlayService.getGame())
@@ -90,7 +93,8 @@ export default function Dashboard(props) {
                         </IonCol>
                         <IonCol>
                           <IonLabel>
-                            {x.completed && x[x.completed[x.completed.length - 1]] && x[x.completed[x.completed.length - 1]].time ? moment(x[x.completed[x.completed.length - 1]].time.seconds * 1000).format("DD/MM HH:mm") : "N/A"}
+                            {x.completed && x[x.completed[x.completed.length - 1]] && x[x.completed[x.completed.length - 1]].time
+                              ? moment(x[x.completed[x.completed.length - 1]].time.seconds * 1000).format("DD/MM HH:mm") : "N/A"}
                           </IonLabel>
                         </IonCol>
                       </IonRow>
@@ -122,7 +126,7 @@ export default function Dashboard(props) {
                 </IonCard>
 
                 {game && DashboardService.getToBeValidated(teams, game.steps).map(x => (
-                  <IonItem style={{ cursor: "pointer" }} >
+                  <IonItem style={{ cursor: "pointer" }} button onClick={() => { setShowApproveModal(x); setCurrentTeamName(x.name) }}>
                     <IonGrid>
                       <IonRow key={x.name} >
                         <IonCol>
@@ -142,9 +146,6 @@ export default function Dashboard(props) {
                       </IonRow>
                     </IonGrid></IonItem>
                 ))}
-
-
-
               </IonCol>
             </IonRow>
           </IonGrid>
@@ -161,6 +162,21 @@ export default function Dashboard(props) {
             game={game}
             team={teams[currentTeam]}
             steps={game.steps} />}
+      </IonModal>
+
+      <IonModal
+        isOpen={showApproveModal !== undefined}
+        onDidDismiss={() => setShowApproveModal()}
+      >
+        {game &&
+          <ApproveModal
+            handleClose={() => setShowApproveModal()}
+            {...showApproveModal}
+            team={currentTeamName}
+            finished={teams.find(x => x.name == currentTeamName)
+              && teams.find(x => x.name == currentTeamName).completed
+              && teams.find(x => x.name == currentTeamName).completed.length >= game.steps.length - 1}
+          />}
       </IonModal>
     </>
   )

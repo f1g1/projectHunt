@@ -33,7 +33,6 @@ export default function Lobby(props) {
   }, [lobby])
 
   useEffect(() => {
-    console.log("lobby", props.location.lobbyId);
     LobbyService.setLobby(props.location.lobbyId)
     LobbyService.getLobby(props.location.lobbyId || LobbyService.getCurrentLobby())
       .then(x => {
@@ -53,7 +52,6 @@ export default function Lobby(props) {
     }
   }, [teams])
   let startGame = () => {
-    debugger;
     LobbyService.startGame(lobby.id);
   }
   const leaveLobby = () => {

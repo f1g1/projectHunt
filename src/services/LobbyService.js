@@ -24,10 +24,7 @@ export const LobbyService = {
     startGame,
 
 };
-
-
 function startGame(lobbyId) {
-    debugger;
     fireStore.collection("lobbies").doc(lobbyId).set({
         startTime: firebase.firestore.FieldValue.serverTimestamp()
     }, { merge: true })
@@ -41,7 +38,6 @@ function setCurrentTeam(team) {
 }
 
 function addTeam(lobby, team, player) {
-    debugger;
     fireStore
         .collection("lobbies")
         .doc(lobby)
@@ -63,9 +59,6 @@ function leaveTeam(lobbyId, playerName, teamName) {
             "players": firebase.firestore.FieldValue.arrayRemove(playerName)
         })
 }
-
-
-
 function playerJoinTeam(lobby, team, playerName) {
     window.localStorage["joinedTeam"] = team;
     return fireStore
@@ -76,9 +69,7 @@ function playerJoinTeam(lobby, team, playerName) {
         .update({
             players: firebase.firestore.FieldValue.arrayUnion(playerName)
         });
-
 }
-
 function leaveLobby() {
     let res;
     //leave team if joined in any
@@ -126,18 +117,14 @@ function getTeams(lobbyId) {
                 teams.push({ ...doc.data(), name: doc.id })
             })
         })
-        .then(() => { debugger; return teams; })
-
+        .then(() => { return teams; })
 }
-
-
 function deleteLobby(id) {
     var lobbyRef = fireStore
         .collection("lobbies")
         .doc(id)
     lobbyRef.delete();
 }
-
 async function getLobbies() {
     const snapshot = await fireStore
         .collection("lobbies").get();

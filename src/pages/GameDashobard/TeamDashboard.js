@@ -14,13 +14,14 @@ export default function TeamDashboard(props) {
     const [active, setActive] = useState([])
     const [adjustment, setAdjustment] = useState({ reason: "", value: 0 })
     const [showPopover, setShowPopover] = useState(false);
+    const [finished, setFinished] = useState()
 
-    const getCompletedStep = (id) => {
-        return props.team[id]
-    }
     useEffect(() => {
         setActive(PlayService.getActiveSteps(props.game, props.team.name, [props.team]));
         setCompleted(PlayService.getCompletedSteps(props.game, props.team.name, [props.team]));
+        let teamFinished = props.team.completed && props.team.completed.length >= props.game.steps.length - 1;
+        setFinished(teamFinished);
+
     }, [props.team])
     console.log(active, completed)
 
@@ -31,6 +32,7 @@ export default function TeamDashboard(props) {
 
     return (
         <>
+
             <IonHeader>
                 <IonToolbar color="primary" className="ion-text-center">
                     <IonButton color="danger" onClick={props.handleClose} className="ion-padding-start ion-float-left">X</IonButton>
@@ -107,7 +109,7 @@ export default function TeamDashboard(props) {
                     <IonItem>
                         <IonLabel>Challenge #{x.index + 1}</IonLabel>
                         <IonLabel>{x.points}</IonLabel>
-                        <IonButton onClick={() => DashboardService.completeChallenge(props.team.name, x)}>Complete!</IonButton>
+                        <IonButton onClick={() => DashboardService.completeChallenge(props.team.name, x, finished)}>Complete!</IonButton>
 
                     </IonItem>
                 )) : <IonLabel><p style={{ fontSize: "1.5em" }} className="ion-padding">There are no active challenges remaining, all challenges are completed</p></IonLabel>
@@ -121,7 +123,7 @@ export default function TeamDashboard(props) {
                 className="adjustmentPopover"
                 style={{ minWidth: "300px" }}
             >
-                {props.team.adjustments.length ? props.team.adjustments.map(adjustment => (
+                {props.team.adjustments && props.team.adjustments.length ? props.team.adjustments.map(adjustment => (
                     <IonRow >
                         <IonCol>
                             <IonLabel >{adjustment.reason}</IonLabel>

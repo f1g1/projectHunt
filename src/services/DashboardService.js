@@ -9,21 +9,47 @@ export const DashboardService = {
     adjustPoints,
     deleteAdjustment,
     getToBeValidated,
+    approveAnswer,
+    revokeAnswer
 }
+
+function revokeAnswer(id, team) {
+    return fireStore
+        .collection("lobbies")
+        .doc(LobbyService.getCurrentLobby())
+        .collection("teams")
+        .doc(team)
+        .update({
+            toBeValidated: firebase.firestore.FieldValue.arrayRemove(id),
+            [id]: null
+        });
+}
+
+function approveAnswer(id, team, finished) {
+    return fireStore
+        .collection("lobbies")
+        .doc(LobbyService.getCurrentLobby())
+        .collection("teams")
+        .doc(team)
+        .update({
+            toBeValidated: firebase.firestore.FieldValue.arrayRemove(id),
+            completed: firebase.firestore.FieldValue.arrayUnion(id),
+            finished
+
+        });
+}
+
 
 function getToBeValidated(teams, steps) {
     let needsValidation = [];
     teams.forEach(element => {
         element.toBeValidated &&
-
             element.toBeValidated.forEach(x => {
                 let step = steps.find(z => z.id === x)
                 needsValidation.push({ ...x, ...step, name: element.name, ...element[x] });
             })
     });
-    debugger
-
-    return needsValidation
+    return needsValidation.sort(x => x.time.seconds)
 }
 
 function deleteAdjustment(team, adjustment) {
@@ -49,6 +75,7 @@ function adjustPoints(team, adjustment) {
 }
 
 function revokeChallenge(teamName, step) {
+    debugger;
     return fireStore
         .collection("lobbies")
         .doc(LobbyService.getCurrentLobby())
@@ -56,12 +83,28 @@ function revokeChallenge(teamName, step) {
         .doc(teamName)
         .update({
             completed: firebase.firestore.FieldValue.arrayRemove(step.id),
-            [step.id]: null
+            [step.id]: null,
+            finished: false
         });
+
 }
 
 
-function completeChallenge(teamName, step) {
+function completeChallenge(teamName, step, finished) {
+    let answer = step.answerType != 2 ? {
+        answer: step.code,
+        time: firebase.firestore.FieldValue.serverTimestamp(),
+        submitedBy: UserService.getCurrentPlayer().name,
+        byAdmin: true
+
+    } : {
+            answeImage: null,
+            time: firebase.firestore.FieldValue.serverTimestamp(),
+            submitedBy: UserService.getCurrentPlayer().name,
+            byAdmin: true
+
+        }
+
     return fireStore
         .collection("lobbies")
         .doc(LobbyService.getCurrentLobby())
@@ -69,12 +112,9 @@ function completeChallenge(teamName, step) {
         .doc(teamName)
         .update({
             completed: firebase.firestore.FieldValue.arrayUnion(step.id),
-            [step.id]: {
-                answer: step.code,
-                time: firebase.firestore.FieldValue.serverTimestamp(),
-                submitedBy: UserService.getCurrentPlayer().name
-
-            }
-        });
+            [step.id]: answer,
+            finished
+        }
+        );
 
 }

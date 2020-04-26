@@ -17,11 +17,13 @@ export default function LobbySearch(props) {
     const joinLobby = (lobby) => {
 
         LobbyService.setLobby(UserService.getCurrentPlayer(), lobby.lobbyId)
-        // if (!lobby.startTime)
-        props.history.push({ pathname: "/lobby", lobbyId: lobby.lobbyId });
-        // else {
+        if (!lobby.startTime)
+            props.history.push({ pathname: "/lobby", lobbyId: lobby.lobbyId });
+        else {
+            LobbyService.setLobby(lobby.lobbyId)
 
-        // }
+            props.history.push({ pathname: "/play", lobby });
+        }
 
     }
     return (
