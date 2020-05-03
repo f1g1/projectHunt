@@ -1,51 +1,67 @@
-import { IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonModal, IonPage, IonToolbar } from '@ionic/react'
+import { IonBackButton, IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonModal, IonPage, IonToolbar } from '@ionic/react'
 import React, { useEffect, useState } from 'react'
 
 import ChatBoard from '../../components/Chat/ChatBoard/ChatBoard'
 import ClueList from './ClueList'
 import Dashboard from '../GameDashobard/Dashboard'
+import GameMap from './GameMap/GameMap'
 import LeaderBoard from './LeaderBoard'
 import { LobbyService } from '../../services/LobbyService'
+import MiscService from '../../services/MiscService'
 import { PlayService } from '../../services/PlayService'
-import useTeamChanges from '../../services/useTeamChanges'
+import useGameChanges from '../../services/CustomHooks/useGameChanges'
+import useTeamChanges from '../../services/CustomHooks/useTeamChanges'
 
 export default function Play(props) {
-    const [game, setGame] = useState()
     const [showChatModal, setShowChatModal] = useState(false)
     const [showLeaderBoardModal, setShowLeaderBoardModal] = useState(false)
+    const [showMap, setShowMap] = useState(false)
+    const [geolocation, setGeolocation] = useState({ latitude: 0, longitude: 0 })
+    const [game, setGame] = useState()
+
     const teams = useTeamChanges()
+    const gameChanging = useGameChanges()
 
     useEffect(() => {
-        if (props.location.lobby)
-            PlayService.setGame(props.location.lobby);
-        let game = PlayService.getGame();
-        setGame(game);
+        MiscService.getCachedGeolocation().then(x => setGeolocation(x));
+
     }, [])
+
+    useEffect(() => {
+        PlayService.setGame(gameChanging || {});
+        setGame(gameChanging);
+    }, [gameChanging])
 
 
     return (
         <IonPage>
             {game && <>
                 <IonHeader>
-                    <IonToolbar color="primary" className="ion-padding-start" >
-                        <h1>
+
+                    <IonToolbar color={PlayService.ImAdmin ? "tertiary" : "primary"}  >
+                        <IonButtons style={{ display: "inline-block" }}>
+                            <IonBackButton defaultHref='/home'></IonBackButton>
+                        </IonButtons>
+                        <h1 style={{ display: "inline-block" }}>
                             {game.title}
                         </h1>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
-                    {!PlayService.ImAdmin() ? <ClueList game={game} teams={teams} /> :
-                        <Dashboard />}
+                    {teams.length > 0 && game != {} && (!PlayService.ImAdmin(game) ? <ClueList game={game} teams={teams} /> :
+                        <Dashboard />)}
                 </IonContent>
                 <IonFooter>
                     <IonToolbar>
-
                         <IonButtons>
                             <IonButton onClick={() => setShowChatModal(true)}>
                                 Chat
                             </IonButton>
                             <IonButton onClick={() => setShowLeaderBoardModal(true)}>
                                 LeaderBoard
+                            </IonButton>
+                            <IonButton onClick={() => setShowMap(true)}>
+                                Map
                             </IonButton>
                         </IonButtons>
                     </IonToolbar>
@@ -59,10 +75,15 @@ export default function Play(props) {
                     handleClose={() => setShowChatModal(false)} />
             </IonModal>
             <IonModal
-
                 isOpen={showLeaderBoardModal}
                 onDidDismiss={() => setShowLeaderBoardModal(false)}>
                 <LeaderBoard handleClose={() => setShowLeaderBoardModal(false)} teams={teams} game={game} />
+            </IonModal>
+            <IonModal
+                className="gameMap"
+                isOpen={showMap}
+                onDidDismiss={() => setShowMap(false)}>
+                <GameMap handleClose={() => setShowMap(false)} geolocation={geolocation} teams={teams} game={game} />
             </IonModal>
         </IonPage >
 

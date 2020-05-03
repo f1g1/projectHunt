@@ -18,7 +18,7 @@ export default function ClueList(props) {
     const [finished, setfinished] = useState(false)
     const [currentTeamObj, setCurrentTeamObj] = useState({})
     const [showPendingToast, setshowPendingToast] = useState(false)
-
+    console.log(props.teams, props.game)
     const hanldeStepClick = (id) => {
 
         if (!currentTeamObj.toBeValidated || !currentTeamObj.toBeValidated.find(z => z === id)) {
@@ -34,13 +34,11 @@ export default function ClueList(props) {
     })
 
     useEffect(() => {
-        debugger;
         let teamFinished = currentTeamObj.completed && currentTeamObj.completed.length >= props.game.steps.length - 1;
         teamFinished && setfinished(teamFinished)
     }, [props.teams])
 
     useEffect(() => {
-
         if (!LobbyService.getCurrentTeam() && props.teams) {
             let myTeam = props.teams.filter(x => x.players.includes(UserService.getCurrentPlayer().name));
             if (myTeam.length > 0) {
@@ -73,7 +71,7 @@ export default function ClueList(props) {
                         {!showSteps ? `Active Challenges ${props.teams.length > 0 ? filtered.length : ""}` : `Completed Challenges ${filtered.length}`}
                     </IonTitle>
                     <IonList>
-                        {filtered && props.teams.length != 0 && filtered.length > 0 && filtered.map((x, index) => (
+                        {filtered.map((x, index) => (
                             <IonItem button onClick={() => hanldeStepClick(x.id)} style={showSteps === showStatus.COMPLETED ? { opacity: 0.6 } : {}} key={x.id}>
                                 <IonThumbnail slot="start">
                                     <img src={x.image} />
@@ -95,7 +93,6 @@ export default function ClueList(props) {
                                                     <h2 color="danger">Answer:</h2>
 
                                                     <IonLabel color="danger">
-                                                        {console.log(filtered, x.id, "fff")}
                                                         {currentTeamObj[x.id].answer}
                                                     </IonLabel>
                                                 </>

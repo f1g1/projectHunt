@@ -2,7 +2,8 @@ import { Geolocation } from "@capacitor/core";
 
 const MiscService = {
     getCachedGeolocation,
-    getQr
+    getQr,
+    getLiveGeolocation
 }
 
 function getQr(data) {
@@ -37,5 +38,13 @@ async function getCachedGeolocation() {
     }
     else { return parsed.coords }
 }
+
+function getLiveGeolocation(setLocation) {
+    Geolocation.watchPosition().subscribe(position => {
+        console.log(position.coords.longitude + ' ' + position.coords.latitude);
+        setLocation(position);
+    })
+}
+
 
 export default MiscService

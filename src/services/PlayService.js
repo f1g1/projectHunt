@@ -20,10 +20,47 @@ export const PlayService = {
     getTotalPoints,
     getChallengesPoints,
     submitAnswerImage,
-    ImAdmin
+    ImAdmin,
+    shareLocation,
+    saveArea,
+    saveAdminPoint
+}
+
+
+function saveAdminPoint(point) {
+    return fireStore
+        .collection("lobbies")
+        .doc(LobbyService.getCurrentLobby())
+        .set(
+            { adminPoint: point }, { merge: true })
+}
+
+
+function saveArea(area) {
+    return fireStore
+        .collection("lobbies")
+        .doc(LobbyService.getCurrentLobby())
+        .set(
+            { area: area }, { merge: true })
+}
+
+function shareLocation(location, team) {
+    debugger;
+    return fireStore
+        .collection("lobbies")
+        .doc(LobbyService.getCurrentLobby())
+        .collection("teams")
+        .doc(team)
+        .update({
+            location: {
+                coords: { lat: location.latitude, lng: location.longitude },
+                time: firebase.firestore.FieldValue.serverTimestamp()
+            }
+        });
 }
 
 function ImAdmin() {
+    debugger;
     return UserService.getCurrentPlayer().name === getGame().owner;
 }
 

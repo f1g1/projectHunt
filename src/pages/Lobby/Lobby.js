@@ -9,7 +9,7 @@ import MapWithLocation from "../../components/Map/Map";
 import TeamPanel from "./TeamPanel";
 import TeamsContainer from "./TeamsContainer";
 import { UserService } from "../../services/UserSerivce";
-import useTeamChanges from "../../services/useTeamChanges";
+import useTeamChanges from "../../services/CustomHooks/useTeamChanges";
 
 export default function Lobby(props) {
   const [lobby, setLobby] = useState()

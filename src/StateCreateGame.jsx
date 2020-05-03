@@ -84,6 +84,9 @@ let reducer = (state, action) => {
         case "setMaxPlayers": {
             return { ...state, maxPlayers: action.maxPlayers }
         }
+        case "setArea": {
+            return { ...state, area: action.value }
+        }
         case "setSteps": {
 
             return {

@@ -1,0 +1,44 @@
+.bottomContainer{
+    display: flex;
+    flex:1;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 5px;
+    left: 5px; 
+  }
+.labelLocation{
+    top: -38px;
+    position: absolute;
+    text-align: center;
+    min-width: 50px;
+    width: fit-content;
+    transform: translate(-50%, -70%);
+    padding: 5px;
+    background: grey;
+     border-radius: 25px;
+
+  }
+
+  .labelLocation.admin{
+    background: orange !important;
+  }
+  
+  .labelLocation.admin.notSetted{
+    opacity: 0.3;
+  }
+
+  .gameMap{
+      --min-width:70% ;
+      --min-height:70%;
+  }
+
+
+.leftContainer{
+  display: flex;
+  flex-direction: column;
+  flex:1;
+  justify-content: space-between;
+  position: absolute;
+  left: 5px; 
+  top:5px;
+}

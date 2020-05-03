@@ -19,9 +19,7 @@ let ModalMap = (props) => {
     setSelectedPosition(mapCenter);
     setpositionSelected(true);
   }
-  useEffect(() => {
-    console.log("default")
-  }, [])
+
 
   useEffect(() => {
     //changePolyLines

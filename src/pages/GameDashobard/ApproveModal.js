@@ -28,7 +28,7 @@ export default function ApproveModal(props) {
                     <p>Answer:</p>
                     {props.imageAnswer && <img src={props.imageAnswer} imageViewer ></img>}
                     <div className="ion-margin-top">
-                        <IonButton onClick={() => { DashboardService.approveAnswer(props.id, props.team, props.finished); props.handleClose() }}>
+                        <IonButton color="tertiary" onClick={() => { DashboardService.approveAnswer(props.id, props.team, props.finished); props.handleClose() }}>
                             Approve
                 </IonButton>
                         <IonButton color="danger" onClick={() => { DashboardService.revokeAnswer(props.id, props.team); props.handleClose() }}>

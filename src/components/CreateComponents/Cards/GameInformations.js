@@ -1,9 +1,10 @@
-import { IonBadge, IonButton, IonCard, IonCardContent, IonCardTitle, IonCheckbox, IonInput, IonItem, IonLabel, IonList, IonRange, IonTextarea } from "@ionic/react";
+import { IonBadge, IonButton, IonCard, IonCardContent, IonCardTitle, IonCheckbox, IonCol, IonInput, IonItem, IonLabel, IonList, IonRange, IonRow, IonTextarea } from "@ionic/react";
 import React, { useContext, useRef, useState } from "react";
 
+import AreaPicker from "../../../pages/Create/AreaPicker";
 import { AppContext as CreateGameContext } from "../../../StateCreateGame";
 
-export default function GameInformations() {
+export default function GameInformations(props) {
     const refInput = useRef();
     const { state, dispatch } = useContext(CreateGameContext);
     const [loadingImage, setLoadingImage] = useState(false);
@@ -47,6 +48,13 @@ export default function GameInformations() {
             password: password
         });
     }
+    const setArea = (area) => {
+        dispatch({
+            type: "setArea",
+            value: area
+        })
+    }
+
 
     const onChoosePhoto = event => {
         if (event.target.files && event.target.files[0]) {
@@ -68,55 +76,82 @@ export default function GameInformations() {
 
     return (
         <div className="stickyContainer">
-            <IonCard>
-                <IonCardContent>
-                    <IonCardTitle>Game Informations</IonCardTitle>
-                    <IonList >
 
-                        <IonItem lines="full">
-                            <IonLabel position="floating" style={{ fontSize: "24px" }}>Title*:</IonLabel>
-                            <IonInput required
-                                value={state.title}
-                                onIonChange={e => setTitle(e.target.value)}
-                            ></IonInput>
-                        </IonItem>
-                        <IonItem>
-                            <IonLabel>Team Size:</IonLabel>
-                            <IonRange min={1} max={12} color="primary" snaps pin onIonChange={e => setMaxPlayers(e.target.value)} value={state.maxPlayers}>
-                                <IonLabel slot="start">1</IonLabel>
-                                <IonLabel slot="end">12</IonLabel>
-                            </IonRange>
-                            <IonBadge size="large">
-                                {state.maxPlayers}
-                            </IonBadge>
-                        </IonItem>
-                        <IonItem>
-                            <IonLabel >Challenges in order:</IonLabel>
-                            <IonCheckbox onIonChange={e => setInOrder(e.detail.checked)} slot="end" value={state.inOrder} />
-                        </IonItem>
-                        <IonItem>
-                            <IonLabel position="floating">Description:</IonLabel>
-                            <IonTextarea onIonChange={e => setDescription(e.target.value)} value={state.description}>
-                            </IonTextarea>
-                        </IonItem>
-                        <IonItem>
-                            <IonLabel>Password:</IonLabel>
-                            <IonInput type="text" onIonChange={e => setPassword(e.target.value)} value={state.password} ></IonInput>
-                        </IonItem>
-                        <IonButton
+            <IonRow >
+                <IonCol sizeXl="6">
+                    <IonCard>
+                        <IonCardContent>
+                            <IonCardTitle>Game Informations</IonCardTitle>
+                            <IonList >
+                                <IonItem lines="full">
+                                    <IonLabel position="floating" style={{ fontSize: "24px" }}>Title*:</IonLabel>
+                                    <IonInput required
+                                        value={state.title}
+                                        onIonChange={e => setTitle(e.target.value)}
+                                    ></IonInput>
+                                </IonItem>
+                                <IonItem>
+                                    <IonLabel>Team Size:</IonLabel>
+                                    <IonRange min={1} max={12} color="primary" snaps pin onIonChange={e => setMaxPlayers(e.target.value)} value={state.maxPlayers}>
+                                        <IonLabel slot="start">1</IonLabel>
+                                        <IonLabel slot="end">12</IonLabel>
+                                    </IonRange>
+                                    <IonBadge size="large">
+                                        {state.maxPlayers}
+                                    </IonBadge>
+                                </IonItem>
+                                <IonItem>
+                                    <IonLabel >Challenges in order:</IonLabel>
+                                    <IonCheckbox onIonChange={e => setInOrder(e.detail.checked)} slot="end" value={state.inOrder} />
+                                </IonItem>
+                                <IonItem>
+                                    <IonLabel position="floating">Description:</IonLabel>
+                                    <IonTextarea onIonChange={e => setDescription(e.target.value)} value={state.description}>
+                                    </IonTextarea>
+                                </IonItem>
+                                <IonItem>
+                                    <IonLabel>Password:</IonLabel>
+                                    <IonInput type="text" onIonChange={e => setPassword(e.target.value)} value={state.password} ></IonInput>
+                                </IonItem>
 
-                            onClick={() => refInput.current.click()}
-                        >Add Photo</IonButton>
-                        <input
-                            ref={refInput}
-                            accept="image/*"
-                            className="viewInputGallery"
-                            type="file"
-                            onChange={onChoosePhoto}
-                        />
-                        {state.image && <img src={state.image}></img>}
-                    </IonList>
-                </IonCardContent>
-            </IonCard>
+
+                            </IonList>
+                        </IonCardContent>
+                    </IonCard>
+                </IonCol>
+
+
+                <IonCol sizeXl="6">
+
+                    <IonCard>
+                        <IonCardContent>
+                            <IonCardTitle className="ion-padding-vertical">
+                                Miscellaneous
+                            </IonCardTitle>
+                            <IonButton
+
+                                onClick={() => refInput.current.click()}
+                            >Add Game Photo</IonButton>
+                            {<img src={image ? image : require("../../../resources/placeholder.png")} style={!image ? { opacity: 0.1, maxHeight: "350px" } : { maxHeight: "350px" }} className="ion-padding-vertical"></img>}
+
+                            <input
+                                ref={refInput}
+                                accept="image/*"
+                                className="viewInputGallery"
+                                type="file"
+                                onChange={onChoosePhoto}
+                            />
+                            <AreaPicker setBounds={setArea} bounds={state.area} geolocation={props.geolocation} />
+                        </IonCardContent>
+
+                    </IonCard>
+                </IonCol>
+
+
+            </IonRow>
+
+
+
+
         </div >)
 }

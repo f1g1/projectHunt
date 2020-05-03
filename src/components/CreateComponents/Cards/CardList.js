@@ -1,31 +1,21 @@
 import "./Card.scss";
 
 import { IonCol, IonFabButton, IonModal, IonRow } from "@ionic/react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import AddIcon from "@material-ui/icons/Add";
 import { AppContext as CreateGameContext } from "../../../StateCreateGame";
 import MarginCard from "./MarginCard";
-import MiscService from "../../../services/MiscService";
 import ModalCardCreate from "../ModalCardCreate/ModalCardCreate";
 import ModalMap from "../ModalMap";
 import ReorderableCards from "../ReorderableCards";
 
-export default function CardList() {
+export default function CardList(props) {
   const { state, dispatch } = useContext(CreateGameContext);
-  const [geolocation, setGeolocation] = useState({ lat: 0, lng: 0 });
   const [showBeginModal, setShowBeginModal] = useState(false);
   const [showEndModal, setShowEndModal] = useState(false);
   const [showInnerCardModal, setShowAddCardModal] = useState(false);
   const [edit, setEdit] = useState()
-  useEffect(() => {
-    handleReceivedLocation()
-  }, []);
-
-  let handleReceivedLocation = () => {
-    MiscService.getCachedGeolocation().then(x => setGeolocation(x));
-  };
-
   const saveStart = (lat, lng, radius) => {
     dispatch({
       type: "setStartCoords",
@@ -106,23 +96,23 @@ export default function CardList() {
       <IonModal
         isOpen={showBeginModal}
         onDidDismiss={() => setShowBeginModal(false)}
-        defaultLocation={geolocation}
+        defaultLocation={props.geolocation}
       >
-        {geolocation && (
+        {props.geolocation && (
           <ModalMap
             handleClose={handleClose}
-            location={geolocation}
+            location={props.geolocation}
             save={saveStart} />)}
       </IonModal>
       <IonModal
         isOpen={showEndModal}
         onDidDismiss={() => setShowEndModal(false)}
-        defaultLocation={geolocation}
+        defaultLocation={props.geolocation}
       >
-        {geolocation && (
+        {props.geolocation && (
           <ModalMap
             handleClose={handleCloseFinish}
-            location={geolocation}
+            location={props.geolocation}
             save={saveFinish} />)}
       </IonModal>
       <IonModal

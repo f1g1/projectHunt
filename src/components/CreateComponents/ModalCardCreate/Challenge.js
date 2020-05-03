@@ -23,10 +23,13 @@ export default function Challenge(props) {
     }
     return (
         <IonList >
-            {props.step.image && <>
+            {/* {props.step.image && <>
                 <img className="ion-justify-content-center ion-align-self-center" src={props.step.image} />
 
-            </>}
+            </>} */}
+
+            {<img src={props.step.image ? props.step.image : require("../../../resources/placeholder.png")} style={!props.step.image ? { opacity: 0.1, maxHeight: "500px" } : { maxHeight: "500px" }} className="ion-padding-vertical"></img>}
+
             <IonButton
                 onClick={() => refInput.current.click()}
             >Add Photo</IonButton>

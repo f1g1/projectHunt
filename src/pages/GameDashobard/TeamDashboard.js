@@ -34,7 +34,7 @@ export default function TeamDashboard(props) {
         <>
 
             <IonHeader>
-                <IonToolbar color="primary" className="ion-text-center">
+                <IonToolbar color="tertiary" className="ion-text-center">
                     <IonButton color="danger" onClick={props.handleClose} className="ion-padding-start ion-float-left">X</IonButton>
                     <IonTitle className="ion-padding-top">
                         Manage team: {props.team.name}
@@ -64,14 +64,14 @@ export default function TeamDashboard(props) {
                         <IonItem >
                             <IonLabel>Adjust points:</IonLabel>
                             <IonInput type="number" value={adjustment.value} onIonChange={e => setAdjustment({ ...adjustment, value: e.target.value })}></IonInput>
-                            <IonButton onClick={handleAdjustment}>Adjust</IonButton>
+                            <IonButton onClick={handleAdjustment} color="tertiary">Adjust</IonButton>
                         </IonItem>
-                        <IonButton onClick={() => setShowPopover(true)}>Adjustments</IonButton>
+                        <IonButton onClick={() => setShowPopover(true)} color="tertiary">Adjustments</IonButton>
 
                     </IonCol>
 
                 </IonRow>
-                <IonToolbar color="primary" >
+                <IonToolbar color="tertiary" >
 
                     <IonTitle >
                         Completed Challenges
@@ -93,7 +93,7 @@ export default function TeamDashboard(props) {
                     </IonItem>
                 )) : <IonLabel><p style={{ fontSize: "1.5em" }} className="ion-padding">There are no completed challenges!</p></IonLabel>
                 }
-                <IonToolbar color="primary" className="ion-margin-top" >
+                <IonToolbar color="tertiary" className="ion-margin-top" >
 
                     <IonTitle >
                         Active Challenges
