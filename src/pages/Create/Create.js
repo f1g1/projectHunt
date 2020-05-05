@@ -1,4 +1,4 @@
-import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToolbar } from "@ionic/react";
+import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonPage, IonRow, IonTitle, IonToast, IonToolbar } from "@ionic/react";
 import React, { useContext, useEffect, useState } from "react";
 
 import CardList from "../../components/CreateComponents/Cards/CardList";
@@ -11,6 +11,7 @@ const Create = (props) => {
   const { state, dispatch } = useContext(CreateGameContext);
   const [isEdit, setisEdit] = useState(false)
   const [geolocation, setGeolocation] = useState({ lat: 0, lng: 0 });
+  const [errorToast, setErrorToast] = useState()
 
   let handleReceivedLocation = () => {
     MiscService.getCachedGeolocation().then(x => setGeolocation(x));
@@ -27,8 +28,24 @@ const Create = (props) => {
   }, [])
 
   const saveGame = () => {
-    GamesService.saveGame(state)
+    let errors = validateGame(state)
+    if (errors.length === 0)
+      GamesService.saveGame(state)
+    else {
+      setErrorToast(errors);
+
+    }
+
   }
+  const validateGame = (game) => {
+    let errors = "";
+    if (!game.title || game.title.length < 3)
+      errors += "Title can't be less than 3 characters long.";
+    if (!game.steps || game.steps.length < 1)
+      errors += "\nCan't create a game without any challenges in it."
+    return errors;
+  }
+
 
 
 
@@ -63,6 +80,14 @@ const Create = (props) => {
           </IonButtons>
         </IonToolbar>
       </IonFooter>
+      <IonToast
+        color="danger"
+        position='top'
+        isOpen={errorToast !== undefined}
+        onDidDismiss={() => setErrorToast()}
+        message={errorToast}
+        duration={2000}
+      />
     </IonPage>
   );
 };

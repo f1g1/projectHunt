@@ -28,6 +28,7 @@ export default function Play(props) {
     }, [])
 
     useEffect(() => {
+        console.log("game changed")
         PlayService.setGame(gameChanging || {});
         setGame(gameChanging);
     }, [gameChanging])
@@ -48,7 +49,7 @@ export default function Play(props) {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
-                    {teams.length > 0 && game != {} && (!PlayService.ImAdmin(game) ? <ClueList game={game} teams={teams} /> :
+                    {teams.length > 0 && game !== {} && (!PlayService.ImAdmin(game) ? <ClueList game={game} teams={teams} /> :
                         <Dashboard />)}
                 </IonContent>
                 <IonFooter>

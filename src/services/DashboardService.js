@@ -91,7 +91,7 @@ function revokeChallenge(teamName, step) {
 
 
 function completeChallenge(teamName, step, finished) {
-    let answer = step.answerType != 2 ? {
+    let answer = step.answerType !== 2 ? {
         answer: step.code,
         time: firebase.firestore.FieldValue.serverTimestamp(),
         submitedBy: UserService.getCurrentPlayer().name,

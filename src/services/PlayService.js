@@ -5,7 +5,7 @@ import { fireStore } from "../firebase";
 import firebase from 'firebase';
 import moment from 'moment';
 
-const axios = require('axios').default;
+// const axios = require('axios').default;
 
 export const PlayService = {
     setGame,
@@ -52,22 +52,19 @@ function shareLocation(location, team) {
         .collection("teams")
         .doc(team)
         .update({
-            location: {
-                coords: { lat: location.latitude, lng: location.longitude },
-                time: firebase.firestore.FieldValue.serverTimestamp()
-            }
+            location: firebase.firestore.FieldValue.arrayUnion({
+                lat: location.latitude, lng: location.longitude,
+                time: Date.now()
+            })
         });
 }
 
 function ImAdmin() {
-    debugger;
     return UserService.getCurrentPlayer().name === getGame().owner;
 }
 
 function submitAnswerImage(image, step, team, finished) {
-    debugger;
     MediaService.SaveImage(image).then(x => {
-        debugger;
         !step.needsValidation ?
             fireStore
                 .collection("lobbies")

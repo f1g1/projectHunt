@@ -1,10 +1,10 @@
 import { IonChip, IonCol, IonImg, IonItem, IonLabel, IonList, IonModal, IonRow, IonThumbnail, IonTitle } from '@ionic/react'
 import React, { useEffect, useState } from 'react'
-
 import { LobbyService } from '../../services/LobbyService'
 import { PlayService } from '../../services/PlayService'
-import SeeClue from './SeeClue'
 import { UserService } from '../../services/UserSerivce'
+import SeeClue from './SeeClue'
+
 
 const showStatus = {
     ACTIVE: 0,
@@ -17,10 +17,9 @@ export default function ClueList(props) {
     const [showSteps, setShowSteps] = useState(0)
     const [finished, setfinished] = useState(false)
     const [currentTeamObj, setCurrentTeamObj] = useState({})
-    const [showPendingToast, setshowPendingToast] = useState(false)
+
     console.log(props.teams, props.game)
     const hanldeStepClick = (id) => {
-
         if (!currentTeamObj.toBeValidated || !currentTeamObj.toBeValidated.find(z => z === id)) {
             setShowClueModal(true);
             let status
@@ -31,7 +30,7 @@ export default function ClueList(props) {
     }
     useEffect(() => {
         props.teams.length && setCurrentTeamObj(props.teams.find(y => y.name === LobbyService.getCurrentTeam()) || {})
-    })
+    }, [props.teams])
 
     useEffect(() => {
         let teamFinished = currentTeamObj.completed && currentTeamObj.completed.length >= props.game.steps.length - 1;
@@ -101,11 +100,6 @@ export default function ClueList(props) {
 
 
                                         )}
-                                    {/* <p> Submitted by: {currentTeamObj[x.id].submitedBy}  at {(moment(teams.find(y => y.name === LobbyService.getCurrentTeam())[x.id].time.date).format("hh:mm"))} </p> */}
-
-                                    {/* <p>
-                                        <br></br>
-                                        {x.answerType == 2 && "Requieres photo proof!"}</p> */}
                                 </IonLabel>
                             </IonItem>
                         ))}

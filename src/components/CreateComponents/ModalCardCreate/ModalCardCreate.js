@@ -14,6 +14,7 @@ export default function ModalCardCreate(props) {
   const [showToast1, setShowToast1] = useState(false);
   const { state, dispatch } = useContext(AppContext);
   const [segmentOn, setSegmentOn] = useState("challenge")
+  const [errorToast, setErrorToast] = useState()
   const [step, setStep] = useState({
     points: 100, answerType: 0, validateAnswer: false, clue: null,
     wrongResponseTitle: null, wrongResponseAdditionalInfo: null, succesResponseTitle: null, succesResponseAdditionalInfo: null
@@ -40,33 +41,44 @@ export default function ModalCardCreate(props) {
         break;
     }
   }
+  const validateStep = (step) => {
+    let errors = "";
+    if (!step.clue || step.clue.length < 3)
+      errors += "Clue can't be less than 3 characters long.";
+    if (step.answerType < 2 && !step.code)
+      errors += "\nIf the answer is not an image you need to set an response different than null.";
+    return errors;
+
+  }
+
+
   const saveNewStep = () => {
-    debugger;
-    if (props.edit) {
-      let steps = state.steps;
-      steps.forEach((element, i) => {
-        if (element.id === step.id)
-          steps[i] = step;
-      });
-      dispatch({
-        type: "setSteps",
-        steps
-      });
-    } else {
-      //this is for create
-      dispatch({
-        type: "addStep",
-        step: { ...step, id: Date.now() }
-      });
-      setShowToast1(true);
+
+    let errors = validateStep(step)
+    if (errors.length === 0) {
+      if (props.edit) {
+        let steps = state.steps;
+        steps.forEach((element, i) => {
+          if (element.id === step.id)
+            steps[i] = step;
+        });
+        dispatch({
+          type: "setSteps",
+          steps
+        });
+      } else {
+        //this is for create
+        dispatch({
+          type: "addStep",
+          step: { ...step, id: Date.now() }
+        });
+        setShowToast1(true);
+      }
+      props.handleClose();
     }
-
-    props.handleClose();
-
+    else setErrorToast(errors);
   };
-  useEffect(() => {
-    return () => { };
-  }, []);
+
   return (
     <>
       <IonHeader color="secondary">
@@ -109,6 +121,14 @@ export default function ModalCardCreate(props) {
         position="top"
         color="light"
         mode="ios"
+      />
+      <IonToast
+        color="danger"
+        position='top'
+        isOpen={errorToast !== undefined}
+        onDidDismiss={() => setErrorToast()}
+        message={errorToast}
+        duration={2000}
       />
     </>
   );

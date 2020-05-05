@@ -171,12 +171,13 @@ export default function GameMap(props) {
               />}
 
             {
-              props.team && props.teams.map(x => {
+              props.teams && props.teams.map(x => {
                 {
-                  if (x.location.coords)
+                  console.log("Team LOCATION", x.location);
+                  if (x.location)
                     return (<LocationMarker
-                      lat={x.location.coords.lat}
-                      lng={x.location.coords.lng}
+                      lat={x.location[x.location.length - 1].lat}
+                      lng={x.location[x.location.length - 1].lng}
                       name={x.name}
                     />)
                 }

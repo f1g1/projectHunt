@@ -6,6 +6,8 @@ import { PlayService } from '../../services/PlayService';
 
 function TextInput(props) {
     const [input, setinput] = useState()
+
+
     const handleSubmit = () => {
         if (input) {
             if (props.step.code.toString().toLowerCase() === input.toLowerCase()) {
@@ -30,6 +32,7 @@ function TextInput(props) {
                     maxlength="12"
                 ></IonInput>
             </IonItem>
+            {props.children}
             <IonButton className="ion-margin-top" expand="full" onClick={handleSubmit}>Submit</IonButton>
         </>)
 }
@@ -60,6 +63,8 @@ function QrInput(props) {
     return (
         <>
             {input}
+            {props.children}
+
             <IonButton size="largest" color="tertiary" expand="full" onClick={openScanner} style={{ minHieght: "50px" }}>Scan!</IonButton>
         </>
     )
@@ -100,8 +105,11 @@ function ImageInput(props) {
                 type="file"
                 onChange={onChoosePhoto}
             />
+            {props.children}
+
             {image &&
                 <><img src={image} style={{ maxHeight: "350px" }} />
+
                     <IonButton onClick={handleSend}>Save</IonButton> </>}
             <div style={{ position: "absolute", bottom: "0px" }} className="ion-padding ion-text-center">
                 {props.step.needsValidation && <IonLabel><p>Note: Because this photo proof will still be credited at the time of submission not approval</p></IonLabel>}
