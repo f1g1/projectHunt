@@ -28,7 +28,6 @@ export default function Play(props) {
     }, [])
 
     useEffect(() => {
-        console.log("game changed")
         PlayService.setGame(gameChanging || {});
         setGame(gameChanging);
     }, [gameChanging])
@@ -39,7 +38,7 @@ export default function Play(props) {
             {game && <>
                 <IonHeader>
 
-                    <IonToolbar color={PlayService.ImAdmin ? "tertiary" : "primary"}  >
+                    <IonToolbar color={LobbyService.ImAdmin(game) ? "tertiary" : "primary"}  >
                         <IonButtons style={{ display: "inline-block" }}>
                             <IonBackButton defaultHref='/home'></IonBackButton>
                         </IonButtons>
@@ -49,7 +48,7 @@ export default function Play(props) {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
-                    {teams.length > 0 && game !== {} && (!PlayService.ImAdmin(game) ? <ClueList game={game} teams={teams} /> :
+                    {teams.length > 0 && game !== {} && (!LobbyService.ImAdmin(game) ? <ClueList game={game} teams={teams} /> :
                         <Dashboard />)}
                 </IonContent>
                 <IonFooter>

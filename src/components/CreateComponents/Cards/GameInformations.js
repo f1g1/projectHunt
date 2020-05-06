@@ -84,10 +84,12 @@ export default function GameInformations(props) {
                             <IonCardTitle>Game Informations</IonCardTitle>
                             <IonList >
                                 <IonItem lines="full">
-                                    <IonLabel position="floating" style={{ fontSize: "24px" }}>Title*:</IonLabel>
+                                    <IonLabel position="floating" style={{ fontSize: "24px" }}>Title:</IonLabel>
                                     <IonInput required
                                         value={state.title}
                                         onIonChange={e => setTitle(e.target.value)}
+                                        placeholder="Is requiered, 3-50 characters"
+                                        maxlength="50"
                                     ></IonInput>
                                 </IonItem>
                                 <IonItem>
@@ -109,11 +111,17 @@ export default function GameInformations(props) {
                                     <IonTextarea onIonChange={e => setDescription(e.target.value)} value={state.description}>
                                     </IonTextarea>
                                 </IonItem>
-                                <IonItem>
-                                    <IonLabel>Password:</IonLabel>
-                                    <IonInput type="text" onIonChange={e => setPassword(e.target.value)} value={state.password} ></IonInput>
-                                </IonItem>
+                                <IonItem
+                                    lines="none">
+                                    <IonLabel>Entry Code*:</IonLabel>
+                                    <IonInput type="text" onIonChange={e => setPassword(e.target.value)} value={state.password}
+                                        placeholder="Is requiered, 3-20 characters"
+                                        maxlength="20" />
 
+                                </IonItem>
+                                <IonLabel >
+                                    <p className="ion-padding-start " >*this code will be used by the users to join your game</p>
+                                </IonLabel>
 
                             </IonList>
                         </IonCardContent>

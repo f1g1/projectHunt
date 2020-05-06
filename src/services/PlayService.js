@@ -20,7 +20,6 @@ export const PlayService = {
     getTotalPoints,
     getChallengesPoints,
     submitAnswerImage,
-    ImAdmin,
     shareLocation,
     saveArea,
     saveAdminPoint
@@ -59,9 +58,7 @@ function shareLocation(location, team) {
         });
 }
 
-function ImAdmin() {
-    return UserService.getCurrentPlayer().name === getGame().owner;
-}
+
 
 function submitAnswerImage(image, step, team, finished) {
     MediaService.SaveImage(image).then(x => {

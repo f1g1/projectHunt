@@ -1,6 +1,6 @@
 import "./Lobby.scss"
 
-import { IonBadge, IonButton, IonCard, IonCardContent, IonCardTitle, IonInput, IonItem, IonItemDivider, IonList } from '@ionic/react'
+import { IonButton, IonCard, IonCardContent, IonCardTitle, IonInput, IonItem, IonItemDivider, IonLabel, IonList } from '@ionic/react'
 import React, { Fragment, useState } from 'react'
 
 import { LobbyService } from '../../services/LobbyService'
@@ -28,13 +28,11 @@ export default function TeamsContainer(props) {
                         return 0;
                     }).map((team, index) => {
                         return <Fragment key={team.name}>
-                            <IonItem detail lines="none" color={team.name === props.joinedTeam ? "tertiary" : "primary"} button onClick={() => props.showThisTeam(team.name)} key={team.name + index + "das"}>
-                                <IonItem color="none" lines="none">
-                                    <IonBadge color={team.players.length / props.max === 1 ? "danger" : "primary"} mode="ios">
-                                        <h5>{team.players.length}/{props.max}</h5>
-                                    </IonBadge>
+                            <IonItem detail lines="none" color={team.name === props.joinedTeam ? "secondary" : "primary"} button onClick={() => props.showThisTeam(team.name)} key={team.name + index + "das"}>
+                                <IonLabel color={team.players.length / props.max === 1 && "danger" || "light"} >
+                                    <h5>{team.players.length}/{props.max}</h5>
+                                </IonLabel>
 
-                                </IonItem>
 
                                 <h1>
                                     {team.name}

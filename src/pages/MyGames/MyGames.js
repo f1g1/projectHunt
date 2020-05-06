@@ -1,19 +1,19 @@
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonHeader, IonItem, IonLabel, IonList, IonPage, IonRow, IonTitle, IonToolbar } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 
-import { GamesService } from "../../services/GameService";
+import { GameService } from "../../services/GameService";
 import { LobbyService } from "../../services/LobbyService";
 
 export default function MyGames(props) {
   const [games, setgames] = useState();
   useEffect(() => {
-    GamesService.getMyGames().then(x => setgames(x));
+    GameService.getMyGames().then(x => setgames(x));
 
   }, [])
   console.log(games);
 
   const handleDelete = (id) => {
-    GamesService.deleteGame(id).then(() => {
+    GameService.deleteGame(id).then(() => {
       let filtered = games.filter(x => x.gameId !== id);
       debugger;
       setgames(filtered);

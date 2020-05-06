@@ -1,5 +1,7 @@
 import React, { createContext, useReducer } from "react";
 
+import { GameService } from "./services/GameService";
+
 let AppContext = createContext();
 
 // const initialState = {
@@ -55,6 +57,8 @@ const initialState = {
 // };
 
 let reducer = (state, action) => {
+
+
     switch (action.type) {
 
         case "setGame": {
@@ -144,6 +148,7 @@ const logger = reducer => {
             "color: #47B04B; font-weight: 700;",
             reducer(state, action)
         );
+        GameService.saveToLocal(reducer(state, action));
         return reducer(state, action);
     };
     return reducerWithLogger;

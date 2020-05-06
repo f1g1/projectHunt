@@ -4,24 +4,31 @@ import { IonButton, IonButtons, IonCard, IonCardContent, IonCol, IonContent, Ion
 import React, { useEffect, useState } from "react";
 
 import ChatBoard from "../../components/Chat/ChatBoard/ChatBoard";
+import LobbyPlayers from "./LobbyPlayers";
 import { LobbyService } from "../../services/LobbyService";
 import MapWithLocation from "../../components/Map/Map";
 import TeamPanel from "./TeamPanel";
 import TeamsContainer from "./TeamsContainer";
 import { UserService } from "../../services/UserSerivce";
+import useGameChanges from "../../services/CustomHooks/useGameChanges";
 import useTeamChanges from "../../services/CustomHooks/useTeamChanges";
 
 export default function Lobby(props) {
+  const lobbyChanging = useGameChanges(LobbyService.getCurrentLobby())
   const [lobby, setLobby] = useState()
   const [joinedTeam, setJoinedTeam] = useState()
   const teams = useTeamChanges(props.location.lobbyId)
   const [currentTeamDetails, setcurrentTeamDetails] = useState();
   const [showChatModal, setShowChatModal] = useState(false)
+  const [showPlayersModal, setShowPlayersModal] = useState(false)
 
   const showThisTeam = (name) => {
     setcurrentTeamDetails(teams.filter(x => x.name === name)[0])
   }
 
+  useEffect(() => {
+    setLobby(lobbyChanging);
+  }, [lobbyChanging])
   const passGameStarted = () => {
     if (lobby && lobby.startTime && joinedTeam)
       props.history.push({ pathname: "/play", lobby });
@@ -29,17 +36,9 @@ export default function Lobby(props) {
 
   useEffect(() => {
     passGameStarted()
-
   }, [lobby])
 
-  useEffect(() => {
-    LobbyService.setLobby(props.location.lobbyId)
-    LobbyService.getLobby(props.location.lobbyId || LobbyService.getCurrentLobby())
-      .then(x => {
-        setLobby(x);
 
-      });
-  }, [])
   useEffect(() => {
     currentTeamDetails && setcurrentTeamDetails(teams.filter(x => x.name === currentTeamDetails.name)[0])
     if (!joinedTeam) {
@@ -87,11 +86,11 @@ export default function Lobby(props) {
           <IonContent >
             <IonGrid >
               <IonRow fixed>
-                <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12" offsetXl="1.5" >
+                <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12" >
                   <TeamsContainer teams={teams} max={lobby.maxPlayers} showThisTeam={showThisTeam} addPlayer joinedTeam={joinedTeam}></TeamsContainer>
                 </IonCol>
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12" key="2">
-                  {currentTeamDetails && <TeamPanel team={currentTeamDetails} max={lobby.maxPlayers} leaveTeam={leaveTeam} canJoin={joinedTeam} joinTeam={joinTeam}></TeamPanel>}
+                  {currentTeamDetails && <TeamPanel team={currentTeamDetails} max={lobby.maxPlayers} game={lobby} leaveTeam={leaveTeam} canJoin={joinedTeam} joinTeam={joinTeam}></TeamPanel>}
                 </IonCol>
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12">
                   <IonCard>
@@ -122,6 +121,7 @@ export default function Lobby(props) {
                     </IonCardContent>
                   </IonCard>
                 </IonCol>
+                <IonCol sizeXl="30"></IonCol>
               </IonRow>
             </IonGrid>
           </IonContent>
@@ -133,6 +133,9 @@ export default function Lobby(props) {
                 <IonButton full onClick={() => setShowChatModal(true)}>
                   Chat
                 </IonButton>
+                <IonButton full onClick={() => setShowPlayersModal(true)}>
+                  Players ({lobby.players.length})
+                </IonButton>
               </IonButtons>
             </IonToolbar>
           </IonFooter>
@@ -141,7 +144,15 @@ export default function Lobby(props) {
           isOpen={lobby}
           message={'Please wait...'}
           duration={5000} />}
-
+      <IonModal
+        isOpen={showPlayersModal}
+        onDidDismiss={() => setShowPlayersModal(false)}
+      >
+        <LobbyPlayers
+          game={lobby}
+          handleClose={() => setShowPlayersModal(false)}
+        />
+      </IonModal>
       <IonModal
         isOpen={showChatModal}
         onDidDismiss={() => setShowChatModal(false)}

@@ -12,8 +12,8 @@ export default function useGameChanges(lobby) {
             .collection("lobbies")
             .doc(lobby || LobbyService.getCurrentLobby())
             .onSnapshot(function (snapshot) {
-                game = snapshot.data();
-                setGame(game)
+                // game = snapshot.data();
+                setGame(snapshot.data())
             });
 
         return () => {

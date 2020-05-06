@@ -2,12 +2,26 @@ import MediaService from "./MediaService";
 import { UserService } from "./UserSerivce";
 import { fireStore } from "../firebase";
 
-export const GamesService = {
+export const GameService = {
   getMyGames,
   saveGame,
-  deleteGame
+  deleteGame,
+  saveToLocal
 };
 
+function saveToLocal(game) {
+  window.localStorage["cratingGame"] = JSON.stringify(game);
+}
+function getFromLocal() {
+  let result;
+  try {
+    result = JSON.parse(window.localStorage["cratingGame"])
+
+  }
+  finally {
+    return result;
+  }
+}
 
 function saveGame(state) {
   let objToUpdate = { ...state };

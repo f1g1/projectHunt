@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import CardList from "../../components/CreateComponents/Cards/CardList";
 import { AppContext as CreateGameContext } from "../../StateCreateGame";
 import GameInformations from "../../components/CreateComponents/Cards/GameInformations";
-import { GamesService } from "../../services/GameService";
+import { GameService } from "../../services/GameService";
 import MiscService from "../../services/MiscService";
 
 const Create = (props) => {
@@ -30,7 +30,7 @@ const Create = (props) => {
   const saveGame = () => {
     let errors = validateGame(state)
     if (errors.length === 0)
-      GamesService.saveGame(state)
+      GameService.saveGame(state)
     else {
       setErrorToast(errors);
 
@@ -43,6 +43,9 @@ const Create = (props) => {
       errors += "Title can't be less than 3 characters long.";
     if (!game.steps || game.steps.length < 1)
       errors += "\nCan't create a game without any challenges in it."
+    if (!game.password || game.password < 3)
+      errors += "\nYou need to set an entry code for your game"
+
     return errors;
   }
 

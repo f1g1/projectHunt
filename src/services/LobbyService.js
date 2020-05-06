@@ -22,8 +22,68 @@ export const LobbyService = {
     getCurrentTeam,
     setCurrentTeam,
     startGame,
+    ImAdmin,
+    joinLobby,
+    mutePlayer,
+    unmutePlayer,
+    banPlayer,
+    unbanPlayer
+
 
 };
+function unbanPlayer(player, lobbyId) {
+    fireStore
+        .collection("lobbies")
+        .doc(lobbyId)
+        .update({
+            "banned": firebase.firestore.FieldValue.arrayRemove(player)
+        })
+}
+
+
+function banPlayer(player, lobbyId) {
+    fireStore
+        .collection("lobbies")
+        .doc(lobbyId)
+        .update({
+            "banned": firebase.firestore.FieldValue.arrayUnion(player)
+        })
+}
+
+
+
+function unmutePlayer(player, lobbyId) {
+    fireStore
+        .collection("lobbies")
+        .doc(lobbyId)
+        .update({
+            "muted": firebase.firestore.FieldValue.arrayRemove(player)
+        })
+}
+
+
+function mutePlayer(player, lobbyId) {
+    fireStore
+        .collection("lobbies")
+        .doc(lobbyId)
+        .update({
+            "muted": firebase.firestore.FieldValue.arrayUnion(player)
+        })
+}
+
+function joinLobby(lobby) {
+    fireStore
+        .collection("lobbies")
+        .doc(lobby)
+        .update({
+            "players": firebase.firestore.FieldValue.arrayUnion(UserService.getCurrentPlayer().name)
+        })
+}
+
+function ImAdmin(lobby) {
+    return lobby && UserService.getCurrentPlayer().name === lobby.owner;
+}
+
 function startGame(lobbyId) {
     fireStore.collection("lobbies").doc(lobbyId).set({
         startTime: firebase.firestore.FieldValue.serverTimestamp()
@@ -87,7 +147,12 @@ function leaveLobby() {
                     window.localStorage.removeItem("joinedTeam")
                 }
             )
+    fireStore
+        .collection("lobbies")
+        .doc(LobbyService.getCurrentLobby()).update({
+            players: firebase.firestore.FieldValue.arrayUnion(UserService.getCurrentPlayer().name)
 
+        })
     return res
 }
 function postLobby(game) {
@@ -125,14 +190,17 @@ function deleteLobby(id) {
         .doc(id)
     lobbyRef.delete();
 }
-async function getLobbies() {
+
+async function getLobbies(password) {
     const snapshot = await fireStore
-        .collection("lobbies").get();
+        .collection("lobbies")
+        .where("password", "==", password)
+        .get();
     return snapshot.docs.map(doc => {
         return { ...doc.data(), lobbyId: doc.id }
     });
 }
 
-function setLobby(lobby) {
-    window.localStorage["currentLobby"] = lobby;
+function setLobby(lobbyId) {
+    window.localStorage["currentLobby"] = lobbyId;
 }
