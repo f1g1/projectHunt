@@ -25,6 +25,7 @@ import {
 import React, { useEffect, useState } from "react";
 
 import { LobbyService } from "../../services/LobbyService";
+import { UserService } from "../../services/UserSerivce";
 import moment from "moment";
 
 export default function LobbySearch(props) {
@@ -121,12 +122,25 @@ export default function LobbySearch(props) {
                             <IonRow>
                               <IonCol size="12">
                                 <IonItem>
-                                  <IonButton
-                                    size="default"
-                                    onClick={() => joinLobby(x)}
-                                  >
-                                    Join Lobby!
-                                  </IonButton>
+                                  {console.log(
+                                    x.banned,
+                                    UserService.getCurrentPlayer().name
+                                  )}
+
+                                  {x.banned.includes(
+                                    UserService.getCurrentPlayer().name
+                                  ) ? (
+                                    <IonLabel color="danger">
+                                      You have been banned on this lobby!
+                                    </IonLabel>
+                                  ) : (
+                                    <IonButton
+                                      size="default"
+                                      onClick={() => joinLobby(x)}
+                                    >
+                                      Join Lobby!
+                                    </IonButton>
+                                  )}
                                 </IonItem>
                               </IonCol>
                               <IonCol size="12" className="ion-padding-start">

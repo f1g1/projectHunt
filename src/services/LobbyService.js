@@ -24,6 +24,7 @@ export const LobbyService = {
   startGame,
   ImAdmin,
   joinLobby,
+  kickLobby,
   mutePlayer,
   unmutePlayer,
   banPlayer,
@@ -155,30 +156,34 @@ function playerJoinTeam(lobby, team, playerName) {
       players: firebase.firestore.FieldValue.arrayUnion(playerName),
     });
 }
-function leaveLobby(username) {
-  debugger;
-  let res;
-  if (getCurrentTeam())
-    res = fireStore
+function leaveLobby(username, team) {
+  let res = kickLobby(username, team);
+  res.then(() => {
+    window.localStorage.removeItem("currentLobby");
+    window.localStorage.removeItem("joinedTeam");
+  });
+  return res;
+}
+function kickLobby(username, team) {
+  try {
+    fireStore
       .collection("lobbies")
       .doc(LobbyService.getCurrentLobby())
       .collection("teams")
-      .doc(window.localStorage["joinedTeam"])
+      .doc(team)
       .update({
         players: firebase.firestore.FieldValue.arrayRemove(username),
-      })
-      .then(() => {
-        window.localStorage.removeItem("currentLobby");
-        window.localStorage.removeItem("joinedTeam");
       });
-  return fireStore
-    .collection("lobbies")
-    .doc(LobbyService.getCurrentLobby())
-    .update({
-      players: firebase.firestore.FieldValue.arrayRemove(username),
-    });
-  return res;
+  } finally {
+    return fireStore
+      .collection("lobbies")
+      .doc(LobbyService.getCurrentLobby())
+      .update({
+        players: firebase.firestore.FieldValue.arrayRemove(username),
+      });
+  }
 }
+
 function postLobby(game) {
   var lobbyRef = fireStore.collection("lobbies");
   return lobbyRef.add({ ...game, lobbyCreatedDate: Date.now() });

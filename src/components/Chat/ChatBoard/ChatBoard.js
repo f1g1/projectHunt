@@ -242,23 +242,30 @@ export default class ChatBoard extends Component {
           // Item right (my message)
           if (item.type === 0) {
             viewListMessage.push(
-              <div className="viewItemRight" key={item.timestamp}>
-                <span className="textContentItem">{item.content}</span>
-              </div>
+              <>
+                <div className="viewItemRight" key={item.timestamp + "r"}>
+                  <span className="textContentItem">{item.content}</span>
+                </div>
+                <span className="textTimeRight" key={item.timestamp + "s"}>
+                  {moment(Number(item.timestamp)).format("DD/MM hh:mm")}
+                </span>
+              </>
             );
           } else if (item.type === 1) {
             viewListMessage.push(
-              <div className="viewItemRight2" key={item.timestamp}>
-                <IonImg
-                  className="imgItemRight"
-                  src={item.content}
-                  alt="content message"
-                  onClick={() => PhotoViewer.show(item.content)}
-                />
-                <span>
+              <>
+                <div className="viewItemRight2" key={(item.timestamp = "r1")}>
+                  <IonImg
+                    className="imgItemRight"
+                    src={item.content}
+                    alt="content message"
+                    onClick={() => PhotoViewer.show(item.content)}
+                  />
+                </div>
+                <span className="textTimeRight" key={item.timestamp + "s1"}>
                   {moment(Number(item.timestamp)).format("DD/MM hh:mm")}
                 </span>
-              </div>
+              </>
             );
           }
         } else {
@@ -267,7 +274,7 @@ export default class ChatBoard extends Component {
             viewListMessage.push(
               <div
                 className="viewWrapItemLeft ion-padding-bottom"
-                key={item.timestamp}
+                key={item.timestamp + "l"}
               >
                 {this.props.owner === item.idFrom ? (
                   <IonBadge color="danger">Admin</IonBadge>
@@ -287,15 +294,15 @@ export default class ChatBoard extends Component {
             );
           } else if (item.type === 1) {
             viewListMessage.push(
-              <div className="viewWrapItemLeft2" key={item.timestamp}>
-                {this.props.owner === item.idFrom ? (
-                  <IonBadge color="danger">Admin</IonBadge>
-                ) : (
-                  <IonBadge color="primary">
-                    {this.getPlayerTeam(item.idFrom)}
-                  </IonBadge>
-                )}
-                <div className="viewWrapItemLeft3">
+              <>
+                <div className="viewWrapItemLeft2" key={item.timestamp + "l1"}>
+                  {this.props.owner === item.idFrom ? (
+                    <IonBadge color="danger">Admin</IonBadge>
+                  ) : (
+                    <IonBadge color="primary">
+                      {this.getPlayerTeam(item.idFrom)}
+                    </IonBadge>
+                  )}
                   <div className="viewItemLeft2">
                     <IonImg
                       className="imgItemLeft"
@@ -304,14 +311,12 @@ export default class ChatBoard extends Component {
                       onClick={() => PhotoViewer.show(item.content)}
                     />
                   </div>
-
                   <span className="textTimeLeft">
-                    {item.idFrom}
-                    <br />
+                    {item.idFrom}{" "}
                     {moment(Number(item.timestamp)).format("DD/MM hh:mm")}
                   </span>
                 </div>
-              </div>
+              </>
             );
           }
         }

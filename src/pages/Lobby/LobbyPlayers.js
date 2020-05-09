@@ -5,9 +5,9 @@ import {
   IonHeader,
   IonInput,
   IonItem,
+  IonItemDivider,
   IonLabel,
   IonList,
-  IonListHeader,
   IonRow,
   IonTitle,
   IonToolbar,
@@ -33,7 +33,7 @@ export default function LobbyPlayers(props) {
     }
   }, [searchString, props.game]);
   return (
-    <div>
+    <>
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons style={{ display: "inline-block" }}>
@@ -56,7 +56,9 @@ export default function LobbyPlayers(props) {
       <IonRow style={{ height: "100%" }}>
         <IonCol offsetXl="1" sizeXl="10" size="12">
           <IonList>
-            <IonListHeader>Players:</IonListHeader>
+            <IonTitle className="ion-no-padding ion-padding-vertical">
+              Players:
+            </IonTitle>
             {filtered.map((x) => (
               <PlayerTag
                 playerName={x}
@@ -65,11 +67,13 @@ export default function LobbyPlayers(props) {
                 handleKick={props.handleKick}
                 teams={props.teams}
                 advanced
+                handleBan={props.handleBan}
               />
             ))}
           </IonList>
         </IonCol>
       </IonRow>
+      <IonItemDivider />
       <IonRow>
         <IonCol offsetXl="2" sizeXl="8">
           <IonItem>
@@ -82,6 +86,6 @@ export default function LobbyPlayers(props) {
           </IonItem>
         </IonCol>
       </IonRow>
-    </div>
+    </>
   );
 }

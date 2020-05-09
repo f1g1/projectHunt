@@ -51,8 +51,10 @@ export default function Lobby(props) {
       lobbyChanging &&
       lobbyChanging.players.includes(UserService.getCurrentPlayer().name);
 
-    if (lobbyChanging && !ImInLobby) props.history.go(-1);
-
+    if (lobbyChanging && !ImInLobby) {
+      props.history.go(-1);
+      LobbyService.setLobby();
+    }
     setLobby(lobbyChanging);
   }, [lobbyChanging]);
   const passGameStarted = () => {
@@ -65,8 +67,19 @@ export default function Lobby(props) {
   }, [lobby]);
 
   const handleKick = (username) => {
-    LobbyService.leaveLobby(username);
+    let team = teams.find((x) => x.name === currentTeamDetails.name).name;
+    LobbyService.kickLobby(username, team);
   };
+
+  const handleBan = (username) => {
+    console.log("banned!!!@!#!@");
+    let team = teams.find((x) => x.name === currentTeamDetails.name).name;
+    LobbyService.kickLobby(username, team);
+    LobbyService.banPlayer(username, LobbyService.getCurrentLobby());
+  };
+  useEffect(() => {
+    LobbyService.setCurrentTeam(joinedTeam);
+  }, [joinedTeam]);
 
   useEffect(() => {
     currentTeamDetails &&
@@ -81,20 +94,26 @@ export default function Lobby(props) {
         LobbyService.setCurrentTeam(joined[0].name);
         setJoinedTeam(joined[0].name);
       }
+    } else {
+      setJoinedTeam();
     }
   }, [teams]);
   let startGame = () => {
     LobbyService.startGame(lobby.id);
   };
   const leaveLobby = () => {
-    LobbyService.leaveLobby(UserService.getCurrentPlayer().name);
+    LobbyService.leaveLobby(
+      UserService.getCurrentPlayer().name,
+      currentTeamDetails.name
+    );
   };
   const joinTeam = (team) => {
+    debugger;
     LobbyService.playerJoinTeam(
       LobbyService.getCurrentLobby(),
       team,
       UserService.getCurrentPlayer().name
-    ).then(() => setJoinedTeam(false));
+    ).then(() => setJoinedTeam(team));
   };
   const leaveTeam = (lobby, player, team) => {
     LobbyService.leaveTeam(
@@ -102,7 +121,7 @@ export default function Lobby(props) {
       team.name,
       player,
       team.players.length
-    ).then(() => setJoinedTeam(false));
+    ).then(() => setJoinedTeam());
   };
 
   return (
@@ -181,6 +200,7 @@ export default function Lobby(props) {
                     handleKick={handleKick}
                     leaveTeam={leaveTeam}
                     joinTeam={joinTeam}
+                    handleBan={handleBan}
                   ></TeamsContainer>
                 </IonCol>
 
@@ -218,6 +238,7 @@ export default function Lobby(props) {
           game={lobby}
           handleClose={() => setShowPlayersModal(false)}
           handleKick={handleKick}
+          handleBan={handleBan}
           teams={teams}
         />
       </IonModal>

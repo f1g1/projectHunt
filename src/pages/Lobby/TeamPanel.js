@@ -14,7 +14,7 @@ export default function TeamPanel(props) {
       {props.team && (
         <>
           {props.team.players.map((x, index) => (
-            <IonRow>
+            <IonRow key={x}>
               <IonCol>
                 <PlayerTag
                   handleKick={props.handleKick}
@@ -22,6 +22,7 @@ export default function TeamPanel(props) {
                   playerName={props.team.players[index]}
                   game={props.game}
                   key={props.team.players[index]}
+                  handleBan={props.handleBan}
                 />
               </IonCol>
             </IonRow>

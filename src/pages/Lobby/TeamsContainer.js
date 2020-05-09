@@ -88,6 +88,7 @@ export default function TeamsContainer(props) {
                         canJoin={props.joinedTeam}
                         joinTeam={props.joinTeam}
                         isAdmin={LobbyService.ImAdmin(props.lobby)}
+                        handleBan={props.handleBan}
                       ></TeamPanel>
                     )}
                   <IonItemDivider key={team.name + index} />

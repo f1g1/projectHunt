@@ -39,6 +39,7 @@ export default function PlayerTag(props) {
     return UserService.getCurrentPlayer().name === props.playerName;
   };
   const changeTeam = (oldTeam, newTeam) => {
+    debugger;
     let players =
       oldTeam && props.teams.find((x) => x.name == oldTeam).players.length;
     oldTeam &&
@@ -47,7 +48,8 @@ export default function PlayerTag(props) {
         oldTeam,
         props.playerName
       );
-    newTeam &&
+    props.playerName &&
+      newTeam &&
       LobbyService.playerJoinTeam(
         LobbyService.getCurrentLobby(),
         newTeam,
@@ -140,7 +142,7 @@ export default function PlayerTag(props) {
                         Mute
                       </MenuItem>
                     )}
-                    <MenuItem onClick={handleClose}>
+                    <MenuItem onClick={() => props.handleBan(props.playerName)}>
                       <IonLabel color="danger">
                         <BlockIcon />
                         Ban

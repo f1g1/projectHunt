@@ -43,7 +43,7 @@
     "ionic-img-viewer": "^2.9.0",
     "ionicons": "^4.6.3",
     "moment": "^2.24.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "phonegap-plugin-barcodescanner": "^8.1.0",
     "phonegap-plugin-multidex": "^1.0.0",
     "phonegap-plugin-push": "^2.3.0",
