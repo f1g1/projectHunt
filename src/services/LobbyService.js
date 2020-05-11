@@ -1,6 +1,6 @@
-import { UserService } from "./UserSerivce";
-import { fireStore } from "../firebase";
 import firebase from "firebase";
+import { fireStore } from "../firebase";
+import { UserService } from "./UserSerivce";
 
 export const VISIBILITY = {
   public: "public",

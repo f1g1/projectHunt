@@ -99,12 +99,12 @@ export default function Lobby(props) {
     }
   }, [teams]);
   let startGame = () => {
-    LobbyService.startGame(lobby.id);
+    LobbyService.startGame(LobbyService.getCurrentLobby());
   };
   const leaveLobby = () => {
     LobbyService.leaveLobby(
       UserService.getCurrentPlayer().name,
-      currentTeamDetails.name
+      currentTeamDetails && currentTeamDetails.name
     );
   };
   const joinTeam = (team) => {
