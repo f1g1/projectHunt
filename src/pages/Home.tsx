@@ -1,5 +1,6 @@
-import { Plugins } from "@capacitor/core";
 import "@codetrix-studio/capacitor-google-auth";
+import "./Login.css";
+
 import {
   IonButton,
   IonCol,
@@ -8,13 +9,12 @@ import {
   IonList,
   IonPage,
   IonRow,
-  IonText,
-  IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import React, { Component } from "react";
+
+import { Plugins } from "@capacitor/core";
 import { UserService } from "../services/UserSerivce";
-import "./Login.css";
 
 const INITIAL_STATE = {
   loggedIn: true,
@@ -47,69 +47,29 @@ class Home extends Component {
     return (
       <IonPage>
         <IonHeader>
-          <IonToolbar color="primary">
-            <IonTitle>Logged in ... </IonTitle>
-          </IonToolbar>
+          <IonToolbar color="primary"></IonToolbar>
         </IonHeader>
         <IonContent className="ion-padding">
           <IonRow>
             <IonCol className="text-center">
-              <IonText className="title">
-                You are logged in {UserService.getCurrentPlayer().name}!
-              </IonText>
+              <img
+                style={{ width: "200px", height: "200px" }}
+                src={require("../resources/logo.png")}
+              />
             </IonCol>
           </IonRow>
-          <IonButton
-            className="login-button"
-            onClick={() => this.signOut()}
-            expand="full"
-            fill="solid"
-            color="danger"
-          >
-            Logout from Google
-          </IonButton>
-          <IonList>
+
+          <IonList style={{ marginTop: "10vh" }}>
             <IonButton
-              onClick={(e) => {
-                e.preventDefault();
-                this.props.history.push({ pathname: "/game", state: "t" });
+              style={{
+                minHeight: "100px",
+                marginBottom: "30px",
+                fontWeight: "bold",
+                fontSize: "2.5em",
+                mode: "ios",
               }}
-            >
-              GO TO CREATE
-            </IonButton>
-            <IonButton
-              onClick={(e) => {
-                e.preventDefault();
-                this.props.history.push({ pathname: "/test", state: "t " });
-              }}
-            >
-              GO TO Test
-            </IonButton>
-            <IonButton
-              onClick={(e) => {
-                e.preventDefault();
-                this.props.history.push({ pathname: "/chat", state: "t " });
-              }}
-            >
-              GO TO chat
-            </IonButton>
-            <IonButton
-              onClick={(e) => {
-                e.preventDefault();
-                this.props.history.push({ pathname: "/myGames", state: "t " });
-              }}
-            >
-              GO TO my games
-            </IonButton>
-            <IonButton
-              onClick={(e) => {
-                e.preventDefault();
-                this.props.history.push({ pathname: "/lobby", state: "t " });
-              }}
-            >
-              GO TO Lobby
-            </IonButton>
-            <IonButton
+              expand="full"
+              color="primary"
               onClick={(e) => {
                 e.preventDefault();
                 this.props.history.push({
@@ -118,27 +78,58 @@ class Home extends Component {
                 });
               }}
             >
-              GO TO Lobby search
+              Play!
             </IonButton>
             <IonButton
+              expand="full"
+              style={{
+                minHeight: "50px",
+                marginBottom: "15px",
+                fontWeight: "bold",
+                fontSize: "1.5em",
+                mode: "ios",
+              }}
+              color="secondary"
               onClick={(e) => {
                 e.preventDefault();
-                this.props.history.push({ pathname: "/Tab1", state: "t " });
+                this.props.history.push({ pathname: "/game", state: "t " });
               }}
             >
-              QR
+              New hunt!
+            </IonButton>
+            <IonButton
+              style={{
+                minHeight: "50px",
+                marginBottom: "15px",
+                fontWeight: "bold",
+                fontSize: "1.5em",
+                mode: "ios",
+              }}
+              expand="full"
+              color="secondary"
+              onClick={(e) => {
+                e.preventDefault();
+                this.props.history.push({ pathname: "/myGames", state: "t " });
+              }}
+            >
+              My Hunts!
             </IonButton>
 
             <IonButton
-              onClick={(e) => {
-                e.preventDefault();
-                this.props.history.push({
-                  pathname: "/gameDashboard",
-                  state: "",
-                });
+              style={{
+                minHeight: "50px",
+                marginTop: "30px",
+                fontWeight: "bold",
+                fontSize: "1.5em",
+                mode: "ios",
               }}
+              className="login-button"
+              onClick={() => this.signOut()}
+              expand="full"
+              fill="solid"
+              color="danger"
             >
-              Dashboard
+              Logout!
             </IonButton>
           </IonList>
         </IonContent>

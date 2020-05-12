@@ -252,7 +252,9 @@ export default function Lobby(props) {
           gameChatId={LobbyService.getCurrentLobby()}
           handleClose={() => setShowChatModal(false)}
           muted={
-            lobby && lobby.muted.includes(UserService.getCurrentPlayer().name)
+            lobby &&
+            lobby.muted &&
+            lobby.muted.includes(UserService.getCurrentPlayer().name)
           }
         />
       </IonModal>

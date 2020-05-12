@@ -74,11 +74,11 @@ export default function LobbySearch(props) {
           <IonButtons style={{ display: "inline-block" }}>
             <IonBackButton defaultHref="/home"></IonBackButton>
           </IonButtons>
-          <h1 style={{ display: "inline-block" }}>Search Lobby...</h1>
+          <h1 style={{ display: "inline-block" }}>Search Game...</h1>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonRow>
+        <IonRow style={{ marginTop: "5%" }}>
           <IonCol sizeXl="5" sizeSm="12" offsetXl="3.5">
             <IonCard color="light">
               <IonCardContent>
@@ -122,12 +122,8 @@ export default function LobbySearch(props) {
                             <IonRow>
                               <IonCol size="12">
                                 <IonItem>
-                                  {console.log(
-                                    x.banned,
-                                    UserService.getCurrentPlayer().name
-                                  )}
-
-                                  {x.banned.includes(
+                                  {x.banned &&
+                                  x.banned.includes(
                                     UserService.getCurrentPlayer().name
                                   ) ? (
                                     <IonLabel color="danger">

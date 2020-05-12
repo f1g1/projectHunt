@@ -11,8 +11,6 @@ import {
   IonImg,
   IonPage,
   IonRow,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/react";
 import React, { useContext, useEffect } from "react";
 
@@ -79,11 +77,7 @@ const Login = (props) => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>Ionic React App</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <IonHeader></IonHeader>
       <IonContent className="ion-padding">
         <IonRow>
           <IonCol className="text-center">
@@ -92,11 +86,18 @@ const Login = (props) => {
         </IonRow>
 
         <IonButton
+          style={{
+            minHeight: "50px",
+            marginBottom: "30px",
+            fontWeight: "bold",
+            fontSize: "1em",
+            mode: "ios",
+          }}
           className="login-button"
           onClick={() => signIn()}
           expand="block"
           fill="solid"
-          color="danger"
+          color="primary"
         >
           Login with Google
         </IonButton>
