@@ -108,14 +108,16 @@ export default function LobbySearch(props) {
                       <IonGrid>
                         <IonRow>
                           <IonCol size="4">
-                            <img
-                              src={
-                                x.image
-                                  ? x.image
-                                  : require("../../resources/placeholder.png")
-                              }
-                              style={{ maxWidth: "250px", height: "120px" }}
-                            ></img>
+                            {x.image ? (
+                              <img
+                                src={x.image}
+                                style={{ maxWidth: "250px", height: "120px" }}
+                              ></img>
+                            ) : (
+                              <IonLabel>
+                                <p>no Image</p>
+                              </IonLabel>
+                            )}
                           </IonCol>
 
                           <IonCol size="8" className="ion-no-padding">
