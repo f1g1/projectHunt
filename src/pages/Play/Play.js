@@ -1,5 +1,7 @@
+import "./Play.scss";
+
 import {
-  IonBackButton,
+  IonAlert,
   IonButton,
   IonButtons,
   IonContent,
@@ -14,6 +16,7 @@ import React, { useEffect, useState } from "react";
 import ChatBoard from "../../components/Chat/ChatBoard/ChatBoard";
 import ClueList from "./ClueList";
 import Dashboard from "../GameDashobard/Dashboard";
+import { DashboardService } from "../../services/DashboardService";
 import GameMap from "./GameMap/GameMap";
 import LeaderBoard from "./LeaderBoard";
 import { LobbyService } from "../../services/LobbyService";
@@ -28,12 +31,14 @@ export default function Play(props) {
   const [showMap, setShowMap] = useState(false);
   const [geolocation, setGeolocation] = useState({ latitude: 0, longitude: 0 });
   const [game, setGame] = useState();
+  const [showAlert1, setShowAlert1] = useState(false);
 
   const teams = useTeamChanges();
   const gameChanging = useGameChanges();
 
   useEffect(() => {
     MiscService.getCachedGeolocation().then((x) => setGeolocation(x));
+    PlayService.setActiveGame(LobbyService.getCurrentLobby());
   }, []);
 
   useEffect(() => {
@@ -41,6 +46,10 @@ export default function Play(props) {
     PlayService.setGame(gameChanging || {});
     setGame(gameChanging);
   }, [gameChanging]);
+
+  const closeGame = () => {
+    DashboardService.closeGame(LobbyService.getCurrentLobby());
+  };
 
   return (
     <IonPage>
@@ -50,15 +59,21 @@ export default function Play(props) {
             <IonToolbar
               color={LobbyService.ImAdmin(game) ? "tertiary" : "primary"}
             >
-              <IonButtons style={{ display: "inline-block" }}>
+              {/* <IonButtons style={{ display: "inline-block" }}>
                 <IonBackButton defaultHref="/home"></IonBackButton>
-              </IonButtons>
-              <h1 style={{ display: "inline-block" }}>{game.title}</h1>
+              </IonButtons> */}
+              <h1
+                style={{ display: "inline-block" }}
+                className="ion-padding-horizontal"
+              >
+                {game.title}
+              </h1>
             </IonToolbar>
           </IonHeader>
           <IonContent>
             {teams.length > 0 &&
               game !== {} &&
+              game &&
               (!LobbyService.ImAdmin(game) ? (
                 <ClueList game={game} teams={teams} />
               ) : (
@@ -75,11 +90,44 @@ export default function Play(props) {
                   LeaderBoard
                 </IonButton>
                 <IonButton onClick={() => setShowMap(true)}>Map</IonButton>
+                {LobbyService.ImAdmin(game) && (
+                  <IonButton
+                    color="danger"
+                    slot="block"
+                    onClick={setShowAlert1}
+                    onClick={() => setShowAlert1(true)}
+                  >
+                    Close Game!
+                  </IonButton>
+                )}
               </IonButtons>
             </IonToolbar>
           </IonFooter>
         </>
       )}
+
+      <IonAlert
+        isOpen={showAlert1}
+        onDidDismiss={() => setShowAlert1(false)}
+        header={"You are going to close the game!"}
+        subHeader={""}
+        message={
+          "A game once closed can't be opened again, and all the scored and the leaderboard will remain like that, are you sure you want to proceed?"
+        }
+        buttons={[
+          {
+            text: "Cancel!",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "Ok!",
+            handler: () => {
+              closeGame();
+            },
+          },
+        ]}
+      />
       <IonModal
         isOpen={showChatModal}
         onDidDismiss={() => setShowChatModal(false)}

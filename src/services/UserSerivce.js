@@ -21,14 +21,14 @@ function checkUserName(username) {
 function logout() {
   window.localStorage.clear("user");
 }
-function getUserFirebase(email) {
-  return fireStore.collection("users").doc(email).get();
+function getUserFirebase(username) {
+  return fireStore.collection("users").doc(username).get();
 }
 function SaveNewUser(user) {
   window.localStorage["user"] = JSON.stringify({
     ...user,
   });
-  return fireStore.collection("users").doc(user.email).set(user);
+  return fireStore.collection("users").doc(user.userName).set(user);
 }
 
 function getCurrentUser() {
@@ -36,7 +36,7 @@ function getCurrentUser() {
 }
 
 function checkNewUser(user) {
-  let ref = fireStore.collection("users").doc(user.email);
+  let ref = fireStore.collection("users").doc(user.userName);
 
   return ref.get().then((x) => {
     if (x.exists && x.data().username) {

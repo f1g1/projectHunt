@@ -15,13 +15,13 @@ export default function CardList(props) {
   const [showBeginModal, setShowBeginModal] = useState(false);
   const [showEndModal, setShowEndModal] = useState(false);
   const [showInnerCardModal, setShowAddCardModal] = useState(false);
-  const [edit, setEdit] = useState()
+  const [edit, setEdit] = useState();
   const saveStart = (lat, lng, radius) => {
     dispatch({
       type: "setStartCoords",
       lat,
       lng,
-      radius
+      radius,
     });
   };
   const saveFinish = (lat, lng, radius) => {
@@ -29,14 +29,14 @@ export default function CardList(props) {
       type: "setFinishCoords",
       lat,
       lng,
-      radius
+      radius,
     });
   };
 
   const handleEditStep = (step) => {
     setEdit(step);
     setShowAddCardModal(true);
-  }
+  };
 
   const handleClose = () => {
     setShowBeginModal(false);
@@ -47,7 +47,7 @@ export default function CardList(props) {
   const handleCloseModalCreate = () => {
     setEdit();
     setShowAddCardModal(false);
-  }
+  };
 
   return (
     <>
@@ -55,11 +55,13 @@ export default function CardList(props) {
         <IonCol>
           <MarginCard
             title="Start location"
-            coords={{ lat: state.startLat, lng: state.startLng, radius: state.radius }}
+            coords={{
+              lat: state.startLat,
+              lng: state.startLng,
+            }}
             openModal={() => setShowBeginModal(true)}
             lat={state.startLat}
             lng={state.startLng}
-            radius={state.startRadius}
           ></MarginCard>
         </IonCol>
       </IonRow>
@@ -73,7 +75,8 @@ export default function CardList(props) {
           <div className="arrow">
             <IonFabButton
               color="light"
-              onClick={() => setShowAddCardModal(true)}>
+              onClick={() => setShowAddCardModal(true)}
+            >
               <AddIcon></AddIcon>
             </IonFabButton>
           </div>
@@ -85,7 +88,7 @@ export default function CardList(props) {
             title="Finish location"
             coords={{
               lat: state.finishLat,
-              lng: state.finishLng
+              lng: state.finishRadiusLng,
             }}
             openModal={() => setShowEndModal(true)}
             lat={state.finishLat}
@@ -100,9 +103,12 @@ export default function CardList(props) {
       >
         {props.geolocation && (
           <ModalMap
+            noRadius={true}
             handleClose={handleClose}
             location={props.geolocation}
-            save={saveStart} />)}
+            save={saveStart}
+          />
+        )}
       </IonModal>
       <IonModal
         isOpen={showEndModal}
@@ -111,9 +117,12 @@ export default function CardList(props) {
       >
         {props.geolocation && (
           <ModalMap
+            noRadius={true}
             handleClose={handleCloseFinish}
             location={props.geolocation}
-            save={saveFinish} />)}
+            save={saveFinish}
+          />
+        )}
       </IonModal>
       <IonModal
         isOpen={showInnerCardModal}
@@ -122,8 +131,8 @@ export default function CardList(props) {
         <ModalCardCreate
           handleClose={() => handleCloseModalCreate()}
           edit={edit}
-
         ></ModalCardCreate>
       </IonModal>
-    </>)
+    </>
+  );
 }

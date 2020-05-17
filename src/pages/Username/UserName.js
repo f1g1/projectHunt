@@ -16,6 +16,7 @@ import { UserService } from "../../services/UserSerivce";
 export default function UserName(props) {
   const [name, setName] = useState();
   const [showToast, setShowToast] = useState(false);
+  const [showToast1, setShowToast1] = useState(false);
   let handleSubmit = () => {
     let userName = (name && name.trim()) || "";
     debugger;
@@ -49,6 +50,7 @@ export default function UserName(props) {
             );
           } else {
             console.log("user already exists");
+            setShowToast1(true);
           }
         })
         .catch((x) => {
@@ -84,7 +86,16 @@ export default function UserName(props) {
         position="top"
         isOpen={showToast}
         onDidDismiss={() => setShowToast(false)}
-        message="Name must be at least 3 character long and shouldn't contain ' '."
+        message="Uername must be at least 3 character long and shouldn't contain ' '."
+        duration={2000}
+      />
+
+      <IonToast
+        color="danger"
+        position="top"
+        isOpen={showToast1}
+        onDidDismiss={() => setShowToast1(false)}
+        message="Username is already taken! Please choose other username!"
         duration={2000}
       />
     </IonPage>

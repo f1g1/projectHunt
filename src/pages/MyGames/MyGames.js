@@ -27,12 +27,18 @@ export default function MyGames(props) {
   const handleDelete = (id) => {
     GameService.deleteGame(id).then(() => {
       let filtered = games.filter((x) => x.gameId !== id);
-      debugger;
       setgames(filtered);
     });
   };
   const handleEdit = (game) => {
     props.history.push({ pathname: "/game", game });
+  };
+
+  const joinLobby = (lobbyId) => {
+    LobbyService.joinLobby(lobbyId).then(() => {
+      props.history.replace({ pathname: "/lobby", lobbyId: lobbyId });
+    });
+    LobbyService.setLobby(lobbyId);
   };
 
   return (
@@ -57,12 +63,8 @@ export default function MyGames(props) {
                     <IonButton
                       size="default"
                       onClick={(e) => {
-                        LobbyService.postLobby(x).then((id) => {
-                          LobbyService.setLobby(id);
-                          props.history.push({
-                            pathname: "/lobby",
-                            lobbyId: id.id,
-                          });
+                        LobbyService.postLobby(x).then((response) => {
+                          joinLobby(response.id);
                         });
                       }}
                     >

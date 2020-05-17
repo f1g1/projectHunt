@@ -47,6 +47,12 @@ export default function Lobby(props) {
   };
 
   useEffect(() => {
+    return () => {
+      leaveLobby();
+    };
+  }, []);
+
+  useEffect(() => {
     let ImInLobby =
       lobbyChanging &&
       lobbyChanging.players.includes(UserService.getCurrentPlayer().name);
@@ -64,6 +70,7 @@ export default function Lobby(props) {
 
   useEffect(() => {
     passGameStarted();
+    // LobbyService.setLobby();
   }, [lobby]);
 
   const handleKick = (username) => {
@@ -100,24 +107,31 @@ export default function Lobby(props) {
   }, [teams]);
   let startGame = () => {
     LobbyService.startGame(LobbyService.getCurrentLobby());
+    props.history.replace("/play", lobby);
   };
   const leaveLobby = () => {
+    if (joinedTeam) {
+      leaveTeam(
+        LobbyService.getCurrentLobby(),
+        UserService.getCurrentPlayer.name,
+        teams.find((x) => x.name === joinedTeam)
+      );
+    }
     LobbyService.leaveLobby(
       UserService.getCurrentPlayer().name,
       currentTeamDetails && currentTeamDetails.name
     );
   };
   const joinTeam = (team) => {
-    debugger;
     LobbyService.playerJoinTeam(
       LobbyService.getCurrentLobby(),
       team,
       UserService.getCurrentPlayer().name
     ).then(() => setJoinedTeam(team));
   };
-  const leaveTeam = (lobby, player, team) => {
+  const leaveTeam = (lobbyId, player, team) => {
     LobbyService.leaveTeam(
-      lobby,
+      lobbyId,
       team.name,
       player,
       team.players.length
@@ -149,15 +163,17 @@ export default function Lobby(props) {
                   sizeXs="12"
                   offsetXl="1.5"
                 >
-                  <IonCard>
-                    <IonCardContent>
-                      <IonImg
-                        src={lobby.image}
-                        imageViewer
-                        onClick={() => PhotoViewer.show(lobby.image)}
-                      ></IonImg>
-                    </IonCardContent>
-                  </IonCard>
+                  {lobby.image && (
+                    <IonCard>
+                      <IonCardContent>
+                        <IonImg
+                          src={lobby.image}
+                          imageViewer
+                          onClick={() => PhotoViewer.show(lobby.image)}
+                        ></IonImg>
+                      </IonCardContent>
+                    </IonCard>
+                  )}
                   <IonCard>
                     <IonCardContent>
                       <IonList>

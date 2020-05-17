@@ -39,7 +39,6 @@ export default function TeamDashboard(props) {
       props.team.completed.length >= props.game.steps.length - 1;
     setFinished(teamFinished);
   }, [props.team]);
-  console.log(active, completed);
 
   const handleAdjustment = () => {
     DashboardService.adjustPoints(props.team, adjustment);
@@ -63,29 +62,33 @@ export default function TeamDashboard(props) {
       </IonHeader>
       <IonContent>
         <IonRow>
-          <IonCol size="6">
-            <div className="ion-padding">
-              <IonItem>
-                <IonLabel>
-                  Challenges Points:{" "}
-                  <p>{completed.reduce((t, x) => (t += x.points), 0)} </p>
-                </IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  Adjusting Points:{" "}
-                  <p>{PlayService.getAdjustmentPoints(props.team)} </p>
-                </IonLabel>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  Total Points:{" "}
-                  <p>{PlayService.getTotalPoints(props.team, props.game)} </p>
-                </IonLabel>
-              </IonItem>
-            </div>
+          <IonCol size="4">
+            <IonItem>
+              <IonLabel>
+                Challenges:{" "}
+                <p>{completed.reduce((t, x) => (t += x.points), 0)} points </p>
+              </IonLabel>
+            </IonItem>
           </IonCol>
-          <IonCol size="6">
+          <IonCol size="4">
+            <IonItem>
+              <IonLabel>
+                Adjusting:{" "}
+                <p>{PlayService.getAdjustmentPoints(props.team)} points </p>
+              </IonLabel>
+            </IonItem>
+          </IonCol>
+          <IonCol size="4">
+            <IonItem>
+              <IonLabel>
+                Total:{" "}
+                <p>
+                  {PlayService.getTotalPoints(props.team, props.game)} points{" "}
+                </p>
+              </IonLabel>
+            </IonItem>
+          </IonCol>
+          <IonCol size="12">
             <IonItem lines="none">
               <IonLabel>Adjust reason:</IonLabel>
               <IonInput
@@ -109,10 +112,14 @@ export default function TeamDashboard(props) {
                 Adjust
               </IonButton>
             </IonItem>
-            <IonButton onClick={() => setShowPopover(true)} color="tertiary">
-              Adjustments
-            </IonButton>
           </IonCol>
+          <IonRow className="ion-justify-content-center">
+            <IonCol>
+              <IonButton onClick={() => setShowPopover(true)} color="tertiary">
+                Adjustments
+              </IonButton>
+            </IonCol>
+          </IonRow>
         </IonRow>
         <IonToolbar color="tertiary">
           <IonTitle>Completed Challenges</IonTitle>

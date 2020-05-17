@@ -8,9 +8,10 @@ import {
   IonRange,
   IonRow,
 } from "@ionic/react";
-import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
-import GoogleMap from "google-map-react";
 import React, { useEffect, useState } from "react";
+
+import GoogleMap from "google-map-react";
+import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import MiscService from "../../../services/MiscService";
 import ModalMap from "../ModalMap";
 
@@ -43,6 +44,7 @@ export default function Misc(props) {
     console.log(props.step);
   });
   const initPolyLines = (google) => {
+    debugger;
     let ppolyline = new google.maps.Circle({
       strokeOpacity: 0.3,
       strokeWeight: 1,

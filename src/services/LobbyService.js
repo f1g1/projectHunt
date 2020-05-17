@@ -128,6 +128,7 @@ function addTeam(lobby, team, player, noPlayers = false) {
         });
 }
 function leaveTeam(lobbyId, teamName, playerName, players) {
+  debugger;
   window.localStorage.removeItem("joinedTeam");
   return players === 1
     ? fireStore
@@ -157,6 +158,7 @@ function playerJoinTeam(lobby, team, playerName) {
     });
 }
 function leaveLobby(username, team) {
+  debugger;
   let res = kickLobby(username, team);
   res.then(() => {
     window.localStorage.removeItem("currentLobby");
@@ -224,9 +226,10 @@ async function getLobbies(password) {
     .collection("lobbies")
     .where("password", "==", password)
     .get();
-  return snapshot.docs.map((doc) => {
+  let z = snapshot.docs.map((doc) => {
     return { ...doc.data(), lobbyId: doc.id };
   });
+  return z.filter((x) => !x.startTime);
 }
 
 function setLobby(lobbyId) {

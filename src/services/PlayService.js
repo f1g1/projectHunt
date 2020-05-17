@@ -24,8 +24,17 @@ export const PlayService = {
   saveArea,
   saveAdminPoint,
   getAllActiveSteps,
+  setActiveGame,
+  getActiveGame,
 };
 
+function setActiveGame(id) {
+  window.localStorage["activeGame"] = id;
+}
+
+function getActiveGame(id) {
+  return window.localStorage["activeGame"];
+}
 function saveAdminPoint(point) {
   return fireStore
     .collection("lobbies")
@@ -146,7 +155,6 @@ function getTimeOut(step) {
   let res =
     window.localStorage[step.id + "timeout"] &&
     moment(window.localStorage[step.id + "timeout"]);
-  debugger;
   return res;
 }
 
@@ -171,9 +179,11 @@ function getAvalaibleHidden(game, teamObj) {
   let steps = game.steps.filter((x) => x.hidden);
   steps = steps.filter(
     (x) =>
-      !teamObj.location.includes(
-        (x) => JSON.stringify(x) === JSON.stringify(x.coords)
-      )
+      !teamObj ||
+      (teamObj.location &&
+        !teamObj.location.includes(
+          (x) => JSON.stringify(x) === JSON.stringify(x.coords)
+        ))
   );
   if (teamObj.completed)
     steps = steps.filter((x) => !teamObj.completed.includes(x.id));
@@ -197,7 +207,6 @@ function getAllActiveSteps(game, team, teams) {
 }
 
 function getInactiveSteps(game, team, teams) {
-  debugger;
   let steps = game.steps;
   let currentTeam = teams.find((x) => x.name === team);
   if (currentTeam && currentTeam.completed) {
@@ -216,7 +225,6 @@ function getInactiveSteps(game, team, teams) {
   return [];
 }
 function getCompletedSteps(game, team, teams) {
-  debugger;
   let steps = game.steps;
   let currentTeam = teams.find((x) => x.name === team);
   if (currentTeam && currentTeam.completed) {

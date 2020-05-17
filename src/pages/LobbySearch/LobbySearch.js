@@ -40,6 +40,7 @@ export default function LobbySearch(props) {
     setdate(new Date());
   }, []);
   const joinLobby = (lobby) => {
+    debugger;
     LobbyService.joinLobby(lobby.lobbyId).then(() => {
       if (!lobby.startTime)
         props.history.push({ pathname: "/lobby", lobbyId: lobby.lobbyId });
