@@ -21,8 +21,8 @@ function checkUserName(username) {
 function logout() {
   window.localStorage.clear("user");
 }
-function getUserFirebase(username) {
-  return fireStore.collection("users").doc(username).get();
+function getUserFirebase(email) {
+  return fireStore.collection("users").where("email", "==", email).get();
 }
 function SaveNewUser(user) {
   window.localStorage["user"] = JSON.stringify({

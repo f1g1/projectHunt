@@ -25,16 +25,25 @@ export const PlayService = {
   saveAdminPoint,
   getAllActiveSteps,
   setActiveGame,
+  checkActiveGame,
   getActiveGame,
 };
 
 function setActiveGame(id) {
   window.localStorage["activeGame"] = id;
 }
-
-function getActiveGame(id) {
+function getActiveGame() {
   return window.localStorage["activeGame"];
 }
+
+function checkActiveGame(id) {
+  return fireStore
+    .collection("users")
+    .doc(UserService.getCurrentPlayer().name)
+    .get()
+    .then((x) => x.data().activeGame);
+}
+
 function saveAdminPoint(point) {
   return fireStore
     .collection("lobbies")
@@ -113,6 +122,7 @@ function getTotalPoints(team, game) {
 }
 
 function submitAnswer(answer, step, team, finished) {
+  debugger;
   return fireStore
     .collection("lobbies")
     .doc(LobbyService.getCurrentLobby())

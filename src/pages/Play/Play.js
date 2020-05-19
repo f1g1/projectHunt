@@ -38,7 +38,6 @@ export default function Play(props) {
 
   useEffect(() => {
     MiscService.getCachedGeolocation().then((x) => setGeolocation(x));
-    PlayService.setActiveGame(LobbyService.getCurrentLobby());
   }, []);
 
   useEffect(() => {
@@ -48,7 +47,7 @@ export default function Play(props) {
   }, [gameChanging]);
 
   const closeGame = () => {
-    DashboardService.closeGame(LobbyService.getCurrentLobby());
+    DashboardService.closeGame(LobbyService.getCurrentLobby(), game);
   };
 
   return (
@@ -77,7 +76,7 @@ export default function Play(props) {
               (!LobbyService.ImAdmin(game) ? (
                 <ClueList game={game} teams={teams} />
               ) : (
-                <Dashboard />
+                <Dashboard game={game} teams={teams} />
               ))}
           </IonContent>
           <IonFooter>

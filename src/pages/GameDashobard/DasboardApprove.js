@@ -20,50 +20,48 @@ export default function DasboardApprove(props) {
 
   return (
     <>
-      <IonCol sizeXl="6" offsetXl="3">
-        <IonCard color="light" style={{ marginBottom: "30px" }}>
-          <IonCardContent>
-            <IonRow color="priamry">
-              <IonCol>
-                <h2 style={{ textDecoration: "bold" }}>Team</h2>
-              </IonCol>
-              <IonCol>
-                <IonLabel>challenge</IonLabel>
-              </IonCol>
-              <IonCol>
-                <IonLabel>Timestamp</IonLabel>
-              </IonCol>
-            </IonRow>
-          </IonCardContent>
-        </IonCard>
+      <IonCard color="light" style={{ marginBottom: "30px" }}>
+        <IonCardContent>
+          <IonRow color="priamry">
+            <IonCol>
+              <h2 style={{ textDecoration: "bold" }}>Team</h2>
+            </IonCol>
+            <IonCol>
+              <IonLabel>challenge</IonLabel>
+            </IonCol>
+            <IonCol>
+              <IonLabel>Timestamp</IonLabel>
+            </IonCol>
+          </IonRow>
+        </IonCardContent>
+      </IonCard>
 
-        {props.toBeValidated &&
-          props.toBeValidated.map((x) => (
-            <IonItem
-              style={{ cursor: "pointer" }}
-              button
-              onClick={() => {
-                setCurrentTeamName(x.name);
+      {props.toBeValidated &&
+        props.toBeValidated.map((x) => (
+          <IonItem
+            style={{ cursor: "pointer" }}
+            button
+            onClick={() => {
+              setCurrentTeamName(x.name);
 
-                setShowApproveModal(x);
-              }}
-            >
-              <IonGrid>
-                <IonRow key={x.name}>
-                  <IonCol>{x.name}</IonCol>
-                  <IonCol>
-                    <IonLabel>#{x.index + 1}</IonLabel>
-                  </IonCol>
-                  <IonCol>
-                    <IonLabel>
-                      {moment(x.time * 1000).format("DD/MM HH:mm")}
-                    </IonLabel>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-            </IonItem>
-          ))}
-      </IonCol>
+              setShowApproveModal(x);
+            }}
+          >
+            <IonGrid>
+              <IonRow key={x.name}>
+                <IonCol>{x.name}</IonCol>
+                <IonCol>
+                  <IonLabel>#{x.index + 1}</IonLabel>
+                </IonCol>
+                <IonCol>
+                  <IonLabel>
+                    {moment(x.time * 1000).format("DD/MM HH:mm")}
+                  </IonLabel>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonItem>
+        ))}
 
       <IonModal
         isOpen={showApproveModal !== undefined}

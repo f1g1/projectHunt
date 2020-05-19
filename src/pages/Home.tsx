@@ -32,14 +32,17 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const { history } = this.props;
-    if (PlayService.getActiveGame()) {
-      debugger;
-      LobbyService.setLobby(PlayService.getActiveGame());
-      history.replace("/play", PlayService.getActiveGame());
-    } else {
-      this.setState({ ...this.state, noActiveGame: true });
-    }
+    PlayService.checkActiveGame().then((activeGame: string) => {
+      if (activeGame) {
+        PlayService.setActiveGame(activeGame);
+        LobbyService.setLobby(activeGame);
+        this.props.history.replace("/play", activeGame);
+      } else {
+        PlayService.setActiveGame();
+        LobbyService.setLobby();
+        this.setState({ ...this.state, noActiveGame: true });
+      }
+    });
   }
 
   async signOut(): Promise<void> {

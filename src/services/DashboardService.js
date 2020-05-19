@@ -12,17 +12,48 @@ export const DashboardService = {
   approveAnswer,
   revokeAnswer,
   closeGame,
+  addStep,
 };
 
-function closeGame(lobby) {
-  function startGame(lobbyId) {
-    fireStore.collection("lobbies").doc(lobbyId).set(
+function addStep(lobbyId, step) {
+  return fireStore
+    .collection("lobbies")
+    .doc(lobbyId)
+    .update({
+      steps: firebase.firestore.FieldValue.arrayUnion(step),
+    });
+}
+
+function closeGame(lobbyId, game) {
+  fireStore
+    .collection("lobbies")
+    .doc(lobbyId)
+    .set(
       {
-        startTime: firebase.firestore.FieldValue.serverTimestamp(),
+        finishTime: firebase.firestore.FieldValue.serverTimestamp(),
       },
       { merge: true }
+    )
+    .then(
+      game.players.forEach((element) => {
+        fireStore
+          .collection("users")
+          .doc(element)
+          .set(
+            {
+              activeGame: null,
+              dateActiveGame: null,
+              history: firebase.firestore.FieldValue.arrayUnion({
+                lobbyId: lobbyId,
+                title: game.title,
+                image: game.image || null,
+                date: game.startTime,
+              }),
+            },
+            { merge: true }
+          );
+      })
     );
-  }
 }
 
 function revokeAnswer(id, team) {

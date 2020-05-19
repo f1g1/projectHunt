@@ -21,69 +21,65 @@ export default function Dashboardteams(props) {
   const [currentTeamName, setCurrentTeamName] = useState();
   return (
     <>
-      <IonCol sizeXl="6" offsetXl="3">
-        <IonCard color="light" style={{ marginBottom: "30px" }}>
-          <IonCardContent>
-            <IonRow color="priamry">
-              <IonCol>
-                <h2 style={{ textDecoration: "bold" }}>Team</h2>
-              </IonCol>
-              <IonCol>
-                <IonLabel>Completed</IonLabel>
-              </IonCol>
-              <IonCol>
-                <IonLabel>Points</IonLabel>
-              </IonCol>
-              <IonCol>
-                <IonLabel>Last Completed</IonLabel>
-              </IonCol>
-            </IonRow>
-          </IonCardContent>
-        </IonCard>
-        <IonCardContent className="ion-padding-none">
-          {props.teams &&
-            props.teams.map((x, i) => (
-              <IonItem
-                button
-                onClick={() => {
-                  setCurrentTeam(i);
-                  setShowTeamDashboard(true);
-                }}
-                key={x.name}
-                style={{ cursor: "pointer" }}
-                color="tertiary"
-              >
-                <IonGrid>
-                  <IonRow key={x.name}>
-                    <IonCol>{x.name}</IonCol>
-                    <IonCol>
-                      <IonLabel>
-                        {x.completed ? x.completed.length : 0}
-                      </IonLabel>
-                    </IonCol>
-                    <IonCol>
-                      <IonLabel>
-                        {PlayService.getTotalPoints(x, props.game) || 0}
-                      </IonLabel>
-                    </IonCol>
-                    <IonCol>
-                      <IonLabel>
-                        {x.completed &&
-                        x[x.completed[x.completed.length - 1]] &&
-                        x[x.completed[x.completed.length - 1]].time
-                          ? moment(
-                              x[x.completed[x.completed.length - 1]].time
-                                .seconds * 1000
-                            ).format("DD/MM HH:mm")
-                          : "N/A"}
-                      </IonLabel>
-                    </IonCol>
-                  </IonRow>
-                </IonGrid>
-              </IonItem>
-            ))}
+      <IonCard color="light" style={{ marginBottom: "30px" }}>
+        <IonCardContent>
+          <IonRow color="priamry">
+            <IonCol>
+              <h2 style={{ textDecoration: "bold" }}>Team</h2>
+            </IonCol>
+            <IonCol>
+              <IonLabel>Completed</IonLabel>
+            </IonCol>
+            <IonCol>
+              <IonLabel>Points</IonLabel>
+            </IonCol>
+            <IonCol>
+              <IonLabel>Last Completed</IonLabel>
+            </IonCol>
+          </IonRow>
         </IonCardContent>
-      </IonCol>
+      </IonCard>
+      <IonCardContent className="ion-padding-none">
+        {props.teams &&
+          props.teams.map((x, i) => (
+            <IonItem
+              button
+              onClick={() => {
+                setCurrentTeam(i);
+                setShowTeamDashboard(true);
+              }}
+              key={x.name}
+              style={{ cursor: "pointer" }}
+              color="tertiary"
+            >
+              <IonGrid>
+                <IonRow key={x.name}>
+                  <IonCol>{x.name}</IonCol>
+                  <IonCol>
+                    <IonLabel>{x.completed ? x.completed.length : 0}</IonLabel>
+                  </IonCol>
+                  <IonCol>
+                    <IonLabel>
+                      {PlayService.getTotalPoints(x, props.game) || 0}
+                    </IonLabel>
+                  </IonCol>
+                  <IonCol>
+                    <IonLabel>
+                      {x.completed &&
+                      x[x.completed[x.completed.length - 1]] &&
+                      x[x.completed[x.completed.length - 1]].time
+                        ? moment(
+                            x[x.completed[x.completed.length - 1]].time
+                              .seconds * 1000
+                          ).format("DD/MM HH:mm")
+                        : "N/A"}
+                    </IonLabel>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonItem>
+          ))}
+      </IonCardContent>
 
       <IonModal
         className="adjustmentPopover"

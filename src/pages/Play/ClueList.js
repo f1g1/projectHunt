@@ -4,7 +4,6 @@ import {
   IonImg,
   IonItem,
   IonLabel,
-  IonList,
   IonModal,
   IonRow,
   IonThumbnail,
@@ -29,7 +28,6 @@ export default function ClueList(props) {
   const [finished, setfinished] = useState(false);
   const [currentTeamObj, setCurrentTeamObj] = useState({});
 
-  console.log(props.teams, props.game);
   const hanldeStepClick = (id) => {
     if (
       !currentTeamObj.toBeValidated ||
@@ -45,6 +43,24 @@ export default function ClueList(props) {
       });
     }
   };
+  useEffect(() => {
+    props.teams.length > 0 &&
+      LobbyService.getCurrentTeam() &&
+      setFiltered(
+        showSteps === showStatus.ACTIVE
+          ? PlayService.getActiveSteps(
+              props.game,
+              LobbyService.getCurrentTeam(),
+              props.teams
+            )
+          : PlayService.getCompletedSteps(
+              props.game,
+              LobbyService.getCurrentTeam(),
+              props.teams
+            )
+      );
+  }, [props.game]);
+
   useEffect(() => {
     props.teams.length &&
       setCurrentTeamObj(
@@ -148,52 +164,48 @@ export default function ClueList(props) {
                 </IonLabel>
               </>
             ) : (
-              <IonList>
-                <IonItem
-                  button
-                  onClick={() => hanldeStepClick(x.id)}
-                  style={
-                    showSteps === showStatus.COMPLETED ? { opacity: 0.6 } : {}
-                  }
-                  key={x.id}
-                >
-                  <IonThumbnail slot="start">
-                    <img src={x.image} />
-                  </IonThumbnail>
-                  <IonLabel>
-                    {currentTeamObj.toBeValidated &&
-                      currentTeamObj.toBeValidated.find((z) => z === x.id) && (
-                        <p style={{ float: "right" }}>Pending validation</p>
-                      )}
-                    <h2>#{x.index + 1}</h2>
-                    {x.hidden && (
-                      <IonLabel>
-                        <p> (hidden)</p>
-                      </IonLabel>
+              <IonItem
+                button
+                onClick={() => hanldeStepClick(x.id)}
+                style={
+                  showSteps === showStatus.COMPLETED ? { opacity: 0.6 } : {}
+                }
+                key={x.id}
+              >
+                <IonThumbnail slot="start">
+                  <img src={x.image} />
+                </IonThumbnail>
+                <IonLabel>
+                  {currentTeamObj.toBeValidated &&
+                    currentTeamObj.toBeValidated.find((z) => z === x.id) && (
+                      <p style={{ float: "right" }}>Pending validation</p>
                     )}
-                    <h3>{x.clue}</h3>
-                    &nbsp;
-                    {showSteps === showStatus.COMPLETED &&
-                      //for text/qr we show the answer as label
-                      currentTeamObj[x.id] &&
-                      (x.answerType < 2 ? (
-                        <>
-                          <h2 color="danger">Answer:</h2>
+                  <h2>#{x.index + 1}</h2>
+                  {x.hidden && (
+                    <IonLabel>
+                      <p> (hidden)</p>
+                    </IonLabel>
+                  )}
+                  <h3>{x.clue}</h3>
+                  &nbsp;
+                  {showSteps === showStatus.COMPLETED &&
+                    //for text/qr we show the answer as label
+                    currentTeamObj[x.id] &&
+                    (x.answerType < 2 ? (
+                      <>
+                        <h2 color="danger">Answer:</h2>
 
-                          <IonLabel color="danger">
-                            {currentTeamObj[x.id].answer}
-                          </IonLabel>
-                        </>
-                      ) : (
-                        <IonThumbnail slot="end" className="ion-float-right">
-                          <IonImg
-                            src={currentTeamObj[x.id].imageAnswer}
-                          ></IonImg>
-                        </IonThumbnail>
-                      ))}
-                  </IonLabel>
-                </IonItem>
-              </IonList>
+                        <IonLabel color="danger">
+                          {currentTeamObj[x.id].answer}
+                        </IonLabel>
+                      </>
+                    ) : (
+                      <IonThumbnail slot="end" className="ion-float-right">
+                        <IonImg src={currentTeamObj[x.id].imageAnswer}></IonImg>
+                      </IonThumbnail>
+                    ))}
+                </IonLabel>
+              </IonItem>
             )
           )}
         </IonCol>

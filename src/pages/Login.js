@@ -12,7 +12,7 @@ import {
   IonPage,
   IonRow,
 } from "@ionic/react";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 
 import { AppContext } from "../StateGeneric";
 import { Plugins } from "@capacitor/core";
@@ -20,15 +20,6 @@ import { UserService } from "../services/UserSerivce";
 
 const Login = (props) => {
   const { state: userState, dispatch } = useContext(AppContext);
-  useEffect(() => {
-    try {
-      if (userState.authentication.idToken) doLogin(userState);
-    } catch {}
-  }, [userState]);
-  useEffect(() => {
-    let user = UserService.getCurrentUser();
-    user && user.authentication && doLogin(user);
-  }, []);
 
   const saveUser = (user) => {
     dispatch({
@@ -49,30 +40,36 @@ const Login = (props) => {
 
   const doLogin = async (user) => {
     let token = user.authentication.idToken;
-    await firebase
+    firebase
       .auth()
-      .signInWithCredential(firebase.auth.GoogleAuthProvider.credential(token));
-
-    const { history } = props;
-    UserService.getUserFirebase(user.email).then((u) => {
-      let userFromDb = u.data();
-      debugger;
-      saveUser({ ...userFromDb, ...u.data() });
-      let x = u.exists && userFromDb.userName;
-      !x
-        ? history.replace({
-            pathname: "/username",
-            user,
-          })
-        : history.replace({
-            pathname: "/home",
-            state: {
-              name: userFromDb.name || userFromDb.displayName,
-              image: userFromDb.imageUrl,
-              email: userFromDb.email,
-            },
+      .signInWithCredential(firebase.auth.GoogleAuthProvider.credential(token))
+      .then(() => {
+        const { history } = props;
+        UserService.getUserFirebase(user.email).then((qs) => {
+          let exists = false;
+          let userFromDb;
+          qs.forEach((doc) => {
+            exists = true;
+            userFromDb = doc.data();
           });
-    });
+
+          saveUser({ ...user, ...userFromDb });
+          let x = userFromDb && userFromDb.userName;
+          !x
+            ? history.replace({
+                pathname: "/username",
+                user,
+              })
+            : history.replace({
+                pathname: "/home",
+                state: {
+                  name: userFromDb.name || userFromDb.displayName,
+                  image: userFromDb.imageUrl,
+                  email: userFromDb.email,
+                },
+              });
+        });
+      });
   };
 
   return (
@@ -94,7 +91,7 @@ const Login = (props) => {
             mode: "ios",
           }}
           className="login-button"
-          onClick={() => signIn()}
+          onClick={signIn}
           expand="block"
           fill="solid"
           color="primary"

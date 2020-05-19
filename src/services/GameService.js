@@ -97,7 +97,7 @@ async function deleteGame(id) {
   debugger;
   return fireStore
     .collection("users")
-    .doc(UserService.getCurrentUser().email)
+    .doc(UserService.getCurrentUser().userName)
     .collection("createdGames")
     .doc(id)
     .delete();
@@ -107,7 +107,7 @@ async function getMyGames() {
   let x = UserService.getCurrentUser();
   var createdGamesRef = fireStore
     .collection("users")
-    .doc(UserService.getCurrentUser().email)
+    .doc(UserService.getCurrentUser().userName)
     .collection("createdGames");
   const snapshot = await createdGamesRef.orderBy("createdDate").get();
   return snapshot.docs.map((doc) => {
@@ -132,7 +132,7 @@ function saveGameInternal(state) {
   let createdGamesRef;
   createdGamesRef = fireStore
     .collection("users")
-    .doc(UserService.getCurrentUser().email)
+    .doc(UserService.getCurrentUser().userName)
     .collection("createdGames");
   if (state.gameId) {
     return createdGamesRef.doc(state.gameId).update(state);

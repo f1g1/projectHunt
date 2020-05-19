@@ -2,6 +2,8 @@ import { UserService } from "./UserSerivce";
 import { fireStore } from "../firebase";
 import firebase from "firebase";
 
+const axios = require("axios").default;
+
 export const VISIBILITY = {
   public: "public",
   code: "code",
@@ -92,13 +94,35 @@ function ImAdmin(lobby) {
   return lobby && UserService.getCurrentPlayer().name === lobby.owner;
 }
 
-function startGame(lobbyId) {
+function startGame(lobbyId, game) {
   fireStore.collection("lobbies").doc(lobbyId).set(
     {
       startTime: firebase.firestore.FieldValue.serverTimestamp(),
     },
     { merge: true }
   );
+  game.players.forEach((element) => {
+    fireStore.collection("users").doc(element).set(
+      {
+        activeGame: lobbyId,
+        dateActiveGame: firebase.firestore.FieldValue.serverTimestamp(),
+      },
+      { merge: true }
+    );
+  });
+
+  // debugger;
+  // axios({
+  //   headers: {
+  //     "Access-Control-Allow-Origin": "*",
+  //   },
+  //   method: "post",
+  //   url: "https://us-central1-projecthunt-2644e.cloudfunctions.net/helloWorld",
+  //   data: {
+  //     lobbyId,
+  //     game,
+  //   },
+  // });
 }
 
 function getCurrentTeam() {

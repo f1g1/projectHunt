@@ -106,7 +106,7 @@ export default function Lobby(props) {
     }
   }, [teams]);
   let startGame = () => {
-    LobbyService.startGame(LobbyService.getCurrentLobby());
+    LobbyService.startGame(LobbyService.getCurrentLobby(), lobby);
     props.history.replace("/play", lobby);
   };
   const leaveLobby = () => {

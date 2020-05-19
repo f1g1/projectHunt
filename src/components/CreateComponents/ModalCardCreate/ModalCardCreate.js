@@ -8,16 +8,13 @@ import {
   IonLabel,
   IonSegment,
   IonSegmentButton,
-  IonTitle,
   IonToast,
   IonToolbar,
 } from "@ionic/react";
 import React, { useContext, useEffect, useState } from "react";
 
-import AddBoxIcon from "@material-ui/icons/AddBox";
 import { AppContext } from "../../../StateCreateGame";
 import Challenge from "./Challenge";
-import EditIcon from "@material-ui/icons/Edit";
 import Misc from "./Misc";
 import Response from "./Response";
 
@@ -65,23 +62,29 @@ export default function ModalCardCreate(props) {
   const saveNewStep = () => {
     let errors = validateStep(step);
     if (errors.length === 0) {
-      if (props.edit) {
-        let steps = state.steps;
-        steps.forEach((element, i) => {
-          if (element.id === step.id) steps[i] = step;
-        });
-        dispatch({
-          type: "setSteps",
-          steps,
-        });
+      if (!props.dashboard) {
+        if (props.edit) {
+          let steps = state.steps;
+          steps.forEach((element, i) => {
+            if (element.id === step.id) steps[i] = step;
+          });
+          dispatch({
+            type: "setSteps",
+            steps,
+          });
+        } else {
+          //this is for create
+          dispatch({
+            type: "addStep",
+            step: { ...step, id: Date.now() },
+          });
+          setShowToast1(true);
+        }
       } else {
-        //this is for create
-        dispatch({
-          type: "addStep",
-          step: { ...step, id: Date.now() },
-        });
-        setShowToast1(true);
+        props.addFromDashboard(step);
+        props.handleClose();
       }
+
       props.handleClose();
     } else setErrorToast(errors);
   };
@@ -90,7 +93,7 @@ export default function ModalCardCreate(props) {
     <>
       <IonHeader color="secondary">
         <IonToolbar color="primary">
-          <IonTitle>{props.edit ? <EditIcon /> : <AddBoxIcon />}</IonTitle>
+          {/* <IonTitle>{props.edit ? <EditIcon /> : <AddBoxIcon />}</IonTitle> */}
           <IonButtons slot="end">
             <IonButton color="danger" onClick={props.handleClose}>
               X

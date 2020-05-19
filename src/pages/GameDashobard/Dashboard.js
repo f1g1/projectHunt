@@ -17,7 +17,6 @@ import { DashboardService } from "../../services/DashboardService";
 import DashboardTeams from "./DashboardTeams";
 import { LobbyService } from "../../services/LobbyService";
 import { LocalNotifications } from "@ionic-native/local-notifications";
-import { PlayService } from "../../services/PlayService";
 import useTeamChanges from "../../services/CustomHooks/useTeamChanges";
 
 var moment = require("moment");
@@ -37,20 +36,18 @@ function DashboardSegmentPicker(props) {
 
 export default function Dashboard(props) {
   const teams = useTeamChanges(LobbyService.getCurrentLobby());
-  const [game, setGame] = useState();
   const [toBeValidated, setToBeValidated] = useState();
   const [showToast1, setShowToast1] = useState();
 
   let toBeValidatedOldLength = 0;
   useEffect(() => {
-    game &&
-      setToBeValidated(DashboardService.getToBeValidated(teams, game.steps));
+    props.game &&
+      setToBeValidated(
+        DashboardService.getToBeValidated(teams, props.game.steps)
+      );
   }, [teams]);
 
   const [segmentOn, setSegmentOn] = useState("approve");
-  useEffect(() => {
-    setGame(PlayService.getGame());
-  }, [teams]);
 
   const notify = () => {
     LocalNotifications.schedule({
@@ -88,13 +85,15 @@ export default function Dashboard(props) {
               </IonSegmentButton>
             </IonSegment>
           </IonCol>
-          <DashboardSegmentPicker
-            value={segmentOn}
-            teams={teams}
-            game={game}
-            toBeValidated={toBeValidated}
-            notify={notify}
-          />
+          <IonCol sizeXl="6" offsetXl="3">
+            <DashboardSegmentPicker
+              value={segmentOn}
+              teams={teams}
+              game={props.game}
+              toBeValidated={toBeValidated}
+              notify={notify}
+            />
+          </IonCol>
         </IonRow>
       </IonGrid>
       <IonToast

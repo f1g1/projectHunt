@@ -23,7 +23,6 @@ import LobbySearch from "./pages/LobbySearch/LobbySearch";
 import Login from "./pages/Login";
 import MyGames from "./pages/MyGames/MyGames";
 import Play from "./pages/Play/Play";
-import { PlayContextProvider } from "./StatePlayGame";
 import React from "react";
 import SeeClue from "./pages/Play/SeeClueChallenge";
 import UserName from "./pages/Username/UserName";
@@ -38,11 +37,10 @@ const App: React.FC = () => (
 
         <Route path="/lobbysearch" component={LobbySearch} exact={true} />
         <Route path="/mygames" component={MyGames} exact={true} />
-        {/* <Route path="/tab1" component={Tabb} exact={true} /> */}
 
         <Route exact path="/" render={() => <Redirect to="/login" />} />
         <Route path="/lobby" component={Lobby} exact={true} />
-        <Route path="/play" component={Play} exact={true} />
+        <Route path="/play" component={withCreateContext(Play)} exact={true} />
         <Route path="/seeClue" component={SeeClue} exact={true} />
         <Route path="/username" component={UserName} exact={true} />
         <Route path="/gameDashboard" component={Dashboard} exact={true} />
@@ -61,12 +59,12 @@ export function withCreateContext(Component: any) {
   };
 }
 
-export function withPlayContext(Component: any) {
-  return function WrapperComponent(props: any) {
-    return (
-      <PlayContextProvider>{<Component {...props} />}</PlayContextProvider>
-    );
-  };
-}
+// export function withPlayContext(Component: any) {
+//   return function WrapperComponent(props: any) {
+//     return (
+//       <PlayContextProvider>{<Component {...props} />}</PlayContextProvider>
+//     );
+//   };
+// }
 
 export default App;
