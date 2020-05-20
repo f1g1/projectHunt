@@ -66,7 +66,7 @@ export default function Dashboard(props) {
     <>
       <IonGrid>
         <IonRow className="ion-padding-top">
-          <IonCol sizeXl="6" offsetXl="3">
+          <IonCol sizeXl="6" offsetXl="3" size="12">
             <IonSegment
               value={segmentOn}
               color="primary"

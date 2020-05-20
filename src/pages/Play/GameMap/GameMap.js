@@ -76,7 +76,7 @@ export default function GameMap(props) {
   const [handlingPoint, setHandlingPoint] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState();
   const [visibleChallenges, setVisibleChallenges] = useState();
-
+  const [incrV, setincrV] = useState();
   const handleSavePoint = () => {
     setSelectedPosition();
     setHandlingPoint(false);
@@ -109,6 +109,7 @@ export default function GameMap(props) {
         props.game.steps.filter((x) => x.hidden || x.visible)
       );
     }
+    setincrV(incrV + 1);
   }, [props.teams, props.game]);
 
   useEffect(() => {

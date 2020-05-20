@@ -91,6 +91,7 @@ function joinLobby(lobby) {
 }
 
 function ImAdmin(lobby) {
+  debugger;
   return lobby && UserService.getCurrentPlayer().name === lobby.owner;
 }
 

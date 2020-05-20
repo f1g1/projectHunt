@@ -9,6 +9,7 @@ import {
   IonHeader,
   IonModal,
   IonPage,
+  IonToast,
   IonToolbar,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
@@ -25,12 +26,24 @@ import { PlayService } from "../../services/PlayService";
 import useGameChanges from "../../services/CustomHooks/useGameChanges";
 import useTeamChanges from "../../services/CustomHooks/useTeamChanges";
 
+function arraysEqual(a, b) {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length != b.length) return false;
+
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
+
 export default function Play(props) {
   const [showChatModal, setShowChatModal] = useState(false);
   const [showLeaderBoardModal, setShowLeaderBoardModal] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [geolocation, setGeolocation] = useState({ latitude: 0, longitude: 0 });
   const [game, setGame] = useState();
+  const [showToast1, setShowToast1] = useState();
   const [showAlert1, setShowAlert1] = useState(false);
 
   const teams = useTeamChanges();
@@ -41,7 +54,10 @@ export default function Play(props) {
   }, []);
 
   useEffect(() => {
-    debugger;
+    if (game && gameChanging && !LobbyService.ImAdmin(game))
+      if (!arraysEqual(game.area, gameChanging.area)) {
+        setShowToast1("Caution, game area as been modified!");
+      }
     PlayService.setGame(gameChanging || {});
     setGame(gameChanging);
   }, [gameChanging]);
@@ -158,6 +174,15 @@ export default function Play(props) {
           game={game}
         />
       </IonModal>
+      <IonToast
+        isOpen={showToast1 !== undefined}
+        onDidDismiss={() => setShowToast1()}
+        message={showToast1}
+        duration={2000}
+        position="top"
+        color="light"
+        mode="ios"
+      />
     </IonPage>
   );
 }
