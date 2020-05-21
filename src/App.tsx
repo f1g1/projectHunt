@@ -17,6 +17,7 @@ import Create from "./pages/Create/Create";
 import { CreateGameContextProvider } from "./StateCreateGame";
 import Dashboard from "./pages/GameDashobard/Dashboard";
 import FinishedGame from "./pages/FinishedGame";
+import History from "./pages/History/History";
 import Home from "./pages/Home";
 import { IonReactRouter } from "@ionic/react-router";
 import Lobby from "./pages/Lobby/Lobby";
@@ -29,26 +30,33 @@ import SeeClue from "./pages/Play/SeeClueChallenge";
 import UserName from "./pages/Username/UserName";
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/login" component={Login} exact={true} />
-        <Route path="/home" component={Home} exact={true} />
-        <Route path="/game" component={withCreateContext(Create)} />
+  <>
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route path="/login" component={Login} exact={true} />
+          <Route path="/home" component={Home} exact={true} />
+          <Route path="/game" component={withCreateContext(Create)} />
 
-        <Route path="/lobbysearch" component={LobbySearch} exact={true} />
-        <Route path="/mygames" component={MyGames} exact={true} />
+          <Route path="/lobbysearch" component={LobbySearch} exact={true} />
+          <Route path="/mygames" component={MyGames} exact={true} />
 
-        <Route exact path="/" render={() => <Redirect to="/login" />} />
-        <Route path="/lobby" component={Lobby} exact={true} />
-        <Route path="/play" component={withCreateContext(Play)} exact={true} />
-        <Route path="/seeClue" component={SeeClue} exact={true} />
-        <Route path="/username" component={UserName} exact={true} />
-        <Route path="/gameDashboard" component={Dashboard} exact={true} />
-        <Route path="/finishedGame" component={FinishedGame} exact={true} />
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
+          <Route exact path="/" render={() => <Redirect to="/login" />} />
+          <Route path="/lobby" component={Lobby} exact={true} />
+          <Route
+            path="/play"
+            component={withCreateContext(Play)}
+            exact={true}
+          />
+          <Route path="/seeClue" component={SeeClue} exact={true} />
+          <Route path="/username" component={UserName} exact={true} />
+          <Route path="/gameDashboard" component={Dashboard} exact={true} />
+          <Route path="/finishedGame" component={FinishedGame} exact={true} />
+          <Route path="/history" component={History} exact={true} />
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
+  </>
 );
 
 export function withCreateContext(Component: any) {

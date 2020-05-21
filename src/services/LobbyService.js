@@ -33,10 +33,24 @@ export const LobbyService = {
   unbanPlayer,
   disbandTeam,
   handleGameClosed,
-  getHistoryGame,
-  getHistoryTeams,
+  getLocalHistoryGame,
+  setLocalHistoryGame,
+  setLocalHistoryTeams,
+  getLocalHistoryTeams,
+  getHistoryGames,
 };
 
+async function getHistoryGames(listIds) {
+  debugger;
+  let snapshot = await fireStore
+    .collection("lobbies")
+    .where(firebase.firestore.FieldPath.documentId(), "in", listIds)
+    .get();
+  let z = snapshot.docs.map((doc) => {
+    return { ...doc.data(), lobbyId: doc.id };
+  });
+  return z;
+}
 function handleGameClosed(lobbyId, game, teams) {
   debugger;
   window.localStorage.removeItem("activeGame");
@@ -45,10 +59,24 @@ function handleGameClosed(lobbyId, game, teams) {
   window.localStorage["historyGame"] = JSON.stringify(game);
   window.localStorage["historyTeams"] = JSON.stringify(teams);
 }
-function getHistoryGame() {
+function getLocalHistoryGame() {
   return JSON.parse(window.localStorage["historyGame"]);
 }
-function getHistoryTeams() {
+
+function setLocalHistoryGame(game) {
+  if (game) window.localStorage["historyGame"] = JSON.stringify(game);
+  else {
+    window.localStorage.removeItem("historyGame");
+  }
+}
+
+function setLocalHistoryTeams(teams) {
+  if (teams) window.localStorage["historyTeams"] = JSON.stringify(teams);
+  else {
+    window.localStorage.removeItem("historyTeams");
+  }
+}
+function getLocalHistoryTeams() {
   return JSON.parse(window.localStorage["historyTeams"]);
 }
 

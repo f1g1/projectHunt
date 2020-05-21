@@ -19,7 +19,6 @@ import React from "react";
 var moment = require("moment");
 
 export default function LeaderBoard(props) {
-  console.log(props.teams);
   return (
     <>
       <IonToolbar color="primary">
@@ -76,14 +75,12 @@ export default function LeaderBoard(props) {
                   </IonCol>
                   <IonCol>
                     <IonLabel>
-                      {x.completed
+                      {x.completed.length > 0
                         ? moment(
                             x[x.completed[x.completed.length - 1]].time
                               .seconds * 1000
                           ).format("DD/MM HH:mm")
                         : "N/A"}
-
-                      {/* {x.completed ? moment(x[x.completed[x.completed.length - 1]].time.seconds).format("HH:mm:ss") : "N/A"} */}
                     </IonLabel>
                   </IonCol>
                 </IonRow>

@@ -71,15 +71,17 @@ export default function Play(props) {
   }, [gameChanging]);
 
   const closeGame = () => {
-    DashboardService.closeGame(LobbyService.getCurrentLobby(), game).then(
-      (x) => {
-        LobbyService.handleGameClosed(
-          LobbyService.getCurrentLobby(),
-          game,
-          teams
-        );
-      }
-    );
+    DashboardService.closeGame(
+      LobbyService.getCurrentLobby(),
+      game,
+      teams
+    ).then((x) => {
+      LobbyService.handleGameClosed(
+        LobbyService.getCurrentLobby(),
+        game,
+        teams
+      );
+    });
   };
 
   return (

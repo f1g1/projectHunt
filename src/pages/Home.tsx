@@ -3,10 +3,12 @@ import "./Login.css";
 
 import {
   IonButton,
+  IonButtons,
   IonCol,
   IonContent,
   IonHeader,
   IonList,
+  IonMenuButton,
   IonPage,
   IonRow,
   IonToolbar,
@@ -14,9 +16,10 @@ import {
 import React, { Component } from "react";
 
 import { LobbyService } from "../services/LobbyService";
+import Menu from "../components/Menu/Menu";
+import MenuIcon from "@material-ui/icons/Menu";
 import { PlayService } from "../services/PlayService";
-import { Plugins } from "@capacitor/core";
-import { UserService } from "../services/UserSerivce";
+import { menuController } from "@ionic/core";
 
 const INITIAL_STATE = {
   loggedIn: true,
@@ -45,114 +48,99 @@ class Home extends Component {
     });
   }
 
-  async signOut(): Promise<void> {
-    const { history } = this.props;
-    const { navigation } = this.props;
-    await Plugins.GoogleAuth.signOut();
-    history.replace("login");
-    // navigation.navigate("login", { initial: "login" });
-
-    UserService.logout();
-  }
-
   render() {
     return (
-      <IonPage>
-        {this.state.noActiveGame && (
-          <>
-            <IonHeader>
-              <IonToolbar color="primary"></IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">
-              <IonRow>
-                <IonCol className="text-center">
-                  <img
-                    style={{ width: "200px", height: "200px" }}
-                    src={require("../resources/logo.png")}
-                  />
-                </IonCol>
-              </IonRow>
+      <>
+        <Menu {...this.props} />
+        <IonPage id="main">
+          {this.state.noActiveGame && (
+            <>
+              <IonHeader>
+                <IonToolbar color="primary">
+                  <IonButtons>
+                    <IonMenuButton color="light">
+                      <MenuIcon onClick={() => menuController.open()} />
+                    </IonMenuButton>
+                  </IonButtons>
+                </IonToolbar>
+              </IonHeader>
+              <IonContent className="ion-padding">
+                <IonRow>
+                  <IonCol className="text-center">
+                    <img
+                      style={{ width: "200px", height: "200px" }}
+                      src={require("../resources/logo.png")}
+                    />
+                  </IonCol>
+                </IonRow>
 
-              <IonList style={{ marginTop: "10vh" }}>
-                <IonButton
-                  style={{
-                    minHeight: "100px",
-                    marginBottom: "30px",
-                    fontWeight: "bold",
-                    fontSize: "2.5em",
-                    mode: "ios",
-                  }}
-                  expand="full"
-                  color="primary"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    this.props.history.push({
-                      pathname: "/lobbysearch",
-                      state: "t ",
-                    });
-                  }}
-                >
-                  Play!
-                </IonButton>
-                <IonButton
-                  expand="full"
-                  style={{
-                    minHeight: "50px",
-                    marginBottom: "15px",
-                    fontWeight: "bold",
-                    fontSize: "1.5em",
-                    mode: "ios",
-                  }}
-                  color="secondary"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    this.props.history.push({ pathname: "/game", state: "t " });
-                  }}
-                >
-                  New hunt!
-                </IonButton>
-                <IonButton
-                  style={{
-                    minHeight: "50px",
-                    marginBottom: "15px",
-                    fontWeight: "bold",
-                    fontSize: "1.5em",
-                    mode: "ios",
-                  }}
-                  expand="full"
-                  color="secondary"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    this.props.history.push({
-                      pathname: "/myGames",
-                      state: "t ",
-                    });
-                  }}
-                >
-                  My Hunts!
-                </IonButton>
-
-                <IonButton
-                  style={{
-                    minHeight: "50px",
-                    marginTop: "30px",
-                    fontWeight: "bold",
-                    fontSize: "1.5em",
-                    mode: "ios",
-                  }}
-                  className="login-button"
-                  onClick={() => this.signOut()}
-                  expand="full"
-                  fill="solid"
-                  color="danger"
-                >
-                  Logout!
-                </IonButton>
-              </IonList>
-            </IonContent>
-          </>
-        )}
-      </IonPage>
+                <IonList style={{ marginTop: "10vh" }}>
+                  <IonButton
+                    style={{
+                      minHeight: "100px",
+                      marginBottom: "30px",
+                      fontWeight: "bold",
+                      fontSize: "2.5em",
+                      mode: "ios",
+                    }}
+                    expand="full"
+                    color="primary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.props.history.push({
+                        pathname: "/lobbysearch",
+                        state: "t ",
+                      });
+                    }}
+                  >
+                    Play!
+                  </IonButton>
+                  <IonButton
+                    expand="full"
+                    style={{
+                      minHeight: "50px",
+                      marginBottom: "15px",
+                      fontWeight: "bold",
+                      fontSize: "1.5em",
+                      mode: "ios",
+                    }}
+                    color="secondary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.props.history.push({
+                        pathname: "/game",
+                        state: "t ",
+                      });
+                    }}
+                  >
+                    New hunt!
+                  </IonButton>
+                  <IonButton
+                    style={{
+                      minHeight: "50px",
+                      marginBottom: "15px",
+                      fontWeight: "bold",
+                      fontSize: "1.5em",
+                      mode: "ios",
+                    }}
+                    expand="full"
+                    color="secondary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.props.history.push({
+                        pathname: "/myGames",
+                        state: "t ",
+                      });
+                    }}
+                  >
+                    Created Hunts!
+                  </IonButton>
+                </IonList>
+              </IonContent>
+            </>
+          )}
+        </IonPage>
+      </>
     );
   }
 }
