@@ -27,6 +27,7 @@ export const PlayService = {
   setActiveGame,
   checkActiveGame,
   getActiveGame,
+  submitOnlyAnswerWrong,
 };
 
 function setActiveGame(id) {
@@ -115,10 +116,31 @@ function getAdjustmentPoints(team) {
 
 function getChallengesPoints(team, game) {
   let completed = getCompletedSteps(game, team.name, [team]);
+  if (completed && team.failed)
+    completed = completed.filter((x) => team.failed.includes(x.id));
+
   return completed.reduce((t, x) => (t += parseInt(x.points)), 0);
 }
 function getTotalPoints(team, game) {
   return getAdjustmentPoints(team) + getChallengesPoints(team, game);
+}
+
+function submitOnlyAnswerWrong(answer, step, team, finished) {
+  return fireStore
+    .collection("lobbies")
+    .doc(LobbyService.getCurrentLobby())
+    .collection("teams")
+    .doc(team)
+    .update({
+      completed: firebase.firestore.FieldValue.arrayUnion(step.id),
+      failed: firebase.firestore.FieldValue.arrayUnion(step.id),
+      [step.id]: {
+        answer,
+        time: firebase.firestore.FieldValue.serverTimestamp(),
+        submitedBy: UserService.getCurrentPlayer().name,
+      },
+      finished,
+    });
 }
 
 function submitAnswer(answer, step, team, finished) {

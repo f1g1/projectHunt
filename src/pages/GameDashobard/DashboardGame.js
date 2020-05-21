@@ -42,7 +42,6 @@ export default function DashboardGame(props) {
     });
   };
   const initPolyLines = (google, x) => {
-    debugger;
     let ppolyline = new google.maps.Circle({
       strokeOpacity: 0.3,
       strokeWeight: 1,
@@ -131,7 +130,7 @@ export default function DashboardGame(props) {
                 <IonLabel>Allow Once:</IonLabel>
                 <br />
                 <IonLabel>
-                  <p>{x.only1 ? "True" : "False"}</p>
+                  <p>{x.onlyOnce ? "True" : "False"}</p>
                 </IonLabel>
               </IonCol>
               <IonCol>

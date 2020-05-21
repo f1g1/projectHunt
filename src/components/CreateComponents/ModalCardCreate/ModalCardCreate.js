@@ -2,7 +2,6 @@ import "./ModalCard.scss";
 
 import {
   IonButton,
-  IonButtons,
   IonContent,
   IonHeader,
   IonLabel,
@@ -32,6 +31,8 @@ export default function ModalCardCreate(props) {
     wrongResponseAdditionalInfo: null,
     succesResponseTitle: null,
     succesResponseAdditionalInfo: null,
+    hidden: false,
+    visible: false,
   });
   useEffect(() => {
     if (props.edit) setStep(props.edit);
@@ -91,17 +92,21 @@ export default function ModalCardCreate(props) {
 
   return (
     <>
-      <IonHeader color="secondary">
+      <IonHeader>
         <IonToolbar color="primary">
-          {/* <IonTitle>{props.edit ? <EditIcon /> : <AddBoxIcon />}</IonTitle> */}
-          <IonButtons slot="end">
-            <IonButton color="danger" onClick={props.handleClose}>
-              X
-            </IonButton>
-            <IonButton onClick={saveNewStep}>Save!</IonButton>
-          </IonButtons>
+          <IonButton
+            color="danger"
+            onClick={props.handleClose}
+            className="ion-padding-horizontal"
+          >
+            X
+          </IonButton>
+          <IonButton onClick={saveNewStep} color="success">
+            Save!
+          </IonButton>
         </IonToolbar>
       </IonHeader>
+
       <IonContent className="ion-padding">
         <IonSegment
           value={segmentOn}
@@ -115,7 +120,7 @@ export default function ModalCardCreate(props) {
             <IonLabel>Misc</IonLabel>
           </IonSegmentButton>
           <IonSegmentButton value="response">
-            <IonLabel>Response</IonLabel>
+            <IonLabel>Feedback</IonLabel>
           </IonSegmentButton>
         </IonSegment>
         {RenderSegment()}

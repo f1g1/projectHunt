@@ -35,10 +35,6 @@ export default function Challenge(props) {
   };
   return (
     <IonList>
-      {/* {props.step.image && <>
-                <img className="ion-justify-content-center ion-align-self-center" src={props.step.image} />
-
-            </>} */}
       {
         <img
           src={props.step.image}

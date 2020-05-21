@@ -66,7 +66,10 @@ export default function TeamDashboard(props) {
             <IonItem>
               <IonLabel>
                 Challenges:{" "}
-                <p>{completed.reduce((t, x) => (t += x.points), 0)} points </p>
+                <p>
+                  {PlayService.getChallengesPoints(props.team, props.game)}{" "}
+                  points{" "}
+                </p>
               </IonLabel>
             </IonItem>
           </IonCol>
@@ -136,9 +139,20 @@ export default function TeamDashboard(props) {
         {completed.length ? (
           completed.map((x) => (
             <IonItem>
-              <IonLabel>
+              <IonLabel
+                color={
+                  props.team.failed &&
+                  props.team.failed.includes(x.id) &&
+                  "danger"
+                }
+              >
                 Challenge #{x.index + 1}
                 <p>{x.hidden && " (hidden)"}</p>
+                <p color="danger">
+                  {props.team.failed &&
+                    props.team.failed.includes(x.id) &&
+                    "failed!"}
+                </p>
               </IonLabel>
               <IonLabel>{x.points}</IonLabel>
               <IonLabel>
@@ -194,8 +208,7 @@ export default function TeamDashboard(props) {
         ) : (
           <IonLabel>
             <p style={{ fontSize: "1.5em" }} className="ion-padding">
-              There are no active challenges remaining, all challenges are
-              completed
+              There are no active challenges! completed
             </p>
           </IonLabel>
         )}

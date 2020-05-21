@@ -127,7 +127,7 @@ export default function GameInformations(props) {
                   <IonCheckbox
                     onIonChange={(e) => setInOrder(e.detail.checked)}
                     slot="end"
-                    value={state.inOrder}
+                    checked={state.inOrder}
                   />
                 </IonItem>
                 <IonItem>

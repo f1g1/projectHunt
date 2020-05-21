@@ -48,7 +48,7 @@ export default function Lobby(props) {
 
   useEffect(() => {
     return () => {
-      leaveLobby();
+      if (lobby && lobby.startTime) leaveLobby();
     };
   }, []);
 
@@ -62,16 +62,14 @@ export default function Lobby(props) {
       LobbyService.setLobby();
     }
     setLobby(lobbyChanging);
-  }, [lobbyChanging]);
-  const passGameStarted = () => {
-    if (lobby && lobby.startTime && joinedTeam)
-      props.history.go({ pathname: "/play", lobby });
-  };
 
-  useEffect(() => {
-    passGameStarted();
-    // LobbyService.setLobby();
-  }, [lobby]);
+    passGameStarted(lobbyChanging);
+  }, [lobbyChanging]);
+
+  const passGameStarted = (lobby) => {
+    if (lobby && lobby.startTime && (joinedTeam || LobbyService.ImAdmin(lobby)))
+      props.history.replace("/play");
+  };
 
   const handleKick = (username) => {
     let team = teams.find((x) => x.name === currentTeamDetails.name).name;
@@ -107,7 +105,7 @@ export default function Lobby(props) {
   }, [teams]);
   let startGame = () => {
     LobbyService.startGame(LobbyService.getCurrentLobby(), lobby);
-    props.history.replace("/play", lobby);
+    // props.history.replace("/play", lobby);
   };
   const leaveLobby = () => {
     if (joinedTeam) {

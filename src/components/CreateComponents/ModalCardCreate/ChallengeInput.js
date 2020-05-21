@@ -1,9 +1,10 @@
 import {
-  IonButton,
   IonCheckbox,
   IonInput,
   IonItem,
   IonLabel,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 
@@ -36,23 +37,38 @@ function TextInput(props) {
 }
 function QrInput(props) {
   const [qr, setQr] = useState();
+  const [qrCode, setQrCode] = useState(makeid(6));
+  const [color, setColor] = useState();
 
   useEffect(() => {
-    MiscService.getQr(props.step.code).then((x) => {
+    MiscService.getQr(qrCode, color).then((x) => {
       setQr(x.url);
     });
-  }, []);
+    props.setStep({ ...props.step, code: qrCode, color: color });
+  }, [color]);
 
-  const generateQR = (code) => {
-    props.setStep({ ...props.step, code: code });
-  };
   return (
     <>
-      <IonButton onClick={() => generateQR(makeid(6))}>Generate</IonButton>
+      <IonItem>
+        <IonLabel>Color:</IonLabel>
+        <IonSelect
+          interface="popover"
+          value={color}
+          onIonChange={(e) => setColor(e.detail.value)}
+        >
+          <IonSelectOption defaultChecked value="">
+            black
+          </IonSelectOption>
+          <IonSelectOption value="FF0000">red</IonSelectOption>
+          <IonSelectOption value="0000ff">blue</IonSelectOption>
+          <IonSelectOption value="0f0">green</IonSelectOption>
+        </IonSelect>
+      </IonItem>
+
       {qr && <img src={qr}></img>}
       <p>
         {qr && (
-          <a href={qr} download>
+          <a href={qr.replace("size=200x200", "size=1000x1000")} download>
             Click to open on new page
           </a>
         )}
@@ -87,7 +103,6 @@ export default function ChallengeInput(props) {
         return <ImageInput {...props} />;
       default:
         return <TextInput {...props} />;
-
         break;
     }
   };

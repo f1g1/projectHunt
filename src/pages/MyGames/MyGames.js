@@ -8,6 +8,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonModal,
   IonPage,
   IonRow,
   IonTitle,
@@ -17,9 +18,11 @@ import React, { useEffect, useState } from "react";
 
 import { GameService } from "../../services/GameService";
 import { LobbyService } from "../../services/LobbyService";
+import QrModal from "../Create/QrModal";
 
 export default function MyGames(props) {
   const [games, setgames] = useState();
+  const [showQrModal, setShowQrModal] = useState();
   useEffect(() => {
     GameService.getMyGames().then((x) => setgames(x));
   }, []);
@@ -70,8 +73,19 @@ export default function MyGames(props) {
                     >
                       Create Lobby
                     </IonButton>
-                    <IonButton color="dark" onClick={() => handleEdit(x)}>
+                    <IonButton
+                      color="dark"
+                      onClick={() => handleEdit(x)}
+                      className="ion-margin-start"
+                    >
                       Edit
+                    </IonButton>
+                    <IonButton
+                      className="ion-margin-horizontal"
+                      color="dark"
+                      onClick={() => setShowQrModal(x.steps)}
+                    >
+                      QRs
                     </IonButton>
 
                     <IonButton
@@ -87,6 +101,15 @@ export default function MyGames(props) {
           </IonCol>
         </IonRow>
       </IonContent>
+      <IonModal
+        isOpen={showQrModal !== undefined}
+        onDidDismiss={() => setShowQrModal()}
+      >
+        <QrModal
+          handleClose={() => setShowQrModal()}
+          steps={showQrModal}
+        ></QrModal>
+      </IonModal>
     </IonPage>
   );
 }

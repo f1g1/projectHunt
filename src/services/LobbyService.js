@@ -32,7 +32,25 @@ export const LobbyService = {
   banPlayer,
   unbanPlayer,
   disbandTeam,
+  handleGameClosed,
+  getHistoryGame,
+  getHistoryTeams,
 };
+
+function handleGameClosed(lobbyId, game, teams) {
+  debugger;
+  window.localStorage.removeItem("activeGame");
+  window.localStorage.removeItem("currentlobby");
+  window.localStorage.removeItem("game");
+  window.localStorage["historyGame"] = JSON.stringify(game);
+  window.localStorage["historyTeams"] = JSON.stringify(teams);
+}
+function getHistoryGame() {
+  return JSON.parse(window.localStorage["historyGame"]);
+}
+function getHistoryTeams() {
+  return JSON.parse(window.localStorage["historyTeams"]);
+}
 
 function disbandTeam(lobbyId, team) {
   return fireStore

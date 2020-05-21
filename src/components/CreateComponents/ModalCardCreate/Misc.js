@@ -79,6 +79,16 @@ export default function Misc(props) {
           }
         />
       </IonItem>
+      <IonItem>
+        <IonLabel>Allow answer only once</IonLabel>
+        <IonCheckbox
+          className="ion-no-padding"
+          value={props.step.onlyOnce}
+          onIonChange={(x) =>
+            props.setStep({ ...props.step, onlyOnce: x.detail.checked })
+          }
+        />
+      </IonItem>
       <IonItem lines="none">
         <IonLabel>Hidden</IonLabel>
         <IonCheckbox

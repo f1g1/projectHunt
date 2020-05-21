@@ -170,6 +170,11 @@ export default function ClueList(props) {
                 style={
                   showSteps === showStatus.COMPLETED ? { opacity: 0.6 } : {}
                 }
+                color={
+                  currentTeamObj.failed &&
+                  currentTeamObj.failed.find((z) => z === x.id) &&
+                  "danger"
+                }
                 key={x.id}
               >
                 <IonThumbnail slot="start">

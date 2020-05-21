@@ -16,6 +16,7 @@ import { Redirect, Route } from "react-router-dom";
 import Create from "./pages/Create/Create";
 import { CreateGameContextProvider } from "./StateCreateGame";
 import Dashboard from "./pages/GameDashobard/Dashboard";
+import FinishedGame from "./pages/FinishedGame";
 import Home from "./pages/Home";
 import { IonReactRouter } from "@ionic/react-router";
 import Lobby from "./pages/Lobby/Lobby";
@@ -44,6 +45,7 @@ const App: React.FC = () => (
         <Route path="/seeClue" component={SeeClue} exact={true} />
         <Route path="/username" component={UserName} exact={true} />
         <Route path="/gameDashboard" component={Dashboard} exact={true} />
+        <Route path="/finishedGame" component={FinishedGame} exact={true} />
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

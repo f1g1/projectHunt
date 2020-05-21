@@ -25,7 +25,7 @@ function addStep(lobbyId, step) {
 }
 
 function closeGame(lobbyId, game) {
-  fireStore
+  return fireStore
     .collection("lobbies")
     .doc(lobbyId)
     .set(
@@ -122,7 +122,6 @@ function adjustPoints(team, adjustment) {
 }
 
 function revokeChallenge(teamName, step) {
-  debugger;
   return fireStore
     .collection("lobbies")
     .doc(LobbyService.getCurrentLobby())
@@ -130,6 +129,7 @@ function revokeChallenge(teamName, step) {
     .doc(teamName)
     .update({
       completed: firebase.firestore.FieldValue.arrayRemove(step.id),
+      failed: firebase.firestore.FieldValue.arrayRemove(step.id),
       [step.id]: null,
       finished: false,
     });

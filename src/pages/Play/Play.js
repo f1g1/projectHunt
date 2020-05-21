@@ -60,10 +60,26 @@ export default function Play(props) {
       }
     PlayService.setGame(gameChanging || {});
     setGame(gameChanging);
+    if (gameChanging && gameChanging.finishTime) {
+      LobbyService.handleGameClosed(
+        LobbyService.getCurrentLobby(),
+        gameChanging,
+        teams
+      );
+      props.history.replace("/finishedGame");
+    }
   }, [gameChanging]);
 
   const closeGame = () => {
-    DashboardService.closeGame(LobbyService.getCurrentLobby(), game);
+    DashboardService.closeGame(LobbyService.getCurrentLobby(), game).then(
+      (x) => {
+        LobbyService.handleGameClosed(
+          LobbyService.getCurrentLobby(),
+          game,
+          teams
+        );
+      }
+    );
   };
 
   return (
@@ -74,9 +90,6 @@ export default function Play(props) {
             <IonToolbar
               color={LobbyService.ImAdmin(game) ? "tertiary" : "primary"}
             >
-              {/* <IonButtons style={{ display: "inline-block" }}>
-                <IonBackButton defaultHref="/home"></IonBackButton>
-              </IonButtons> */}
               <h1
                 style={{ display: "inline-block" }}
                 className="ion-padding-horizontal"
@@ -109,7 +122,6 @@ export default function Play(props) {
                   <IonButton
                     color="danger"
                     slot="block"
-                    onClick={setShowAlert1}
                     onClick={() => setShowAlert1(true)}
                   >
                     Close Game!
