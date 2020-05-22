@@ -8,6 +8,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonLoading,
   IonModal,
   IonPage,
   IonRow,
@@ -23,8 +24,12 @@ import QrModal from "../Create/QrModal";
 export default function MyGames(props) {
   const [games, setgames] = useState();
   const [showQrModal, setShowQrModal] = useState();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    GameService.getMyGames().then((x) => setgames(x));
+    GameService.getMyGames().then((x) => {
+      setgames(x);
+      setLoading(false);
+    });
   }, []);
 
   const handleDelete = (id) => {
@@ -51,11 +56,16 @@ export default function MyGames(props) {
           <IonButtons>
             <IonBackButton defaultHref="/home"></IonBackButton>
 
-            <IonTitle>My games</IonTitle>
+            <IonTitle>My hunts</IonTitle>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        <IonLoading
+          isOpen={loading}
+          message={"Please wait..."}
+          duration={5000}
+        />
         <IonRow className="ion-padding-top">
           <IonCol sizeXl="4" sizeSm="12" offsetXl="3">
             <IonList>

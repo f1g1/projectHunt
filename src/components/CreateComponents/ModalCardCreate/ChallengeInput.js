@@ -38,7 +38,7 @@ function TextInput(props) {
 function QrInput(props) {
   const [qr, setQr] = useState();
   const [qrCode, setQrCode] = useState(makeid(6));
-  const [color, setColor] = useState();
+  const [color, setColor] = useState("");
 
   useEffect(() => {
     MiscService.getQr(qrCode, color).then((x) => {

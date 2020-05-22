@@ -75,7 +75,7 @@ export default function LeaderBoard(props) {
                   </IonCol>
                   <IonCol>
                     <IonLabel>
-                      {x.completed.length > 0
+                      {x.completed && x.completed.length > 0
                         ? moment(
                             x[x.completed[x.completed.length - 1]].time
                               .seconds * 1000

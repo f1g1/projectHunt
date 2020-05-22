@@ -33,6 +33,7 @@ export default function ModalCardCreate(props) {
     succesResponseAdditionalInfo: null,
     hidden: false,
     visible: false,
+    color: "",
   });
   useEffect(() => {
     if (props.edit) setStep(props.edit);

@@ -83,7 +83,7 @@ export default function Misc(props) {
         <IonLabel>Allow answer only once</IonLabel>
         <IonCheckbox
           className="ion-no-padding"
-          value={props.step.onlyOnce}
+          checked={props.step.onlyOnce || false}
           onIonChange={(x) =>
             props.setStep({ ...props.step, onlyOnce: x.detail.checked })
           }
@@ -94,7 +94,7 @@ export default function Misc(props) {
         <IonCheckbox
           className="ion-no-padding"
           disabled={props.step.visible}
-          value={props.step.hidden}
+          checked={props.step.hidden || false}
           onIonChange={(x) =>
             props.setStep({ ...props.step, hidden: x.detail.checked })
           }
@@ -114,7 +114,7 @@ export default function Misc(props) {
         <IonCheckbox
           className="ion-no-padding"
           disabled={props.step.hidden}
-          value={props.step.visible}
+          checked={props.step.visible || false}
           onIonChange={(x) =>
             props.setStep({ ...props.step, visible: x.detail.checked })
           }

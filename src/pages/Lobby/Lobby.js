@@ -1,6 +1,7 @@
 import "./Lobby.scss";
 
 import {
+  IonAlert,
   IonButton,
   IonButtons,
   IonCard,
@@ -41,7 +42,7 @@ export default function Lobby(props) {
   const [currentTeamDetails, setcurrentTeamDetails] = useState();
   const [showChatModal, setShowChatModal] = useState(false);
   const [showPlayersModal, setShowPlayersModal] = useState(false);
-
+  const [showAlert1, setShowAlert1] = useState(false);
   const showThisTeam = (name) => {
     setcurrentTeamDetails(teams.filter((x) => x.name === name)[0]);
   };
@@ -67,8 +68,12 @@ export default function Lobby(props) {
   }, [lobbyChanging]);
 
   const passGameStarted = (lobby) => {
-    if (lobby && lobby.startTime && (joinedTeam || LobbyService.ImAdmin(lobby)))
-      props.history.replace("/play");
+    if (lobby && lobby.startTime)
+      if (joinedTeam || LobbyService.ImAdmin(lobby))
+        props.history.replace("/play");
+      else {
+        leaveLobby();
+      }
   };
 
   const handleKick = (username) => {
@@ -105,7 +110,6 @@ export default function Lobby(props) {
   }, [teams]);
   let startGame = () => {
     LobbyService.startGame(LobbyService.getCurrentLobby(), lobby);
-    // props.history.replace("/play", lobby);
   };
   const leaveLobby = () => {
     if (joinedTeam) {
@@ -226,7 +230,10 @@ export default function Lobby(props) {
             <IonToolbar>
               <IonButtons>
                 {lobby.owner === UserService.getCurrentUser().userName && (
-                  <IonButton color="primary" onClick={startGame}>
+                  <IonButton
+                    color="primary"
+                    onClick={() => setShowAlert1(true)}
+                  >
                     Start Game
                   </IonButton>
                 )}
@@ -272,6 +279,28 @@ export default function Lobby(props) {
           }
         />
       </IonModal>
+      <IonAlert
+        isOpen={showAlert1}
+        onDidDismiss={() => setShowAlert1(false)}
+        header={"You are going to start the game!"}
+        subHeader={""}
+        message={
+          "Once a game starrts, players can't change teams, and new players can't join, are you sure you want to proceed?"
+        }
+        buttons={[
+          {
+            text: "Cancel!",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "YES!",
+            handler: () => {
+              startGame();
+            },
+          },
+        ]}
+      />
     </IonPage>
   );
 }

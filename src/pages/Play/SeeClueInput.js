@@ -2,6 +2,7 @@ import { IonButton, IonInput, IonItem, IonLabel } from "@ionic/react";
 import React, { useEffect, useRef, useState } from "react";
 
 import { BarcodeScanner } from "@ionic-native/barcode-scanner";
+import MiscService from "../../services/MiscService";
 import { PlayService } from "../../services/PlayService";
 
 function TextInput(props) {
@@ -18,6 +19,9 @@ function TextInput(props) {
         )
           .then(() => {
             props.handleSucces();
+            MiscService.getCachedGeolocation().then((x) =>
+              PlayService.shareLocation(x, props.team)
+            );
           })
           .catch((x) => console.log(x));
       } else {
@@ -31,6 +35,9 @@ function TextInput(props) {
           )
             .then(() => {
               props.handleWrong();
+              MiscService.getCachedGeolocation().then((x) =>
+                PlayService.shareLocation(x, props.team)
+              );
             })
             .catch((x) => console.log(x));
         }
@@ -85,6 +92,9 @@ function QrInput(props) {
             props.handleClose();
           })
           .catch((x) => console.log(x));
+        MiscService.getCachedGeolocation().then((x) =>
+          PlayService.shareLocation(x, props.team)
+        );
         props.handleSucces();
       } else {
         props.handleWrong();
@@ -134,6 +144,9 @@ function ImageInput(props) {
       props.step,
       props.team,
       props.finished || false
+    );
+    MiscService.getCachedGeolocation().then((x) =>
+      PlayService.shareLocation(x, props.team)
     );
   };
   return (

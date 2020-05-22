@@ -37,12 +37,15 @@ function getActiveGame() {
   return window.localStorage["activeGame"];
 }
 
-function checkActiveGame(id) {
+function checkActiveGame() {
   return fireStore
     .collection("users")
     .doc(UserService.getCurrentPlayer().name)
     .get()
-    .then((x) => x.data().activeGame);
+    .then((x) => {
+      UserService.setCurrentUser(x.data());
+      return x.data().activeGame;
+    });
 }
 
 function saveAdminPoint(point) {
@@ -207,15 +210,24 @@ function getActiveSteps(game, team, teams) {
     return steps;
   }
 }
+
+function arePointsNear(checkPoint, centerPoint, m) {
+  let km = m / 1000;
+  var ky = 40000 / 360;
+  var kx = Math.cos((Math.PI * centerPoint.lat) / 180.0) * ky;
+  var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
+  var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
+  debugger;
+  return Math.sqrt(dx * dx + dy * dy) <= km;
+}
 function getAvalaibleHidden(game, teamObj) {
   let steps = game.steps.filter((x) => x.hidden);
+  debugger;
   steps = steps.filter(
     (x) =>
       !teamObj ||
       (teamObj.location &&
-        !teamObj.location.includes(
-          (x) => JSON.stringify(x) === JSON.stringify(x.coords)
-        ))
+        teamObj.location.find((y) => arePointsNear(y, x.coords, x.radius)))
   );
   if (teamObj.completed)
     steps = steps.filter((x) => !teamObj.completed.includes(x.id));

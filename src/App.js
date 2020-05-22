@@ -29,8 +29,19 @@ import React from "react";
 import SeeClue from "./pages/Play/SeeClueChallenge";
 import UserName from "./pages/Username/UserName";
 
-const App: React.FC = () => (
-  <>
+export default function App() {
+  // useEffect(() => {
+  //   let z;
+
+  //   try {
+  //     z = UserService.getCurrentUser();
+  //     z !== {} &&
+  //       UserService.setCurrentUser(UserService.getUserFirebase(z.email));
+  //   } catch {}
+  //   debugger;
+  // }, []);
+
+  return (
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
@@ -56,11 +67,11 @@ const App: React.FC = () => (
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
-  </>
-);
+  );
+}
 
-export function withCreateContext(Component: any) {
-  return function WrapperComponent(props: any) {
+export function withCreateContext(Component) {
+  return function WrapperComponent(props) {
     return (
       <CreateGameContextProvider>
         {<Component {...props} />}
@@ -68,13 +79,3 @@ export function withCreateContext(Component: any) {
     );
   };
 }
-
-// export function withPlayContext(Component: any) {
-//   return function WrapperComponent(props: any) {
-//     return (
-//       <PlayContextProvider>{<Component {...props} />}</PlayContextProvider>
-//     );
-//   };
-// }
-
-export default App;

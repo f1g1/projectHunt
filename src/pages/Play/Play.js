@@ -82,6 +82,10 @@ export default function Play(props) {
         teams
       );
     });
+
+    // UserService.setCurrentUser(
+    //   UserService.getUserFirebase(UserService.getCurrentUser().email)
+    // );
   };
 
   return (
@@ -150,7 +154,7 @@ export default function Play(props) {
             cssClass: "secondary",
           },
           {
-            text: "Ok!",
+            text: "YES!",
             handler: () => {
               closeGame();
             },

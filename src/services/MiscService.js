@@ -28,20 +28,20 @@ function getQr(data, color) {
 }
 
 async function getCachedGeolocation() {
-  let parsed;
-  try {
-    parsed = JSON.parse(window.localStorage["cachedCoords"]);
-  } catch {}
-  if (!parsed || !parsed.coords || Date.now() - parsed.timestamp > 3600000) {
-    let coords = await Geolocation.getCurrentPosition();
-    window.localStorage["cachedCoords"] = JSON.stringify({
-      ...coords.coords,
-    });
+  // let parsed;
+  // try {
+  //   parsed = JSON.parse(window.localStorage["cachedCoords"]);
+  // } catch {}
+  // if (!parsed || !parsed.coords || Date.now() - parsed.timestamp > 3600000) {
+  let coords = await Geolocation.getCurrentPosition();
+  //   window.localStorage["cachedCoords"] = JSON.stringify({
+  //     ...coords.coords,
+  //   });
 
-    return coords.coords;
-  } else {
-    return parsed.coords;
-  }
+  return coords.coords;
+  // } else {
+  //   return parsed.coords;
+  // }
 }
 
 function getLiveGeolocation(setLocation) {

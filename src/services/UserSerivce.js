@@ -55,6 +55,7 @@ function getCurrentPlayer() {
   return { name: user.userName, image: user.imageUrl };
 }
 function setCurrentUser(user) {
+  debugger;
   window.localStorage["user"] = JSON.stringify({
     ...user,
   });

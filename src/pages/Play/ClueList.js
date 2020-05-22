@@ -142,77 +142,83 @@ export default function ClueList(props) {
           <IonTitle>
             {!showSteps
               ? `Active Challenges ${
-                  props.teams.length > 0 && filtered[0] ? filtered.length : ""
+                  props.teams.length > 0 && filtered && filtered[0]
+                    ? filtered.length
+                    : ""
                 }`
               : `Completed Challenges ${filtered.length}`}
           </IonTitle>
-          {filtered.map((x, index) =>
-            !x ? (
-              <>
-                <IonTitle style={{ marginTop: "80px" }}>
-                  Congratulations!!!
-                  <br /> You have finished all the challenges!
-                </IonTitle>
-                <IonLabel>
-                  <p
-                    style={{ bottom: "40px" }}
-                    className="ion-padding-horizontal"
-                  >
-                    psst, pssst, hey you, you may find some hidden challenges if
-                    you check in in the places that you solved other challenges
-                  </p>
-                </IonLabel>
-              </>
-            ) : (
-              <IonItem
-                button
-                onClick={() => hanldeStepClick(x.id)}
-                style={
-                  showSteps === showStatus.COMPLETED ? { opacity: 0.6 } : {}
-                }
-                color={
-                  currentTeamObj.failed &&
-                  currentTeamObj.failed.find((z) => z === x.id) &&
-                  "danger"
-                }
-                key={x.id}
-              >
-                <IonThumbnail slot="start">
-                  <img src={x.image} />
-                </IonThumbnail>
-                <IonLabel>
-                  {currentTeamObj.toBeValidated &&
-                    currentTeamObj.toBeValidated.find((z) => z === x.id) && (
-                      <p style={{ float: "right" }}>Pending validation</p>
+          {filtered &&
+            filtered.map((x, index) =>
+              !x ? (
+                <>
+                  <IonTitle style={{ marginTop: "80px" }}>
+                    Congratulations!!!
+                    <br /> You have finished all the challenges!
+                  </IonTitle>
+                  <IonLabel>
+                    <p
+                      style={{ bottom: "40px" }}
+                      className="ion-padding-horizontal"
+                    >
+                      psst, pssst, hey you, you may find some hidden challenges
+                      if you check in in the places that you solved other
+                      challenges
+                    </p>
+                  </IonLabel>
+                </>
+              ) : (
+                <IonItem
+                  button
+                  onClick={() => hanldeStepClick(x.id)}
+                  style={
+                    showSteps === showStatus.COMPLETED ? { opacity: 0.6 } : {}
+                  }
+                  color={
+                    currentTeamObj.failed &&
+                    currentTeamObj.failed.find((z) => z === x.id) &&
+                    "danger"
+                  }
+                  key={x.id}
+                >
+                  <IonThumbnail slot="start">
+                    <img src={x.image} />
+                  </IonThumbnail>
+                  <IonLabel>
+                    {currentTeamObj.toBeValidated &&
+                      currentTeamObj.toBeValidated.find((z) => z === x.id) && (
+                        <p style={{ float: "right" }}>Pending validation</p>
+                      )}
+                    <h2>#{x.index + 1}</h2>
+                    {x.hidden && (
+                      <IonLabel>
+                        <p> (hidden)</p>
+                      </IonLabel>
                     )}
-                  <h2>#{x.index + 1}</h2>
-                  {x.hidden && (
-                    <IonLabel>
-                      <p> (hidden)</p>
-                    </IonLabel>
-                  )}
-                  <h3>{x.clue}</h3>
-                  &nbsp;
-                  {showSteps === showStatus.COMPLETED &&
-                    //for text/qr we show the answer as label
-                    currentTeamObj[x.id] &&
-                    (x.answerType < 2 ? (
-                      <>
-                        <h2 color="danger">Answer:</h2>
+                    <h3>{x.clue}</h3>
+                    &nbsp;
+                    {showSteps === showStatus.COMPLETED &&
+                      //for text/qr we show the answer as label
+                      currentTeamObj[x.id] &&
+                      (x.answerType < 2 ? (
+                        <>
+                          <h2 color="danger">Answer:</h2>
 
-                        <IonLabel color="danger">
-                          {currentTeamObj[x.id].answer}
-                        </IonLabel>
-                      </>
-                    ) : (
-                      <IonThumbnail slot="end" className="ion-float-right">
-                        <IonImg src={currentTeamObj[x.id].imageAnswer}></IonImg>
-                      </IonThumbnail>
-                    ))}
-                </IonLabel>
-              </IonItem>
-            )
-          )}
+                          <IonLabel color="danger">
+                            {currentTeamObj[x.id].answer}
+                          </IonLabel>
+                        </>
+                      ) : (
+                        <IonThumbnail slot="end" className="ion-float-right">
+                          <IonImg
+                            src={currentTeamObj[x.id].imageAnswer}
+                          ></IonImg>
+                        </IonThumbnail>
+                      ))}
+                  </IonLabel>
+                </IonItem>
+              )
+            )}
         </IonCol>
       </IonRow>
       <IonModal

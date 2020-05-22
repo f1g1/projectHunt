@@ -133,7 +133,7 @@ class Home extends Component {
                       });
                     }}
                   >
-                    Created Hunts!
+                    My Hunts!
                   </IonButton>
                 </IonList>
               </IonContent>

@@ -88,7 +88,7 @@ const Create = (props) => {
       </IonContent>
       <IonFooter>
         <IonToolbar>
-          <IonButtons slot="end">
+          <IonButtons className="ion-padding-horizontal">
             <IonButton slot="end" onClick={() => saveGame()} color="primary">
               SaveGame
             </IonButton>
