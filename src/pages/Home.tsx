@@ -93,7 +93,7 @@ class Home extends Component {
                       });
                     }}
                   >
-                    Play!
+                    Play!!
                   </IonButton>
                   <IonButton
                     expand="full"

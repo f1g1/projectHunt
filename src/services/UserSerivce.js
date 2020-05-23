@@ -19,20 +19,27 @@ function checkUserName(username) {
 }
 
 function logout() {
-  window.localStorage.clear("user");
+  window.localStorage.removeItem("user");
 }
 function getUserFirebase(email) {
   return fireStore.collection("users").where("email", "==", email).get();
 }
 function SaveNewUser(user) {
-  window.localStorage["user"] = JSON.stringify({
-    ...user,
-  });
+  if (user)
+    window.localStorage["user"] = JSON.stringify({
+      ...user,
+    });
   return fireStore.collection("users").doc(user.userName).set(user);
 }
 
 function getCurrentUser() {
-  return JSON.parse(window.localStorage["user"]) || {};
+  let x;
+  try {
+    x = JSON.parse(window.localStorage["user"]);
+  } catch {}
+  debugger;
+  if (x && x.name) return x;
+  else return undefined;
 }
 
 function checkNewUser(user) {
@@ -56,7 +63,8 @@ function getCurrentPlayer() {
 }
 function setCurrentUser(user) {
   debugger;
-  window.localStorage["user"] = JSON.stringify({
-    ...user,
-  });
+  if (user)
+    window.localStorage["user"] = JSON.stringify({
+      ...user,
+    });
 }

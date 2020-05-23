@@ -28,31 +28,23 @@ import Play from "./pages/Play/Play";
 import React from "react";
 import SeeClue from "./pages/Play/SeeClueChallenge";
 import UserName from "./pages/Username/UserName";
+import { UserService } from "./services/UserSerivce";
+
+function WithRedirect(props) {
+  return props.login ? props.children : <Redirect to="/login" />;
+}
 
 export default function App() {
-  // useEffect(() => {
-  //   let z;
-
-  //   try {
-  //     z = UserService.getCurrentUser();
-  //     z !== {} &&
-  //       UserService.setCurrentUser(UserService.getUserFirebase(z.email));
-  //   } catch {}
-  //   debugger;
-  // }, []);
-
   return (
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
           <Route path="/login" component={Login} exact={true} />
+          {/* <WithRedirect login={UserService.getCurrentUser() || false}> */}
           <Route path="/home" component={Home} exact={true} />
           <Route path="/game" component={withCreateContext(Create)} />
-
           <Route path="/lobbysearch" component={LobbySearch} exact={true} />
           <Route path="/mygames" component={MyGames} exact={true} />
-
-          <Route exact path="/" render={() => <Redirect to="/login" />} />
           <Route path="/lobby" component={Lobby} exact={true} />
           <Route
             path="/play"
@@ -64,6 +56,19 @@ export default function App() {
           <Route path="/gameDashboard" component={Dashboard} exact={true} />
           <Route path="/finishedGame" component={FinishedGame} exact={true} />
           <Route path="/history" component={History} exact={true} />
+          {/* </WithRedirect> */}
+
+          <Route
+            exact
+            path="/"
+            render={() =>
+              UserService.getCurrentUser() ? (
+                <Redirect to="/home" />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
