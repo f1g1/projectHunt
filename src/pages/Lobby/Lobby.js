@@ -1,4 +1,5 @@
-import { PhotoViewer } from "@ionic-native/photo-viewer";
+import "./Lobby.scss";
+
 import {
   IonAlert,
   IonButton,
@@ -22,15 +23,17 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
+
 import ChatBoard from "../../components/Chat/ChatBoard/ChatBoard";
-import MapWithLocation from "../../components/Map/Map";
-import useGameChanges from "../../services/CustomHooks/useGameChanges";
-import useTeamChanges from "../../services/CustomHooks/useTeamChanges";
-import { LobbyService } from "../../services/LobbyService";
-import { UserService } from "../../services/UserSerivce";
-import "./Lobby.scss";
 import LobbyPlayers from "./LobbyPlayers";
+import { LobbyService } from "../../services/LobbyService";
+import MapWithLocation from "../../components/Map/Map";
+import { PhotoViewer } from "@ionic-native/photo-viewer";
 import TeamsContainer from "./TeamsContainer";
+import { UserService } from "../../services/UserSerivce";
+import useGameChanges from "../../services/CustomHooks/useGameChanges";
+import useMessageChanges from "../../services/CustomHooks/useMessageChanges";
+import useTeamChanges from "../../services/CustomHooks/useTeamChanges";
 
 export default function Lobby(props) {
   const lobbyChanging = useGameChanges(LobbyService.getCurrentLobby());
@@ -41,9 +44,20 @@ export default function Lobby(props) {
   const [showChatModal, setShowChatModal] = useState(false);
   const [showPlayersModal, setShowPlayersModal] = useState(false);
   const [showAlert1, setShowAlert1] = useState(false);
+  const [openChat, setOpenChat] = useState(0);
+  const messages = useMessageChanges(
+    teams,
+    LobbyService.getCurrentLobby(),
+    lobbyChanging,
+    openChat
+  );
   const showThisTeam = (name) => {
     setcurrentTeamDetails(teams.filter((x) => x.name === name)[0]);
   };
+
+  useEffect(() => {
+    lobbyChanging && teams && setOpenChat(openChat + 1);
+  }, [lobbyChanging, teams]);
 
   useEffect(() => {
     return () => {
@@ -265,6 +279,21 @@ export default function Lobby(props) {
         isOpen={showChatModal}
         onDidDismiss={() => setShowChatModal(false)}
       >
+        {messages && (
+          <ChatBoard
+            listMessage={messages}
+            teams={teams}
+            gameChatId={LobbyService.getCurrentLobby()}
+            handleClose={() => setShowChatModal(false)}
+            lobby={lobbyChanging}
+            muted={
+              lobbyChanging &&
+              lobbyChanging.muted &&
+              lobbyChanging.muted.includes(UserService.getCurrentPlayer().name)
+            }
+          />
+        )}
+        {/* 
         <ChatBoard
           teams={teams}
           lobby={lobby}
@@ -275,7 +304,7 @@ export default function Lobby(props) {
             lobby.muted &&
             lobby.muted.includes(UserService.getCurrentPlayer().name)
           }
-        />
+        /> */}
       </IonModal>
       <IonAlert
         isOpen={showAlert1}

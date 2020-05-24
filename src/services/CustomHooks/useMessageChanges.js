@@ -14,7 +14,7 @@ export default function useMessageChanges(teams, gameChatId, lobby, openChat) {
       debugger;
       return teams && teams.filter((x) => x.players.includes(player))[0].name;
     } catch {
-      return null;
+      return " ";
     }
   };
   useEffect(() => {

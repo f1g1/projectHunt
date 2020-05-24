@@ -1,9 +1,8 @@
-import { IonBadge, IonImg } from "@ionic/react";
-
-import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { PhotoViewer } from "@ionic-native/photo-viewer";
-import React from "react";
+import { IonBadge, IonImg } from "@ionic/react";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import moment from "moment";
+import React from "react";
 
 export default function MessageOut(props) {
   return props.item.type === 0 ? (
@@ -20,7 +19,6 @@ export default function MessageOut(props) {
         )}
         {props.item.toTeam && !props.item.toAdmin && (
           <>
-            {/* {props.item.fromAdmin && <IonBadge color="danger">Admin</IonBadge>} */}
             <ArrowForwardIcon fontSize="small" />
             <IonBadge color="primary">{props.item.toTeam}</IonBadge>
           </>
