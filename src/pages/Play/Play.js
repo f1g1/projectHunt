@@ -23,7 +23,9 @@ import LeaderBoard from "./LeaderBoard";
 import { LobbyService } from "../../services/LobbyService";
 import MiscService from "../../services/MiscService";
 import { PlayService } from "../../services/PlayService";
+import { UserService } from "../../services/UserSerivce";
 import useGameChanges from "../../services/CustomHooks/useGameChanges";
+import useMessageChanges from "../../services/CustomHooks/useMessageChanges";
 import useTeamChanges from "../../services/CustomHooks/useTeamChanges";
 
 function arraysEqual(a, b) {
@@ -45,13 +47,24 @@ export default function Play(props) {
   const [game, setGame] = useState();
   const [showToast1, setShowToast1] = useState();
   const [showAlert1, setShowAlert1] = useState(false);
-
+  const [chatMessageType, setChatMessageType] = useState("all");
+  const [openChat, setopenChat] = useState(0);
   const teams = useTeamChanges();
   const gameChanging = useGameChanges();
+  const messages = useMessageChanges(
+    teams,
+    LobbyService.getCurrentLobby(),
+    game,
+    openChat
+  );
 
   useEffect(() => {
     MiscService.getCachedGeolocation().then((x) => setGeolocation(x));
   }, []);
+
+  useEffect(() => {
+    console.log(messages);
+  }, [messages]);
 
   useEffect(() => {
     if (game && gameChanging && !LobbyService.ImAdmin(game))
@@ -117,7 +130,12 @@ export default function Play(props) {
           <IonFooter>
             <IonToolbar>
               <IonButtons>
-                <IonButton onClick={() => setShowChatModal(true)}>
+                <IonButton
+                  onClick={() => {
+                    setShowChatModal(true);
+                    setopenChat(openChat + 1);
+                  }}
+                >
                   Chat
                 </IonButton>
                 <IonButton onClick={() => setShowLeaderBoardModal(true)}>
@@ -165,10 +183,23 @@ export default function Play(props) {
         isOpen={showChatModal}
         onDidDismiss={() => setShowChatModal(false)}
       >
-        <ChatBoard
-          gameChatId={LobbyService.getCurrentLobby()}
-          handleClose={() => setShowChatModal(false)}
-        />
+        {messages && (
+          <ChatBoard
+            listMessage={messages}
+            started
+            teams={teams}
+            gameChatId={LobbyService.getCurrentLobby()}
+            handleClose={() => setShowChatModal(false)}
+            lobby={game}
+            chatMessageType={chatMessageType}
+            setChatMessageType={setChatMessageType}
+            muted={
+              game &&
+              game.muted &&
+              game.muted.includes(UserService.getCurrentPlayer().name)
+            }
+          />
+        )}
       </IonModal>
       <IonModal
         isOpen={showLeaderBoardModal}

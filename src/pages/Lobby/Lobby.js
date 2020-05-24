@@ -1,5 +1,4 @@
-import "./Lobby.scss";
-
+import { PhotoViewer } from "@ionic-native/photo-viewer";
 import {
   IonAlert,
   IonButton,
@@ -23,16 +22,15 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
-
 import ChatBoard from "../../components/Chat/ChatBoard/ChatBoard";
-import LobbyPlayers from "./LobbyPlayers";
-import { LobbyService } from "../../services/LobbyService";
 import MapWithLocation from "../../components/Map/Map";
-import { PhotoViewer } from "@ionic-native/photo-viewer";
-import TeamsContainer from "./TeamsContainer";
-import { UserService } from "../../services/UserSerivce";
 import useGameChanges from "../../services/CustomHooks/useGameChanges";
 import useTeamChanges from "../../services/CustomHooks/useTeamChanges";
+import { LobbyService } from "../../services/LobbyService";
+import { UserService } from "../../services/UserSerivce";
+import "./Lobby.scss";
+import LobbyPlayers from "./LobbyPlayers";
+import TeamsContainer from "./TeamsContainer";
 
 export default function Lobby(props) {
   const lobbyChanging = useGameChanges(LobbyService.getCurrentLobby());
@@ -269,7 +267,7 @@ export default function Lobby(props) {
       >
         <ChatBoard
           teams={teams}
-          owner={lobby && lobby.owner}
+          lobby={lobby}
           gameChatId={LobbyService.getCurrentLobby()}
           handleClose={() => setShowChatModal(false)}
           muted={

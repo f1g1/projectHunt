@@ -138,7 +138,8 @@ function joinLobby(lobby) {
 
 function ImAdmin(lobby) {
   debugger;
-  return lobby && UserService.getCurrentPlayer().name === lobby.owner;
+  if (!lobby) return undefined;
+  return UserService.getCurrentPlayer().name === lobby.owner;
 }
 
 function startGame(lobbyId, game) {

@@ -1,70 +1,46 @@
 import "./ChatBoard.css";
 
 import {
-  IonBadge,
   IonButton,
   IonButtons,
-  IonImg,
   IonLabel,
+  IonSelect,
+  IonSelectOption,
   IonToolbar,
 } from "@ionic/react";
 import React, { useEffect, useRef, useState } from "react";
-import { fireStorage, fireStore } from "../../../firebase";
 
+import { ChatService } from "../../../services/ChatService";
 import CloseIcon from "@material-ui/icons/Close";
+import { LobbyService } from "../../../services/LobbyService";
+import MessageIn from "./MessageIn";
+import MessageOut from "./MessageOut";
 import PermMediaIcon from "@material-ui/icons/PermMedia";
-import { PhotoViewer } from "@ionic-native/photo-viewer";
 import SendIcon from "@material-ui/icons/Send";
 import { UserService } from "../../../services/UserSerivce";
+import { fireStorage } from "../../../firebase";
 import moment from "moment";
+
+const typeMessages = {
+  0: "all",
+  1: "team",
+  2: "admin",
+};
 
 export default function ChatBoard(props) {
   const [isLoading, setIsLoading] = useState();
   const [inputValue, setInputValue] = useState();
-  const [isLoadingMessage, setIsLoadingMessage] = useState();
-  const [listMessage, setListMessage] = useState([]);
   const ref = useRef();
   let refInput = useRef(null);
 
   let user = UserService.getCurrentPlayer();
   let currentUserId = user.name;
 
-  let removeListener = null;
   let currentPhotoFile = null;
 
   useEffect(() => {
-    getListHistory();
-    return () => {
-      if (removeListener) removeListener();
-    };
-  }, []);
-  useEffect(() => {
     scrollToBottom();
-  }, [listMessage]);
-  const getListHistory = () => {
-    if (removeListener) {
-      removeListener();
-    }
-    listMessage.length = 0;
-    setIsLoading(true);
-    removeListener = fireStore
-      .collection("messages")
-      .doc(props.gameChatId)
-      .collection(props.gameChatId)
-      .onSnapshot(
-        (snapshot) => {
-          snapshot.docChanges().forEach((change) => {
-            if (change.type === "added") {
-              listMessage.push(change.doc.data());
-            }
-          });
-          setIsLoading(false);
-        },
-        (err) => {
-          props.showToast(0, err.toString());
-        }
-      );
-  };
+  }, [props.listMessage]);
 
   const onSendMessage = (content, type) => {
     if (content.trim() === "") {
@@ -79,18 +55,50 @@ export default function ChatBoard(props) {
       content: content.trim(),
       type: type,
     };
-    fireStore
-      .collection("messages")
-      .doc(props.gameChatId)
-      .collection(props.gameChatId)
-      .doc(timestamp)
-      .set(itemMessage)
-      .then(() => {
-        setInputValue("");
-      })
-      .catch((err) => {
-        props.showToast(0, err.toString());
-      });
+
+    let myTeam;
+    let gameChatId = props.gameChatId;
+    switch (props.chatMessageType) {
+      case "all":
+        ChatService.sendMessageAll(
+          gameChatId,
+          timestamp,
+          itemMessage,
+          LobbyService.ImAdmin(props.lobby)
+        );
+        break;
+      case undefined:
+        ChatService.sendMessageAll(
+          gameChatId,
+          timestamp,
+          itemMessage,
+          LobbyService.ImAdmin(props.lobby)
+        );
+        break;
+      case "team":
+        myTeam = getPlayerTeam(UserService.getCurrentPlayer().name);
+        ChatService.sendMessageTeam(gameChatId, myTeam, timestamp, itemMessage);
+        break;
+      case "admin":
+        myTeam = getPlayerTeam(UserService.getCurrentPlayer().name);
+        ChatService.sendMessageAdmin(
+          gameChatId,
+          myTeam,
+          timestamp,
+          itemMessage
+        );
+        break;
+
+      default:
+        ChatService.sendMessageAdminTeam(
+          gameChatId,
+          props.chatMessageType,
+          timestamp,
+          itemMessage
+        );
+
+        break;
+    }
   };
 
   const onChoosePhoto = (event) => {
@@ -159,94 +167,20 @@ export default function ChatBoard(props) {
     }
   };
   const renderListMessage = () => {
-    if (listMessage.length > 0) {
+    if (props.listMessage.length > 0) {
       let viewListMessage = [];
-      listMessage.forEach((item, index) => {
-        if (item.idFrom === currentUserId) {
-          // Item right (my message)
-          if (item.type === 0) {
-            viewListMessage.push(
-              <>
-                <div className="viewItemRight" key={item.timestamp + "r"}>
-                  <span className="textContentItem">{item.content}</span>
-                </div>
-                <span className="textTimeRight" key={item.timestamp + "s"}>
-                  {moment(Number(item.timestamp)).format("DD/MM hh:mm")}
-                </span>
-              </>
+      props.listMessage.forEach((item, index) => {
+        item.idFrom === currentUserId
+          ? viewListMessage.push(
+              <MessageOut item={item} owner={props.lobby.owner} />
+            )
+          : viewListMessage.push(
+              <MessageIn
+                item={item}
+                owner={props.lobby.owner}
+                team={getPlayerTeam(item.idFrom)}
+              />
             );
-          } else if (item.type === 1) {
-            viewListMessage.push(
-              <>
-                <div className="viewItemRight2" key={item.timestamp + "r1"}>
-                  <IonImg
-                    className="imgItemRight"
-                    src={item.content}
-                    alt="content message"
-                    onClick={() => PhotoViewer.show(item.content)}
-                  />
-                </div>
-                <span className="textTimeRight" key={item.timestamp + "s1"}>
-                  {moment(Number(item.timestamp)).format("DD/MM hh:mm")}
-                </span>{" "}
-              </>
-            );
-          }
-        } else {
-          // Item left (peer message)
-          if (item.type === 0) {
-            viewListMessage.push(
-              <div
-                className="viewWrapItemLeft ion-padding-bottom"
-                key={item.timestamp + "l"}
-              >
-                {props.owner === item.idFrom ? (
-                  <IonBadge color="danger">Admin</IonBadge>
-                ) : (
-                  <IonBadge color="primary">
-                    {getPlayerTeam(item.idFrom)}
-                  </IonBadge>
-                )}
-                <div className="viewItemLeft">
-                  <span className="textContentItem">{item.content}</span>
-                </div>
-                <span className="textTimeLeft">
-                  {item.idFrom}{" "}
-                  {moment(Number(item.timestamp)).format("DD/MM hh:mm")}
-                </span>
-              </div>
-            );
-          } else if (item.type === 1) {
-            viewListMessage.push(
-              <>
-                <div
-                  className="viewWrapItemLeft ion-padding-bottom"
-                  key={item.timestamp + "l"}
-                >
-                  {props.owner === item.idFrom ? (
-                    <IonBadge color="danger">Admin</IonBadge>
-                  ) : (
-                    <IonBadge color="primary">
-                      {getPlayerTeam(item.idFrom)}
-                    </IonBadge>
-                  )}
-                  <div className="viewItemLeft2">
-                    <IonImg
-                      className="imgItemLeft"
-                      src={item.content}
-                      alt="content message"
-                      onClick={() => PhotoViewer.show(item.content)}
-                    />
-                  </div>
-                  <span className="textTimeLeft">
-                    {item.idFrom}{" "}
-                    {moment(Number(item.timestamp)).format("DD/MM hh:mm")}
-                  </span>
-                </div>
-              </>
-            );
-          }
-        }
       });
       return viewListMessage;
     } else {
@@ -276,7 +210,7 @@ export default function ChatBoard(props) {
           {renderListMessage()}
           <div style={{ float: "left", clear: "both" }} ref={ref} />
         </div>
-        {console.log(props.muted, "muted")}
+        {props.muted && console.log("muted")}
         {!props.muted ? (
           <div className="viewBottom">
             <PermMediaIcon
@@ -291,6 +225,38 @@ export default function ChatBoard(props) {
               type="file"
               onChange={onChoosePhoto}
             />
+
+            {props.started && (
+              <IonSelect
+                interface="popover"
+                value={props.chatMessageType}
+                onIonChange={(e) =>
+                  props.chatMessageType &&
+                  props.setChatMessageType(e.target.value)
+                }
+              >
+                {!LobbyService.ImAdmin(props.lobby) ? (
+                  <>
+                    <IonSelectOption value="all">All</IonSelectOption>
+                    <IonSelectOption value="team">Team</IonSelectOption>
+                    <IonSelectOption value="admin">Admin</IonSelectOption>
+                  </>
+                ) : (
+                  <>
+                    <IonSelectOption value="all">All</IonSelectOption>
+
+                    {props.teams &&
+                      props.teams.map((x) => {
+                        return (
+                          <IonSelectOption value={x.name} lines="none">
+                            {x.name}
+                          </IonSelectOption>
+                        );
+                      })}
+                  </>
+                )}
+              </IonSelect>
+            )}
             <input
               className="viewInput"
               placeholder="Type your message..."
