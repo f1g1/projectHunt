@@ -59,6 +59,7 @@ export default function DashboardGame(props) {
         <IonCard
           color="light"
           className="ion-padding-vertical ion-margin-vertical"
+          key={index}
         >
           <IonCardContent>
             <IonCardTitle>Challenge #{x.index + 1}</IonCardTitle>
@@ -144,10 +145,12 @@ export default function DashboardGame(props) {
           </IonCardContent>
         </IonCard>
       ))}
-      <IonFabButton color="light" onClick={() => setShowAddCardModal(true)}>
-        <AddIcon></AddIcon>
-      </IonFabButton>
 
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <IonFabButton color="light" onClick={() => setShowAddCardModal(true)}>
+          <AddIcon></AddIcon>
+        </IonFabButton>
+      </div>
       <IonModal
         isOpen={showAddCardModal}
         onDidDismiss={() => setShowAddCardModal(false)}

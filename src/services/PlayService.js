@@ -119,8 +119,9 @@ function getAdjustmentPoints(team) {
 
 function getChallengesPoints(team, game) {
   let completed = getCompletedSteps(game, team.name, [team]);
+  debugger;
   if (completed && team.failed)
-    completed = completed.filter((x) => team.failed.includes(x.id));
+    completed = completed.filter((x) => !team.failed.includes(x.id));
 
   return completed.reduce((t, x) => (t += parseInt(x.points)), 0);
 }
@@ -201,13 +202,17 @@ function getActiveSteps(game, team, teams) {
       steps = steps.filter((x) => !currentTeam.completed.includes(x.id));
     if (currentTeam.toBeValidated)
       steps = steps.filter((x) => !currentTeam.toBeValidated.includes(x.id));
+
     if (game.inOrder) {
       let x = [steps.sort((x) => x.index).find((x) => !x.hidden)];
       let hiddenStepsEnabled = getAvalaibleHidden(game, currentTeam);
       if (x[0]) return x.concat(hiddenStepsEnabled);
       return hiddenStepsEnabled;
+    } else {
+      let sWOHidden = steps.filter((x) => !x.hidden);
+      let hiddenStepsEnabled = getAvalaibleHidden(game, currentTeam);
+      return sWOHidden.concat(hiddenStepsEnabled);
     }
-    return steps;
   }
 }
 

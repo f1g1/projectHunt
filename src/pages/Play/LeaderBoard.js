@@ -21,25 +21,31 @@ var moment = require("moment");
 export default function LeaderBoard(props) {
   return (
     <>
-      <IonToolbar color="primary">
-        <IonHeader ion-no-padding>
-          {!props.endGame ? (
-            <IonButton onclick={props.handleClose} color="danger">
-              X
-            </IonButton>
-          ) : (
-            <IonButtons style={{ display: "inline-block" }}>
-              <IonBackButton defaultHref="/home"></IonBackButton>
-            </IonButtons>
-          )}
-          <IonTitle
-            style={{ display: "inline-block" }}
-            className="ion-text-center"
-          >
-            {props.endGame && "Final"} LeaderBoard
-          </IonTitle>
-        </IonHeader>
-      </IonToolbar>
+      <IonHeader ion-no-padding>
+        <IonToolbar color="primary">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {!props.endGame ? (
+              <IonButton
+                onclick={props.handleClose}
+                color="danger"
+                className="ion-padding-start"
+              >
+                X
+              </IonButton>
+            ) : (
+              <IonButtons style={{ display: "inline-block" }}>
+                <IonBackButton defaultHref="/home"></IonBackButton>
+              </IonButtons>
+            )}
+            <IonTitle
+              style={{ display: "inline-block" }}
+              className="ion-text-center"
+            >
+              {props.endGame && "Final"} LeaderBoard
+            </IonTitle>
+          </div>
+        </IonToolbar>
+      </IonHeader>
       <IonGrid fixed full>
         <IonCard color="light" style={{ marginBottom: "30px" }}>
           <IonCardContent>

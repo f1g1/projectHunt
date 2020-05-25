@@ -95,10 +95,6 @@ export default function Play(props) {
         teams
       );
     });
-
-    // UserService.setCurrentUser(
-    //   UserService.getUserFirebase(UserService.getCurrentUser().email)
-    // );
   };
 
   return (

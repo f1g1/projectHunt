@@ -13,20 +13,11 @@ import ReorderableCards from "../ReorderableCards";
 export default function CardList(props) {
   const { state, dispatch } = useContext(CreateGameContext);
   const [showBeginModal, setShowBeginModal] = useState(false);
-  const [showEndModal, setShowEndModal] = useState(false);
   const [showInnerCardModal, setShowAddCardModal] = useState(false);
   const [edit, setEdit] = useState();
   const saveStart = (lat, lng, radius) => {
     dispatch({
       type: "setStartCoords",
-      lat,
-      lng,
-      radius,
-    });
-  };
-  const saveFinish = (lat, lng, radius) => {
-    dispatch({
-      type: "setFinishCoords",
       lat,
       lng,
       radius,
@@ -41,9 +32,7 @@ export default function CardList(props) {
   const handleClose = () => {
     setShowBeginModal(false);
   };
-  const handleCloseFinish = () => {
-    setShowEndModal(false);
-  };
+
   const handleCloseModalCreate = () => {
     setEdit();
     setShowAddCardModal(false);
@@ -82,20 +71,7 @@ export default function CardList(props) {
           </div>
         </IonCol>
       </IonRow>
-      <IonRow>
-        <IonCol>
-          <MarginCard
-            title="Finish location"
-            coords={{
-              lat: state.finishLat,
-              lng: state.finishRadiusLng,
-            }}
-            openModal={() => setShowEndModal(true)}
-            lat={state.finishLat}
-            lng={state.finishLng}
-          ></MarginCard>
-        </IonCol>
-      </IonRow>
+
       <IonModal
         isOpen={showBeginModal}
         onDidDismiss={() => setShowBeginModal(false)}
@@ -107,20 +83,6 @@ export default function CardList(props) {
             handleClose={handleClose}
             location={props.geolocation}
             save={saveStart}
-          />
-        )}
-      </IonModal>
-      <IonModal
-        isOpen={showEndModal}
-        onDidDismiss={() => setShowEndModal(false)}
-        defaultLocation={props.geolocation}
-      >
-        {props.geolocation && (
-          <ModalMap
-            noRadius={true}
-            handleClose={handleCloseFinish}
-            location={props.geolocation}
-            save={saveFinish}
           />
         )}
       </IonModal>

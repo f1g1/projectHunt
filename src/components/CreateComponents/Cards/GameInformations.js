@@ -10,7 +10,6 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  IonRange,
   IonRow,
   IonTextarea,
 } from "@ionic/react";
@@ -33,7 +32,7 @@ export default function GameInformations(props) {
   };
   const setInOrder = (inOrder) => {
     dispatch({
-      type: "setinOrder",
+      type: "setInOrder",
       inOrder: inOrder,
     });
   };
@@ -54,7 +53,7 @@ export default function GameInformations(props) {
   const setMaxPlayers = (maxPlayers) => {
     dispatch({
       type: "setMaxPlayers",
-      maxPlayers: maxPlayers || 4,
+      maxPlayers: maxPlayers,
     });
   };
   const setPassword = (password) => {
@@ -108,18 +107,12 @@ export default function GameInformations(props) {
                 </IonItem>
                 <IonItem>
                   <IonLabel>Team Size:</IonLabel>
-                  <IonRange
-                    min={1}
-                    max={12}
-                    color="primary"
-                    snaps
-                    pin
+                  <IonInput
+                    type="number"
                     onIonChange={(e) => setMaxPlayers(e.target.value)}
                     value={state.maxPlayers}
-                  >
-                    <IonLabel slot="start">1</IonLabel>
-                    <IonLabel slot="end">12</IonLabel>
-                  </IonRange>
+                  ></IonInput>
+
                   <IonBadge size="large">{state.maxPlayers}</IonBadge>
                 </IonItem>
                 <IonItem>
@@ -166,8 +159,13 @@ export default function GameInformations(props) {
               <IonButton onClick={() => refInput.current.click()}>
                 Add Game Photo
               </IonButton>
-              {<img src={image} className="ion-padding-vertical"></img>}
-
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <img
+                  src={image}
+                  style={{ maxHeight: "350px", width: "auto" }}
+                  className="ion-padding-vertical"
+                ></img>
+              </div>
               <input
                 ref={refInput}
                 accept="image/*"
