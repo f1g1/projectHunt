@@ -29,16 +29,18 @@ export default function History(props) {
   const [loading, setloading] = useState(true);
   const [selected, setSelected] = useState();
   useEffect(() => {
-    myLobbies &&
-      myLobbies.length > 0 &&
-      LobbyService.getHistoryGames(myLobbies.map((x) => x.lobbyId)).then(
-        (x) => {
+    if (myLobbies && myLobbies.length > 0)
+      LobbyService.getHistoryGames(myLobbies.map((x) => x.lobbyId))
+        .then((x) => {
           setLobbies(x);
-          console.log(x);
           setloading(false);
-        }
-      );
-  }, [myLobbies]);
+        })
+        .finally(setloading(false));
+    else {
+      setloading(false);
+      setLobbies();
+    }
+  }, []);
 
   return (
     <>
@@ -63,38 +65,47 @@ export default function History(props) {
             duration={5000}
           />
 
-          {!loading && lobbies.length === 0 && (
-            <IonTitle className="ion-text-center" style={{ marginTop: "20vh" }}>
-              You need to play some games to see your history!
+          {loading === false && lobbies === undefined && (
+            <IonTitle
+              className="ion-text-center ion-padding-top"
+              style={{ visible: !loading, marginTop: "10vh" }}
+            >
+              <h1>You need to play some games to see your history!</h1>
             </IonTitle>
           )}
-          <IonRow style={{ marginTop: "20vh" }}>
+          <IonRow className="ion-padding-top">
             <IonCol sizeXl="6" size="12" offsetXl="3">
-              {!loading && (
-                <IonTitle className="ion-padding-vertical ion-no-padding">
-                  Your hunt history:
-                </IonTitle>
+              {!loading && lobbies && lobbies.length > 0 && (
+                <>
+                  <IonTitle className="ion-padding-vertical ion-no-padding">
+                    <h1>Your hunt history:</h1>
+                  </IonTitle>
+
+                  {lobbies.map((x) => {
+                    return (
+                      <IonItem
+                        color="light"
+                        button
+                        onClick={() => setSelected(x)}
+                      >
+                        <IonTitle>Title: {x.title}</IonTitle>
+
+                        <IonLabel>
+                          Date:
+                          {x.finishTime &&
+                            moment(x.finishTime.seconds * 1000).format(
+                              "DD/MM HH:mm"
+                            )}
+                        </IonLabel>
+                        <IonLabel>
+                          Created by:
+                          <p>{x.owner}</p>
+                        </IonLabel>
+                      </IonItem>
+                    );
+                  })}
+                </>
               )}
-
-              {lobbies.map((x) => {
-                return (
-                  <IonItem color="light" button onClick={() => setSelected(x)}>
-                    <IonTitle>Title: {x.title}</IonTitle>
-
-                    <IonLabel>
-                      Date:
-                      {x.finishTime &&
-                        moment(x.finishTime.seconds * 1000).format(
-                          "DD/MM HH:mm"
-                        )}
-                    </IonLabel>
-                    <IonLabel>
-                      Created by:
-                      <p>{x.owner}</p>
-                    </IonLabel>
-                  </IonItem>
-                );
-              })}
             </IonCol>
           </IonRow>
         </IonContent>
@@ -107,6 +118,7 @@ export default function History(props) {
         <HistoryDetail
           handleClose={() => setSelected()}
           finalLeaderboard={selected && selected.finalLeaderboard}
+          game={selected}
         />
       </IonModal>
     </>

@@ -7,29 +7,36 @@ import {
   IonHeader,
   IonLabel,
   IonRow,
-  IonTitle,
   IonToolbar,
 } from "@ionic/react";
 
 import React from "react";
 import { UserService } from "../../services/UserSerivce";
+import moment from "moment";
 
 export default function HistoryDetail(props) {
   return (
     <>
-      <IonToolbar color="primary">
-        <IonHeader lines="none">
-          <IonButton onclick={props.handleClose} color="danger">
-            X
-          </IonButton>
-          <IonTitle
-            style={{ display: "inline-block" }}
-            className="ion-text-center"
-          >
-            LeaderBoard
-          </IonTitle>
-        </IonHeader>
-      </IonToolbar>
+      <IonHeader lines="none">
+        <IonToolbar color="primary">
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <IonButton
+              onclick={props.handleClose}
+              color="danger"
+              className="ion-padding-horizontal"
+            >
+              X
+            </IonButton>
+            <IonLabel>
+              <h1>Game: {props.game.title}</h1>
+              <p>
+                Date: {moment(props.game.finishedDate).format("DD/MM/YYYY")}
+              </p>
+            </IonLabel>
+          </div>
+        </IonToolbar>
+      </IonHeader>
+
       <IonGrid fixed full>
         <IonCard color="light" style={{ marginBottom: "30px" }}>
           <IonCardContent>

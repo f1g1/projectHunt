@@ -29,8 +29,11 @@ export default function QrModal(props) {
 
       <IonList>
         <IonListHeader>
-          <IonTitle className="ion-padding-vertical ion-margin-top ion-no-padding">
-            {props.steps.lenght > 0
+          <IonTitle
+            className="ion-padding-vertical ion-margin-top ion-no-padding"
+            style={{ textAlign: "center" }}
+          >
+            {props.steps.length > 0
               ? "Qrs needed for the challenges"
               : "You didn't set any challenge that requires Qr"}
           </IonTitle>

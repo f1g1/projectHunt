@@ -2,11 +2,11 @@ import {
   IonBackButton,
   IonButton,
   IonButtons,
+  IonCard,
+  IonCardContent,
   IonCol,
   IonContent,
   IonHeader,
-  IonItem,
-  IonLabel,
   IonList,
   IonLoading,
   IonModal,
@@ -22,6 +22,7 @@ import { GameService } from "../../services/GameService";
 import { LobbyService } from "../../services/LobbyService";
 import { Network } from "@ionic-native/network";
 import QrModal from "../Create/QrModal";
+import moment from "moment";
 
 export default function MyGames(props) {
   const [games, setgames] = useState();
@@ -47,9 +48,6 @@ export default function MyGames(props) {
       console.log("network connected!");
       setoffline("Online!");
 
-      // We just got a connection but we need to wait briefly
-      // before we determine the connection type. Might need to wait.
-      // prior to doing any api requests as well.
       setTimeout(() => {
         if (Network.type === "wifi") {
           console.log("we got a wifi connection, woohoo!");
@@ -101,46 +99,140 @@ export default function MyGames(props) {
           <Failed />
         ) : (
           <IonRow className="ion-padding-top">
-            <IonCol sizeXl="4" sizeSm="12" offsetXl="3">
+            <IonCol sizeXl="6" sizeSm="12" offsetXl="3">
               <IonList>
-                {games &&
-                  games.map((x) => (
-                    <IonItem key={x.gameId}>
-                      <IonLabel>{x.title}</IonLabel>
-                      <IonButton
-                        size="default"
-                        onClick={(e) => {
-                          LobbyService.postLobby(x).then((response) => {
-                            joinLobby(response.id);
-                          });
+                {games && games.length > 0 ? (
+                  <>
+                    <IonTitle>
+                      <h1>Hunts:</h1>
+                    </IonTitle>
+                    {games.map((x) => (
+                      <IonCard key={x.gameId}>
+                        <IonCardContent>
+                          <IonRow>
+                            <IonCol
+                              sizeXl="3"
+                              size="6"
+                              style={{
+                                alignItems: "center",
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {!x.image ? (
+                                <div
+                                  style={{
+                                    background: "grey",
+                                    width: "180px",
+                                    height: "100px",
+                                  }}
+                                ></div>
+                              ) : (
+                                <img
+                                  src={x.image}
+                                  style={{
+                                    height: "100px",
+                                    width: "auto",
+                                    maxWidth: "220px",
+                                  }}
+                                ></img>
+                              )}
+                            </IonCol>
+                            <IonCol sizeXl="3" size="6">
+                              <h2>Title:</h2>
+                              <h3>{x.title}</h3>
+                              <p style={{ marginTop: "5px" }}>Date:</p>
+                              {moment(x.createdDate).format("DD/MM/YYYY")}
+                            </IonCol>
+                            <IonCol sizeXl="3">
+                              <p style={{ marginTop: "5px" }}>Entry Code:</p>
+                              <h2 style={{ fontWeight: "bold" }}>
+                                {x.password}
+                              </h2>
+                            </IonCol>
+
+                            <IonCol sizeXl="3" size="12">
+                              <p>
+                                <IonButton
+                                  expand="full"
+                                  size="default"
+                                  onClick={(e) => {
+                                    LobbyService.postLobby(x).then(
+                                      (response) => {
+                                        joinLobby(response.id);
+                                      }
+                                    );
+                                  }}
+                                >
+                                  Create Lobby
+                                </IonButton>
+                              </p>
+                              <IonRow>
+                                <IonCol>
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "center",
+                                    }}
+                                  >
+                                    <IonButton
+                                      color="dark"
+                                      onClick={() => handleEdit(x)}
+                                      className="ion-margin-start"
+                                    >
+                                      Edit
+                                    </IonButton>
+                                    <IonButton
+                                      className="ion-margin-horizontal"
+                                      color="dark"
+                                      onClick={() => setShowQrModal(x.steps)}
+                                    >
+                                      QRs
+                                    </IonButton>
+                                  </div>
+                                </IonCol>
+                              </IonRow>
+                              <p className="ion-justify-content-center">
+                                <IonButton
+                                  expand="full"
+                                  color="danger"
+                                  size="default"
+                                  onClick={() => handleDelete(x.gameId)}
+                                >
+                                  Delete!
+                                </IonButton>
+                              </p>
+                            </IonCol>
+                          </IonRow>
+                        </IonCardContent>
+                      </IonCard>
+                    ))}
+                  </>
+                ) : (
+                  games && (
+                    <>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginTop: "20vh",
                         }}
+                        className="ion-align-text-center"
                       >
-                        Create Lobby
-                      </IonButton>
-                      <IonButton
-                        color="dark"
-                        onClick={() => handleEdit(x)}
-                        className="ion-margin-start"
-                      >
-                        Edit
-                      </IonButton>
-                      <IonButton
-                        className="ion-margin-horizontal"
-                        color="dark"
-                        onClick={() => setShowQrModal(x.steps)}
-                      >
-                        QRs
-                      </IonButton>
+                        <h1>You don't have any hunts created!</h1>
+                      </div>
 
                       <IonButton
-                        color="danger"
-                        size="default"
-                        onClick={() => handleDelete(x.gameId)}
+                        className="ion-padding-vertical"
+                        expand="full"
+                        onClick={() => props.history.replace("/game")}
+                        size="large"
                       >
-                        Delete!
+                        Create new!
                       </IonButton>
-                    </IonItem>
-                  ))}
+                    </>
+                  )
+                )}
               </IonList>
             </IonCol>
           </IonRow>

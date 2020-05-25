@@ -34,7 +34,7 @@ export default function GameInformations(props) {
   const setInOrder = (inOrder) => {
     dispatch({
       type: "setinOrder",
-      inOrder: inOrder || false,
+      inOrder: inOrder,
     });
   };
 
