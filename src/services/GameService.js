@@ -36,11 +36,9 @@ function saveGame(state) {
       MediaService.SaveImage(element.wrongResponseImageFile)
     );
   });
-  debugger;
 
   Promise.allSettled(wrongAnswerImage)
     .then((v) => {
-      debugger;
       v.forEach((image, i) => {
         if (
           objToUpdate.steps[i].wrongResponseImageFile &&
@@ -55,7 +53,6 @@ function saveGame(state) {
       });
     })
     .then(() => {
-      debugger;
       Promise.allSettled(succesAnswerImage).then((v) => {
         v.forEach((image, i) => {
           //delete only if a new file is provided
@@ -73,7 +70,6 @@ function saveGame(state) {
       });
     })
     .then(() => {
-      debugger;
       Promise.allSettled(stepImage).then((v) => {
         v.forEach((image, i) => {
           if (objToUpdate.steps[i].imageFile && objToUpdate.steps[i].image) {
@@ -94,7 +90,6 @@ function saveGame(state) {
 }
 
 async function deleteGame(id) {
-  debugger;
   return fireStore
     .collection("users")
     .doc(UserService.getCurrentUser().userName)
@@ -103,7 +98,6 @@ async function deleteGame(id) {
     .delete();
 }
 async function getMyGames() {
-  debugger;
   let x = UserService.getCurrentUser();
   var createdGamesRef = fireStore
     .collection("users")
@@ -121,7 +115,7 @@ function setIndexesTosteps(steps) {
 
 function saveGameInternal(state) {
   setIndexesTosteps(state.steps);
-  debugger;
+
   let created = {
     ...state,
     createdDate: Date.now(),

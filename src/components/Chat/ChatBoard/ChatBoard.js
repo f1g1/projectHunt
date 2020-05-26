@@ -43,6 +43,7 @@ export default function ChatBoard(props) {
   }, [props.listMessage]);
 
   const onSendMessage = (content, type) => {
+    if (!content) content = "";
     if (content.trim() === "") {
       return;
     }
@@ -76,11 +77,17 @@ export default function ChatBoard(props) {
         );
         break;
       case "team":
-        myTeam = getPlayerTeam(UserService.getCurrentPlayer().name);
+        myTeam = LobbyService.getPlayerTeam(
+          UserService.getCurrentPlayer().name,
+          props.teams
+        ).name;
         ChatService.sendMessageTeam(gameChatId, myTeam, timestamp, itemMessage);
         break;
       case "admin":
-        myTeam = getPlayerTeam(UserService.getCurrentPlayer().name);
+        myTeam = LobbyService.getPlayerTeam(
+          UserService.getCurrentPlayer().name,
+          props.teams
+        ).name;
         ChatService.sendMessageAdmin(
           gameChatId,
           myTeam,
@@ -156,16 +163,7 @@ export default function ChatBoard(props) {
       ref.current.scrollIntoView({});
     }
   };
-  const getPlayerTeam = (player) => {
-    try {
-      return (
-        props.teams &&
-        props.teams.filter((x) => x.players.includes(player))[0].name
-      );
-    } catch {
-      return null;
-    }
-  };
+
   const renderListMessage = () => {
     if (props.listMessage.length > 0) {
       let viewListMessage = [];
@@ -178,7 +176,10 @@ export default function ChatBoard(props) {
               <MessageIn
                 item={item}
                 owner={props.lobby.owner}
-                team={getPlayerTeam(item.idFrom)}
+                team={
+                  LobbyService.getPlayerTeam(item.idFrom, props.teams) &&
+                  LobbyService.getPlayerTeam(item.idFrom, props.teams).name
+                }
               />
             );
       });

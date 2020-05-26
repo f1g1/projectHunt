@@ -3,7 +3,6 @@ import MediaService from "./MediaService";
 import { UserService } from "./UserSerivce";
 import { fireStore } from "../firebase";
 import firebase from "firebase";
-import moment from "moment";
 
 // const axios = require('axios').default;
 
@@ -14,8 +13,6 @@ export const PlayService = {
   getActiveSteps,
   getCompletedSteps: getInactiveSteps,
   setTimeOut,
-  getTimeOut,
-  deleteTimeOut,
   getAdjustmentPoints,
   getTotalPoints,
   getChallengesPoints,
@@ -63,7 +60,6 @@ function saveArea(area) {
 }
 
 function shareLocation(location, team) {
-  debugger;
   return fireStore
     .collection("lobbies")
     .doc(LobbyService.getCurrentLobby())
@@ -119,7 +115,7 @@ function getAdjustmentPoints(team) {
 
 function getChallengesPoints(team, game) {
   let completed = getCompletedSteps(game, team.name, [team]);
-  debugger;
+
   if (completed && team.failed)
     completed = completed.filter((x) => !team.failed.includes(x.id));
 
@@ -148,7 +144,6 @@ function submitOnlyAnswerWrong(answer, step, team, finished) {
 }
 
 function submitAnswer(answer, step, team, finished) {
-  debugger;
   return fireStore
     .collection("lobbies")
     .doc(LobbyService.getCurrentLobby())
@@ -163,36 +158,32 @@ function submitAnswer(answer, step, team, finished) {
       },
       finished,
     });
-  // return axios.post('https://us-central1-projecthunt-2644e.cloudfunctions.net/helloWorld', {
-  //     answer,
-  //     step,
-  //     team,
-  //     finished
-  // })
-  //     // .then(function (response) {
-  //     //     debugger;
-  //     //     console.log(response);
-  //     // })
-  //     .catch(function (error) {
-  //         console.log(error);
-  //     });
-}
-function deleteTimeOut(step) {
-  window.localStorage.removeItem(step.id + "timeout");
 }
 
-function setTimeOut(step, duration) {
-  window.localStorage[step.id + "timeout"] = moment(Date.now()).add(
-    duration,
-    "minutes"
-  );
+function setTimeOut(step, team) {
+  // window.localStorage[step.id + "timeout"] = moment(Date.now()).add(
+  //   step.waitingTime,
+  //   "seconds"
+  // );
+
+  return fireStore
+    .collection("lobbies")
+    .doc(LobbyService.getCurrentLobby())
+    .collection("teams")
+    .doc(team)
+    .update({
+      waitList: firebase.firestore.FieldValue.arrayUnion({
+        step: step.id,
+        expires: Date.now() + step.waitingTime * 1000,
+      }),
+    });
 }
-function getTimeOut(step) {
-  let res =
-    window.localStorage[step.id + "timeout"] &&
-    moment(window.localStorage[step.id + "timeout"]);
-  return res;
-}
+// function getTimeOut(step) {
+//   let res =
+//     window.localStorage[step.id + "timeout"] &&
+//     moment(window.localStorage[step.id + "timeout"]);
+//   return res;
+// }
 
 function getActiveSteps(game, team, teams) {
   let steps = [...game.steps];
@@ -222,12 +213,12 @@ function arePointsNear(checkPoint, centerPoint, m) {
   var kx = Math.cos((Math.PI * centerPoint.lat) / 180.0) * ky;
   var dx = Math.abs(centerPoint.lng - checkPoint.lng) * kx;
   var dy = Math.abs(centerPoint.lat - checkPoint.lat) * ky;
-  debugger;
+
   return Math.sqrt(dx * dx + dy * dy) <= km;
 }
 function getAvalaibleHidden(game, teamObj) {
   let steps = game.steps.filter((x) => x.hidden);
-  debugger;
+
   steps = steps.filter(
     (x) =>
       !teamObj ||

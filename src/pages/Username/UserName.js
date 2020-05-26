@@ -19,7 +19,7 @@ export default function UserName(props) {
   const [showToast1, setShowToast1] = useState(false);
   let handleSubmit = () => {
     let userName = (name && name.trim()) || "";
-    debugger;
+
     if (!userName || userName.length < 3 || userName.includes(" ")) {
       setShowToast(true);
       return;
@@ -32,7 +32,7 @@ export default function UserName(props) {
           });
           if (!exists) {
             console.log("exists");
-            debugger;
+
             UserService.SaveNewUser({
               ...props.location.user,
               userName,

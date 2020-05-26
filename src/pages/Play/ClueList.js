@@ -11,10 +11,8 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 
-import { LobbyService } from "../../services/LobbyService";
 import { PlayService } from "../../services/PlayService";
 import SeeClue from "./SeeClue";
-import { UserService } from "../../services/UserSerivce";
 
 const showStatus = {
   ACTIVE: 0,
@@ -26,92 +24,75 @@ export default function ClueList(props) {
   const [clueInfo, setClueInfo] = useState();
   const [showSteps, setShowSteps] = useState(0);
   const [finished, setfinished] = useState(false);
-  const [currentTeamObj, setCurrentTeamObj] = useState({});
-
   const hanldeStepClick = (id) => {
     if (
-      !currentTeamObj.toBeValidated ||
-      !currentTeamObj.toBeValidated.find((z) => z === id)
+      !props.myTeam.toBeValidated ||
+      !props.myTeam.toBeValidated.find((z) => z === id)
     ) {
       setShowClueModal(true);
       let status;
       if (showStatus.COMPLETED == showSteps) status = 1;
       setClueInfo({
         step: props.game.steps.find((x) => x.id === id),
-        team: LobbyService.getCurrentTeam(),
+        team: props.myTeam.name,
         status: status,
       });
     }
   };
+
   useEffect(() => {
     props.teams.length > 0 &&
-      LobbyService.getCurrentTeam() &&
+      props.myTeam &&
       setFiltered(
         showSteps === showStatus.ACTIVE
           ? PlayService.getActiveSteps(
               props.game,
-              LobbyService.getCurrentTeam(),
+              props.myTeam.name,
               props.teams
             )
           : PlayService.getCompletedSteps(
               props.game,
-              LobbyService.getCurrentTeam(),
+              props.myTeam.name,
               props.teams
             )
       );
   }, [props.game]);
 
   useEffect(() => {
-    props.teams.length &&
-      setCurrentTeamObj(
-        props.teams.find((y) => y.name === LobbyService.getCurrentTeam()) || {}
-      );
+    console.log("myTEAM", props.myTeam);
 
     let teamFinished =
-      currentTeamObj.completed &&
-      currentTeamObj.completed.length >= props.game.steps.length - 1;
+      props.myTeam.completed &&
+      props.myTeam.completed.length >= props.game.steps.length - 1;
     teamFinished && setfinished(teamFinished);
+    props.myTeam &&
+      setFiltered(
+        showSteps === showStatus.ACTIVE
+          ? PlayService.getActiveSteps(
+              props.game,
+              props.myTeam.name,
+              props.teams
+            )
+          : PlayService.getCompletedSteps(
+              props.game,
+              props.myTeam.name,
+              props.teams
+            )
+      );
   }, [props.teams]);
 
   useEffect(() => {
-    if (!LobbyService.getCurrentTeam() && props.teams) {
-      let myTeam = props.teams.filter((x) =>
-        x.players.includes(UserService.getCurrentPlayer().name)
-      );
-      if (myTeam.length > 0) {
-        LobbyService.setCurrentTeam(myTeam[0].name);
-      }
-    }
-    console.log(props.teams);
     props.teams.length > 0 &&
-      LobbyService.getCurrentTeam() &&
       setFiltered(
         showSteps === showStatus.ACTIVE
           ? PlayService.getActiveSteps(
               props.game,
-              LobbyService.getCurrentTeam(),
+              props.myTeam.name,
               props.teams
             )
           : PlayService.getCompletedSteps(
               props.game,
-              LobbyService.getCurrentTeam(),
-              props.teams
-            )
-      );
-  }, [props.teams]);
-  useEffect(() => {
-    props.teams.length > 0 &&
-      LobbyService.getCurrentTeam() &&
-      setFiltered(
-        showSteps === showStatus.ACTIVE
-          ? PlayService.getActiveSteps(
-              props.game,
-              LobbyService.getCurrentTeam(),
-              props.teams
-            )
-          : PlayService.getCompletedSteps(
-              props.game,
-              LobbyService.getCurrentTeam(),
+              props.myTeam.name,
               props.teams
             )
       );
@@ -175,8 +156,8 @@ export default function ClueList(props) {
                     showSteps === showStatus.COMPLETED ? { opacity: 0.6 } : {}
                   }
                   color={
-                    currentTeamObj.failed &&
-                    currentTeamObj.failed.find((z) => z === x.id) &&
+                    props.myTeam.failed &&
+                    props.myTeam.failed.find((z) => z === x.id) &&
                     "danger"
                   }
                   key={x.id}
@@ -185,8 +166,8 @@ export default function ClueList(props) {
                     <img src={x.image} />
                   </IonThumbnail>
                   <IonLabel>
-                    {currentTeamObj.toBeValidated &&
-                      currentTeamObj.toBeValidated.find((z) => z === x.id) && (
+                    {props.myTeam.toBeValidated &&
+                      props.myTeam.toBeValidated.find((z) => z === x.id) && (
                         <p style={{ float: "right" }}>Pending validation</p>
                       )}
                     <h2>#{x.index + 1}</h2>
@@ -199,20 +180,18 @@ export default function ClueList(props) {
                     &nbsp;
                     {showSteps === showStatus.COMPLETED &&
                       //for text/qr we show the answer as label
-                      currentTeamObj[x.id] &&
+                      props.myTeam[x.id] &&
                       (x.answerType < 2 ? (
                         <>
                           <h2 color="danger">Answer:</h2>
 
                           <IonLabel color="danger">
-                            {currentTeamObj[x.id].answer}
+                            {props.myTeam[x.id].answer}
                           </IonLabel>
                         </>
                       ) : (
                         <IonThumbnail slot="end" className="ion-float-right">
-                          <IonImg
-                            src={currentTeamObj[x.id].imageAnswer}
-                          ></IonImg>
+                          <IonImg src={props.myTeam[x.id].imageAnswer}></IonImg>
                         </IonThumbnail>
                       ))}
                   </IonLabel>
@@ -226,10 +205,13 @@ export default function ClueList(props) {
         onDidDismiss={() => setShowClueModal(false)}
       >
         <SeeClue
+          myTeam={props.myTeam}
+          teams={props.teams}
           handleClose={() => setShowClueModal(false)}
           game
           finished={finished}
           {...clueInfo}
+          activeWaitings={props.myTeam}
         />
       </IonModal>
     </>

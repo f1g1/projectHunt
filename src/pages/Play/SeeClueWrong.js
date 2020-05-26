@@ -1,4 +1,5 @@
 import {
+  IonButton,
   IonCardContent,
   IonImg,
   IonItemDivider,
@@ -8,6 +9,7 @@ import {
 
 import { PhotoViewer } from "@ionic-native/photo-viewer";
 import React from "react";
+import moment from "moment";
 
 export default function SeeClueWrong(props) {
   return (
@@ -17,7 +19,11 @@ export default function SeeClueWrong(props) {
       {
         <>
           <IonTitle className="ion-text-center ion-padding-top">
-            {!props.step.onlyOnce && "Remaining penalty time {props.timer"}
+            {!props.step.onlyOnce &&
+              props.timer > 0 &&
+              `Remaining penalty time ${moment
+                .utc(props.timer)
+                .format("mm:ss")}`}
           </IonTitle>
           <IonItemDivider />
 
@@ -41,6 +47,8 @@ export default function SeeClueWrong(props) {
             <IonLabel className="ionic-padding-top">
               {props.step.wrongResponseAdditionalInfo}
             </IonLabel>
+
+            {props.timer <= 0 && <IonButton onClick={props.ok}>Ok</IonButton>}
           </IonCardContent>
         </>
       }

@@ -18,7 +18,6 @@ export default function Response(props) {
   const [loadingImage, setLoadingImage] = useState(false);
 
   const onChooseSuccesPhoto = (event, succes) => {
-    debugger;
     if (event.target.files && event.target.files[0]) {
       setLoadingImage(true);
       const prefixFiletype = event.target.files[0].type.toString();

@@ -74,7 +74,6 @@ let reducer = (state, action) => {
       return { ...state, title: action.title };
     }
     case "setInOrder": {
-      debugger;
       return { ...state, inOrder: action.inOrder };
     }
     case "setPassword": {

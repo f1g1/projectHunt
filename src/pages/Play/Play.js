@@ -49,6 +49,7 @@ export default function Play(props) {
   const [showAlert1, setShowAlert1] = useState(false);
   const [chatMessageType, setChatMessageType] = useState("all");
   const [openChat, setopenChat] = useState(0);
+  const [myTeam, setMyTeam] = useState();
   const teams = useTeamChanges();
   const gameChanging = useGameChanges();
   const messages = useMessageChanges(
@@ -65,6 +66,12 @@ export default function Play(props) {
   useEffect(() => {
     console.log(messages);
   }, [messages]);
+
+  useEffect(() => {
+    setMyTeam(
+      LobbyService.getPlayerTeam(UserService.getCurrentPlayer().name, teams)
+    );
+  }, [teams]);
 
   useEffect(() => {
     if (game && gameChanging && !LobbyService.ImAdmin(game))
@@ -118,7 +125,7 @@ export default function Play(props) {
               game !== {} &&
               game &&
               (!LobbyService.ImAdmin(game) ? (
-                <ClueList game={game} teams={teams} />
+                <ClueList game={game} teams={teams} myTeam={myTeam} />
               ) : (
                 <Dashboard game={game} teams={teams} />
               ))}

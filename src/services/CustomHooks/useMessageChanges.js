@@ -9,17 +9,9 @@ export default function useMessageChanges(teams, gameChatId, lobby, openChat) {
   let unsubscribe;
   let unsubsscribeC;
   let messages = [];
-  const getPlayerTeam = (player) => {
-    try {
-      debugger;
-      return teams && teams.filter((x) => x.players.includes(player))[0].name;
-    } catch {
-      return " ";
-    }
-  };
+
   useEffect(() => {
     if (openChat === 1) {
-      debugger;
       messages = messages;
       unsubscribe = fireStore
         .collection("messages")
@@ -28,7 +20,6 @@ export default function useMessageChanges(teams, gameChatId, lobby, openChat) {
         .onSnapshot((snapshot) => {
           snapshot.docChanges().forEach((change) => {
             if (change.type === "added") {
-              debugger;
               messages = [...messages, { ...change.doc.data() }];
               setMessages([
                 ...messages.sort((x, y) => x.timestamp - y.timestamp),
@@ -56,7 +47,12 @@ export default function useMessageChanges(teams, gameChatId, lobby, openChat) {
         unsubsscribeC = fireStore
           .collection("messages")
           .doc(gameChatId)
-          .collection(getPlayerTeam(UserService.getCurrentPlayer().name))
+          .collection(
+            LobbyService.getPlayerTeam(
+              UserService.getCurrentPlayer().name,
+              teams
+            ).name || gameChatId
+          )
           .onSnapshot((snapshot) => {
             snapshot.docChanges().forEach((change) => {
               if (change.type === "added") {

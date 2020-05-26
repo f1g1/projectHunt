@@ -19,6 +19,13 @@ export default function MessageIn(props) {
       ) : (
         !props.item.forTeam && <IonBadge color="primary">{props.team}</IonBadge>
       )}
+      {/* {props.item.toAdmin && (
+        <>
+          <ArrowForwardIcon fontSize="small" />{" "}
+          <IonBadge color="danger">Admin</IonBadge>
+        </>
+      )} */}
+
       {props.item.toAdmin && (
         <>
           <ArrowForwardIcon fontSize="small" />{" "}
@@ -57,7 +64,7 @@ export default function MessageIn(props) {
       {props.owner === props.item.idFrom ? (
         <IonBadge color="danger">Admin</IonBadge>
       ) : (
-        <IonBadge color="primary">{props.team}</IonBadge>
+        <IonBadge color="primary">{props.team.name}</IonBadge>
       )}
       <div className="viewItemLeft2">
         <IonImg

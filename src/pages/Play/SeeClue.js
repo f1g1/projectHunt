@@ -12,25 +12,47 @@ import { PlayService } from "../../services/PlayService";
 import SeeClueChallenge from "./SeeClueChallenge";
 import SeeClueSucces from "./SeeClueSucces";
 import SeeClueWrong from "./SeeClueWrong";
-import moment from "moment";
 
 export default function SeeClue(props) {
   const [status, setStatus] = useState(props.status || 0);
-  const [step, setStep] = useState();
-  const [timer, setTimer] = useState();
+  const [currentWaiting, setCurrentWaiting] = useState();
 
   useEffect(() => {
-    debugger;
     if (props.status && props.status !== status) setStatus(props.status);
   });
 
-  const startTimer = () => {
-    let timerr = PlayService.getTimeOut(props.step).diff(Date.now());
+  let getCurrentWaiting = () => {
+    debugger;
+    if (props.myTeam && props.myTeam.waitList) {
+      let currentWaitingSteps = props.myTeam.waitList.filter(
+        (x) => x.step === props.step.id
+      );
+      let activeWaiting = currentWaitingSteps.filter(
+        (x) => x.expires > Date.now()
+      );
+      debugger;
+      return activeWaiting;
+    }
+  };
+
+  useEffect(() => {
+    if (props.activeWaitings && props.myTeam) {
+      let thisStep = getCurrentWaiting().find((x) => true);
+      debugger;
+      if (thisStep) {
+        setStatus(2);
+        setCurrentWaiting(thisStep.expires - Date.now());
+        startTimer(thisStep);
+      }
+    }
+  }, [props.activeWaitings]);
+
+  const startTimer = (thisStep) => {
+    let timerr = thisStep.expires - Date.now();
     timerr -= 1000;
     const c = setInterval(() => {
-      console.log(timerr);
       if (timerr <= 0) clearInterval(c);
-      setTimer(moment.utc(timerr).format("mm:ss"));
+      setCurrentWaiting(timerr);
       timerr -= 1000;
     }, 1000);
   };
@@ -39,44 +61,18 @@ export default function SeeClue(props) {
   };
   const handleWrong = () => {
     setStatus(2);
-    PlayService.setTimeOut(step, 0.3);
-    handleTimeout();
+    PlayService.setTimeOut(props.step, props.team);
   };
   const handleSuccesOk = () => {
     props.handleClose();
   };
-  const handleTimeout = () => {
-    PlayService.getTimeOut(props.step) &&
-      console.log(
-        "hanlde Timeout",
-        PlayService.getTimeOut(props.step).diff(Date.now())
-      );
-    if (PlayService.getTimeOut(props.step) && status != 2) {
-      setStatus(2);
-      setTimeout(function () {
-        setStatus(0);
-        PlayService.deleteTimeOut(props.step);
-      }, PlayService.getTimeOut(props.step).diff(Date.now()));
-      setTimer(
-        moment
-          .utc(PlayService.getTimeOut(props.step).diff(Date.now()))
-          .format("mm:ss")
-      );
-      startTimer();
-    }
-  };
 
-  useEffect(() => {
-    handleTimeout();
-    setStep(props.step);
-    console.log("completed", props.completed);
-  }, []);
   const handleStatus = () => {
     switch (status) {
       case 0:
         return (
           <SeeClueChallenge
-            step={step}
+            step={props.step}
             team={props.team}
             finished={props.finished}
             handleSucces={handleSuccesScreen}
@@ -84,9 +80,17 @@ export default function SeeClue(props) {
           />
         );
       case 1:
-        return <SeeClueSucces step={step} handleSucces={handleSuccesOk} />;
+        return (
+          <SeeClueSucces step={props.step} handleSucces={handleSuccesOk} />
+        );
       case 2:
-        return <SeeClueWrong step={props.step} timer={timer} />;
+        return (
+          <SeeClueWrong
+            step={props.step}
+            timer={currentWaiting}
+            ok={() => setStatus(0)}
+          />
+        );
       default:
         break;
     }

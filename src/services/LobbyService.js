@@ -21,8 +21,6 @@ export const LobbyService = {
   addTeam,
   getTeams,
   setLobby,
-  getCurrentTeam,
-  setCurrentTeam,
   startGame,
   ImAdmin,
   joinLobby,
@@ -38,10 +36,10 @@ export const LobbyService = {
   setLocalHistoryTeams,
   getLocalHistoryTeams,
   getHistoryGames,
+  getPlayerTeam,
 };
 
 async function getHistoryGames(listIds) {
-  debugger;
   let snapshot = await fireStore
     .collection("lobbies")
     .where(firebase.firestore.FieldPath.documentId(), "in", listIds)
@@ -52,7 +50,6 @@ async function getHistoryGames(listIds) {
   return z;
 }
 function handleGameClosed(lobbyId, game, teams) {
-  debugger;
   window.localStorage.removeItem("activeGame");
   window.localStorage.removeItem("currentlobby");
   window.localStorage.removeItem("game");
@@ -137,7 +134,6 @@ function joinLobby(lobby) {
 }
 
 function ImAdmin(lobby) {
-  debugger;
   if (!lobby) return undefined;
   return UserService.getCurrentPlayer().name === lobby.owner;
 }
@@ -158,26 +154,14 @@ function startGame(lobbyId, game) {
       { merge: true }
     );
   });
-
-  // debugger;
-  // axios({
-  //   headers: {
-  //     "Access-Control-Allow-Origin": "*",
-  //   },
-  //   method: "post",
-  //   url: "https://us-central1-projecthunt-2644e.cloudfunctions.net/helloWorld",
-  //   data: {
-  //     lobbyId,
-  //     game,
-  //   },
-  // });
 }
 
-function getCurrentTeam() {
-  return window.localStorage["joinedTeam"];
-}
-function setCurrentTeam(team) {
-  return (window.localStorage["joinedTeam"] = team);
+function getPlayerTeam(player, teams) {
+  try {
+    return teams && teams.find((x) => x.players.includes(player));
+  } catch {
+    return null;
+  }
 }
 
 function addTeam(lobby, team, player, noPlayers = false) {
@@ -200,8 +184,6 @@ function addTeam(lobby, team, player, noPlayers = false) {
         });
 }
 function leaveTeam(lobbyId, teamName, playerName, players) {
-  debugger;
-  window.localStorage.removeItem("joinedTeam");
   return players === 1
     ? fireStore
         .collection("lobbies")
@@ -219,7 +201,6 @@ function leaveTeam(lobbyId, teamName, playerName, players) {
         });
 }
 function playerJoinTeam(lobby, team, playerName) {
-  window.localStorage["joinedTeam"] = team;
   return fireStore
     .collection("lobbies")
     .doc(lobby)
@@ -230,7 +211,6 @@ function playerJoinTeam(lobby, team, playerName) {
     });
 }
 function leaveLobby(username, team) {
-  debugger;
   let res = kickLobby(username, team);
   res.then(() => {
     window.localStorage.removeItem("currentLobby");

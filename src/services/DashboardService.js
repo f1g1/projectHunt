@@ -86,7 +86,6 @@ function revokeAnswer(id, team) {
 }
 
 function approveAnswer(id, team, finished) {
-  debugger;
   return fireStore
     .collection("lobbies")
     .doc(LobbyService.getCurrentLobby())
@@ -167,7 +166,7 @@ function completeChallenge(teamName, step, finished = false) {
           submitedBy: UserService.getCurrentPlayer().name,
           byAdmin: true,
         };
-  debugger;
+
   return fireStore
     .collection("lobbies")
     .doc(LobbyService.getCurrentLobby())

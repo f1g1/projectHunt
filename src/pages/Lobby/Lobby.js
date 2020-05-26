@@ -37,7 +37,6 @@ import useTeamChanges from "../../services/CustomHooks/useTeamChanges";
 
 export default function Lobby(props) {
   const lobbyChanging = useGameChanges(LobbyService.getCurrentLobby());
-  const [lobby, setLobby] = useState();
   const [joinedTeam, setJoinedTeam] = useState();
   const teams = useTeamChanges(props.location.lobbyId);
   const [currentTeamDetails, setcurrentTeamDetails] = useState();
@@ -61,7 +60,7 @@ export default function Lobby(props) {
 
   useEffect(() => {
     return () => {
-      if (lobby && lobby.startTime) leaveLobby();
+      if (lobbyChanging && lobbyChanging.startTime) leaveLobby();
     };
   }, []);
 
@@ -74,14 +73,12 @@ export default function Lobby(props) {
       props.history.go(-1);
       LobbyService.setLobby();
     }
-    setLobby(lobbyChanging);
-
     passGameStarted(lobbyChanging);
   }, [lobbyChanging]);
 
-  const passGameStarted = (lobby) => {
-    if (lobby && lobby.startTime)
-      if (joinedTeam || LobbyService.ImAdmin(lobby))
+  const passGameStarted = (lobbyChanging) => {
+    if (lobbyChanging && lobbyChanging.startTime)
+      if (joinedTeam || LobbyService.ImAdmin(lobbyChanging))
         props.history.replace("/play");
       else {
         leaveLobby();
@@ -99,9 +96,6 @@ export default function Lobby(props) {
     LobbyService.kickLobby(username, team);
     LobbyService.banPlayer(username, LobbyService.getCurrentLobby());
   };
-  useEffect(() => {
-    LobbyService.setCurrentTeam(joinedTeam);
-  }, [joinedTeam]);
 
   useEffect(() => {
     currentTeamDetails &&
@@ -113,7 +107,6 @@ export default function Lobby(props) {
         x.players.includes(UserService.getCurrentPlayer().name)
       );
       if (joined.length > 0) {
-        LobbyService.setCurrentTeam(joined[0].name);
         setJoinedTeam(joined[0].name);
       }
     } else {
@@ -121,7 +114,7 @@ export default function Lobby(props) {
     }
   }, [teams]);
   let startGame = () => {
-    LobbyService.startGame(LobbyService.getCurrentLobby(), lobby);
+    LobbyService.startGame(LobbyService.getCurrentLobby(), lobbyChanging);
   };
   const leaveLobby = () => {
     if (joinedTeam) {
@@ -154,12 +147,12 @@ export default function Lobby(props) {
 
   return (
     <IonPage>
-      {lobby ? (
+      {lobbyChanging ? (
         <>
           <IonHeader>
             <IonToolbar color="primary">
               <IonTitle>Lobby for: </IonTitle>
-              <IonTitle color="danger">{lobby.title}</IonTitle>
+              <IonTitle color="danger">{lobbyChanging.title}</IonTitle>
               <IonButtons slot="end">
                 <IonButton color="danger" onClick={leaveLobby}>
                   Leave
@@ -177,13 +170,13 @@ export default function Lobby(props) {
                   sizeXs="12"
                   offsetXl="1.5"
                 >
-                  {lobby.image && (
+                  {lobbyChanging.image && (
                     <IonCard>
                       <IonCardContent>
                         <IonImg
-                          src={lobby.image}
+                          src={lobbyChanging.image}
                           imageViewer
-                          onClick={() => PhotoViewer.show(lobby.image)}
+                          onClick={() => PhotoViewer.show(lobbyChanging.image)}
                         ></IonImg>
                       </IonCardContent>
                     </IonCard>
@@ -193,21 +186,23 @@ export default function Lobby(props) {
                       <IonList>
                         <IonLabel>Description:</IonLabel>
                         <IonItem text-wrap break-word>
-                          {lobby.description}
+                          {lobbyChanging.description}
                         </IonItem>
                         Nr. of Challenges
                         <IonItem>
                           <IonLabel>
-                            {lobby.steps ? lobby.steps.length : 0}
+                            {lobbyChanging.steps
+                              ? lobbyChanging.steps.length
+                              : 0}
                           </IonLabel>
                         </IonItem>
                         Start Location
                         <div style={{ height: "300px" }}>
-                          {lobby.startLat && (
+                          {lobbyChanging.startLat && (
                             <MapWithLocation
                               coords={{
-                                lat: lobby.startLat,
-                                lng: lobby.startLng,
+                                lat: lobbyChanging.startLat,
+                                lng: lobbyChanging.startLng,
                               }}
                             ></MapWithLocation>
                           )}
@@ -220,11 +215,11 @@ export default function Lobby(props) {
                 <IonCol sizeLg="4" sizeXl="3" sizeMd="5" sizeXs="12">
                   <TeamsContainer
                     teams={teams}
-                    lobby={lobby}
-                    max={lobby.maxPlayers}
+                    lobby={lobbyChanging}
+                    max={lobbyChanging.maxPlayers}
                     showThisTeam={showThisTeam}
                     addPlayer
-                    isAdmin={LobbyService.ImAdmin(lobby)}
+                    isAdmin={LobbyService.ImAdmin(lobbyChanging)}
                     joinedTeam={joinedTeam}
                     currentTeamDetails={currentTeamDetails}
                     handleKick={handleKick}
@@ -241,7 +236,8 @@ export default function Lobby(props) {
           <IonFooter className="ion-no-border">
             <IonToolbar>
               <IonButtons>
-                {lobby.owner === UserService.getCurrentUser().userName && (
+                {lobbyChanging.owner ===
+                  UserService.getCurrentUser().userName && (
                   <IonButton
                     color="primary"
                     onClick={() => setShowAlert1(true)}
@@ -254,21 +250,25 @@ export default function Lobby(props) {
                   Chat
                 </IonButton>
                 <IonButton full onClick={() => setShowPlayersModal(true)}>
-                  Players ({lobby.players.length})
+                  Players ({lobbyChanging.players.length})
                 </IonButton>
               </IonButtons>
             </IonToolbar>
           </IonFooter>
         </>
       ) : (
-        <IonLoading isOpen={lobby} message={"Please wait..."} duration={5000} />
+        <IonLoading
+          isOpen={lobbyChanging}
+          message={"Please wait..."}
+          duration={5000}
+        />
       )}
       <IonModal
         isOpen={showPlayersModal}
         onDidDismiss={() => setShowPlayersModal(false)}
       >
         <LobbyPlayers
-          game={lobby}
+          game={lobbyChanging}
           handleClose={() => setShowPlayersModal(false)}
           handleKick={handleKick}
           handleBan={handleBan}
@@ -293,18 +293,6 @@ export default function Lobby(props) {
             }
           />
         )}
-        {/* 
-        <ChatBoard
-          teams={teams}
-          lobby={lobby}
-          gameChatId={LobbyService.getCurrentLobby()}
-          handleClose={() => setShowChatModal(false)}
-          muted={
-            lobby &&
-            lobby.muted &&
-            lobby.muted.includes(UserService.getCurrentPlayer().name)
-          }
-        /> */}
       </IonModal>
       <IonAlert
         isOpen={showAlert1}

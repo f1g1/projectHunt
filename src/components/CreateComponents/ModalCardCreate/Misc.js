@@ -7,6 +7,8 @@ import {
   IonModal,
   IonRange,
   IonRow,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 
@@ -44,7 +46,6 @@ export default function Misc(props) {
     console.log(props.step);
   });
   const initPolyLines = (google) => {
-    debugger;
     let ppolyline = new google.maps.Circle({
       strokeOpacity: 0.3,
       strokeWeight: 1,
@@ -127,6 +128,34 @@ export default function Misc(props) {
         >
           Visible means that this challenge will be visible on the game map, and
           will see the specified area where he can find what he is looking for
+        </p>
+      </IonItem>
+
+      <IonItem lines="none">
+        <IonLabel>Waiting Time:</IonLabel>
+        <IonSelect
+          interface="popover"
+          value={props.step.waitingTime}
+          onIonChange={(e) =>
+            props.setStep({ ...props.step, waitingTime: e.target.value })
+          }
+        >
+          <IonSelectOption value={0}>0s</IonSelectOption>
+          <IonSelectOption value={30}>30s</IonSelectOption>
+          <IonSelectOption value={60}>1min</IonSelectOption>
+          <IonSelectOption value={180}>3min</IonSelectOption>
+          <IonSelectOption value={300}>5min</IonSelectOption>
+          <IonSelectOption value={600}>10min</IonSelectOption>
+          <IonSelectOption value={1800}>30min</IonSelectOption>
+          <IonSelectOption value={3600}>1h</IonSelectOption>
+        </IonSelect>
+      </IonItem>
+      <IonItem className="ion-no-padding">
+        <p
+          style={{ fontSize: "small", opacity: 0.5 }}
+          className="ion-margin-start"
+        >
+          This is the requiered time a team must wait to respond again, if the
         </p>
       </IonItem>
       <IonRow>

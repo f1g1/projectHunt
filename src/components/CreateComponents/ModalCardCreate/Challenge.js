@@ -15,7 +15,6 @@ export default function Challenge(props) {
   const [loadingImage, setLoadingImage] = useState(false);
   const refInput = useRef();
   const onChoosePhoto = (event) => {
-    debugger;
     if (event.target.files && event.target.files[0]) {
       setLoadingImage(true);
       const prefixFiletype = event.target.files[0].type.toString();

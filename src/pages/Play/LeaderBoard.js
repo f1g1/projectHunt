@@ -67,9 +67,9 @@ export default function LeaderBoard(props) {
         </IonCard>
         {props.teams &&
           props.teams.map((x) => (
-            <IonCard>
+            <IonCard key={x.name}>
               <IonCardContent>
-                <IonRow key={x.name}>
+                <IonRow>
                   <IonCol>{x.name}</IonCol>
                   <IonCol>
                     <IonLabel>{x.completed ? x.completed.length : 0}</IonLabel>

@@ -37,7 +37,7 @@ function getCurrentUser() {
   try {
     x = JSON.parse(window.localStorage["user"]);
   } catch {}
-  debugger;
+
   if (x && x.name) return x;
   else return undefined;
 }
@@ -62,7 +62,6 @@ function getCurrentPlayer() {
   return { name: user.userName, image: user.imageUrl };
 }
 function setCurrentUser(user) {
-  debugger;
   if (user)
     window.localStorage["user"] = JSON.stringify({
       ...user,

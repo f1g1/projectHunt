@@ -39,7 +39,6 @@ export default function PlayerTag(props) {
     return UserService.getCurrentPlayer().name === props.playerName;
   };
   const changeTeam = (oldTeam, newTeam) => {
-    debugger;
     let players =
       oldTeam && props.teams.find((x) => x.name == oldTeam).players.length;
     oldTeam &&
@@ -57,7 +56,6 @@ export default function PlayerTag(props) {
       );
   };
   const getCurrentTeam = () => {
-    debugger;
     try {
       return (
         props.teams &&

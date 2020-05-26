@@ -261,11 +261,12 @@ export default function GameMap(props) {
             )}
 
             {props.teams &&
-              props.teams.map((x) => {
+              props.teams.map((x, index) => {
                 {
                   if (x.location)
                     return (
                       <LocationMarker
+                        key={index + "mark"}
                         lat={x.location[x.location.length - 1].lat}
                         lng={x.location[x.location.length - 1].lng}
                         name={x.name}
