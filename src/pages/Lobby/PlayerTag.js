@@ -90,11 +90,11 @@ export default function PlayerTag(props) {
                         changeTeam(getCurrentTeam(), e.detail.value)
                       }
                     >
-                      <IonSelectOption value="null">
+                      <IonSelectOption value="null" key="noteam">
                         --no team--
                       </IonSelectOption>
                       {props.teams.map((x) => (
-                        <IonSelectOption value={x.name}>
+                        <IonSelectOption value={x.name} key={x.name}>
                           {x.name}
                         </IonSelectOption>
                       ))}

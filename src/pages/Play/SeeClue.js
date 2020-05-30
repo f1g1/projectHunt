@@ -22,7 +22,6 @@ export default function SeeClue(props) {
   });
 
   let getCurrentWaiting = () => {
-    debugger;
     if (props.myTeam && props.myTeam.waitList) {
       let currentWaitingSteps = props.myTeam.waitList.filter(
         (x) => x.step === props.step.id
@@ -30,7 +29,6 @@ export default function SeeClue(props) {
       let activeWaiting = currentWaitingSteps.filter(
         (x) => x.expires > Date.now()
       );
-      debugger;
       return activeWaiting;
     }
   };
@@ -38,7 +36,6 @@ export default function SeeClue(props) {
   useEffect(() => {
     if (props.activeWaitings && props.myTeam) {
       let thisStep = getCurrentWaiting().find((x) => true);
-      debugger;
       if (thisStep) {
         setStatus(2);
         setCurrentWaiting(thisStep.expires - Date.now());

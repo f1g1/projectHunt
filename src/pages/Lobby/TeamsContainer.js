@@ -10,6 +10,7 @@ import {
   IonItemDivider,
   IonLabel,
   IonList,
+  IonToast,
 } from "@ionic/react";
 import React, { Fragment, useState } from "react";
 
@@ -19,14 +20,22 @@ import { UserService } from "../../services/UserSerivce";
 
 export default function TeamsContainer(props) {
   const [newTeamName, setnewTeamName] = useState();
+  const [errorToast, setErrorToast] = useState();
   const addTeam = () => {
     LobbyService.addTeam(
       LobbyService.getCurrentLobby(),
       newTeamName,
       UserService.getCurrentPlayer().name,
       props.isAdmin
-    );
-    !props.isAdmin && LobbyService.setCurrentTeam(newTeamName);
+    )
+      .then(() => {
+        setnewTeamName();
+      })
+      .catch((x) => {
+        debugger;
+        setErrorToast("Something went wron when creating team, try again!");
+      });
+    // !props.isAdmin && LobbyService.setCurrentTeam(newTeamName);
   };
 
   return (
@@ -103,6 +112,7 @@ export default function TeamsContainer(props) {
               type="text"
               value={newTeamName}
               onIonChange={(e) => setnewTeamName(e.detail.value)}
+              disabled={props.joinedTeam}
             ></IonInput>
             <IonButton
               onClick={addTeam}
@@ -116,6 +126,14 @@ export default function TeamsContainer(props) {
           </IonItem>
         </IonList>
       </IonCardContent>
+      <IonToast
+        color="danger"
+        position="top"
+        isOpen={errorToast !== undefined}
+        onDidDismiss={() => setErrorToast()}
+        message={errorToast}
+        duration={2000}
+      />
     </IonCard>
   );
 }

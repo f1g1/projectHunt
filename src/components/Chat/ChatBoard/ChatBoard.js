@@ -103,9 +103,9 @@ export default function ChatBoard(props) {
           timestamp,
           itemMessage
         );
-
         break;
     }
+    setInputValue("");
   };
 
   const onChoosePhoto = (event) => {

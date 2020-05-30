@@ -44,26 +44,29 @@ export default function useMessageChanges(teams, gameChatId, lobby, openChat) {
             });
           });
       else {
-        unsubsscribeC = fireStore
-          .collection("messages")
-          .doc(gameChatId)
-          .collection(
-            LobbyService.getPlayerTeam(
-              UserService.getCurrentPlayer().name,
-              teams
-            ).name || gameChatId
-          )
-          .onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-              if (change.type === "added") {
-                messages = [...messages, { ...change.doc.data() }];
+        if (
+          LobbyService.getPlayerTeam(UserService.getCurrentPlayer().name, teams)
+        )
+          unsubsscribeC = fireStore
+            .collection("messages")
+            .doc(gameChatId)
+            .collection(
+              LobbyService.getPlayerTeam(
+                UserService.getCurrentPlayer().name,
+                teams
+              ).name || gameChatId
+            )
+            .onSnapshot((snapshot) => {
+              snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                  messages = [...messages, { ...change.doc.data() }];
 
-                setMessages([
-                  ...messages.sort((x, y) => x.timestamp - y.timestamp),
-                ]);
-              }
+                  setMessages([
+                    ...messages.sort((x, y) => x.timestamp - y.timestamp),
+                  ]);
+                }
+              });
             });
-          });
       }
     }
   }, [openChat]);

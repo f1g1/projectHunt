@@ -44,6 +44,7 @@ export default function Lobby(props) {
   const [showPlayersModal, setShowPlayersModal] = useState(false);
   const [showAlert1, setShowAlert1] = useState(false);
   const [openChat, setOpenChat] = useState(0);
+  const [usernameToBan, setUsernameToBan] = useState();
   const messages = useMessageChanges(
     teams,
     LobbyService.getCurrentLobby(),
@@ -90,11 +91,14 @@ export default function Lobby(props) {
     LobbyService.kickLobby(username, team);
   };
 
-  const handleBan = (username) => {
+  const proceedBan = () => {
     console.log("banned!!!@!#!@");
     let team = teams.find((x) => x.name === currentTeamDetails.name).name;
-    LobbyService.kickLobby(username, team);
-    LobbyService.banPlayer(username, LobbyService.getCurrentLobby());
+    LobbyService.kickLobby(usernameToBan, team)
+      .then(
+        LobbyService.banPlayer(usernameToBan, LobbyService.getCurrentLobby())
+      )
+      .then(setUsernameToBan());
   };
 
   useEffect(() => {
@@ -225,7 +229,7 @@ export default function Lobby(props) {
                     handleKick={handleKick}
                     leaveTeam={leaveTeam}
                     joinTeam={joinTeam}
-                    handleBan={handleBan}
+                    handleBan={setUsernameToBan}
                   ></TeamsContainer>
                 </IonCol>
 
@@ -271,7 +275,7 @@ export default function Lobby(props) {
           game={lobbyChanging}
           handleClose={() => setShowPlayersModal(false)}
           handleKick={handleKick}
-          handleBan={handleBan}
+          handleBan={setUsernameToBan}
           teams={teams}
         />
       </IonModal>
@@ -294,6 +298,28 @@ export default function Lobby(props) {
           />
         )}
       </IonModal>
+      <IonAlert
+        isOpen={usernameToBan !== undefined}
+        onDidDismiss={() => setUsernameToBan()}
+        header={"You are going to ban someone!"}
+        subHeader={""}
+        message={
+          "A ban is permanent and irreversible, on this lobby, are you sure you want to proceed?"
+        }
+        buttons={[
+          {
+            text: "Cancel!",
+            role: "cancel",
+            cssClass: "secondary",
+          },
+          {
+            text: "YES!",
+            handler: () => {
+              proceedBan();
+            },
+          },
+        ]}
+      />
       <IonAlert
         isOpen={showAlert1}
         onDidDismiss={() => setShowAlert1(false)}

@@ -157,6 +157,7 @@ function startGame(lobbyId, game) {
 }
 
 function getPlayerTeam(player, teams) {
+  debugger;
   try {
     return teams && teams.find((x) => x.players.includes(player));
   } catch {
@@ -165,7 +166,7 @@ function getPlayerTeam(player, teams) {
 }
 
 function addTeam(lobby, team, player, noPlayers = false) {
-  !noPlayers
+  return !noPlayers
     ? fireStore
         .collection("lobbies")
         .doc(lobby)
