@@ -40,9 +40,10 @@ export const LobbyService = {
 };
 
 async function getHistoryGames(listIds) {
+  console.log("getGHistoryGames");
   let snapshot = await fireStore
     .collection("lobbies")
-    .where(firebase.firestore.FieldPath.documentId(), "in", listIds)
+    .where(firebase.firestore.FieldPath.documentId(), "in", listIds.slice(0, 9))
     .get();
   let z = snapshot.docs.map((doc) => {
     return { ...doc.data(), lobbyId: doc.id };
@@ -50,6 +51,8 @@ async function getHistoryGames(listIds) {
   return z;
 }
 function handleGameClosed(lobbyId, game, teams) {
+  console.log("GameClosed");
+
   window.localStorage.removeItem("activeGame");
   window.localStorage.removeItem("currentlobby");
   window.localStorage.removeItem("game");
@@ -57,10 +60,13 @@ function handleGameClosed(lobbyId, game, teams) {
   window.localStorage["historyTeams"] = JSON.stringify(teams);
 }
 function getLocalHistoryGame() {
+  console.log("getLocalHistoryGame");
+
   return JSON.parse(window.localStorage["historyGame"]);
 }
 
 function setLocalHistoryGame(game) {
+  console.log("setLocalHistoryGame");
   if (game) window.localStorage["historyGame"] = JSON.stringify(game);
   else {
     window.localStorage.removeItem("historyGame");
@@ -68,12 +74,14 @@ function setLocalHistoryGame(game) {
 }
 
 function setLocalHistoryTeams(teams) {
+  console.log("setLocalHistoryTeams");
   if (teams) window.localStorage["historyTeams"] = JSON.stringify(teams);
   else {
     window.localStorage.removeItem("historyTeams");
   }
 }
 function getLocalHistoryTeams() {
+  console.log("getLocalHistoryTeams");
   return JSON.parse(window.localStorage["historyTeams"]);
 }
 
@@ -87,6 +95,7 @@ function disbandTeam(lobbyId, team) {
 }
 
 function unbanPlayer(player, lobbyId) {
+  console.log("unbanPlayer");
   return fireStore
     .collection("lobbies")
     .doc(lobbyId)
@@ -96,6 +105,7 @@ function unbanPlayer(player, lobbyId) {
 }
 
 function banPlayer(player, lobbyId) {
+  console.log("banPlayer");
   return fireStore
     .collection("lobbies")
     .doc(lobbyId)
@@ -123,6 +133,7 @@ function mutePlayer(player, lobbyId) {
 }
 
 function joinLobby(lobby) {
+  console.log("joinLobby");
   return fireStore
     .collection("lobbies")
     .doc(lobby)
@@ -139,6 +150,7 @@ function ImAdmin(lobby) {
 }
 
 function startGame(lobbyId, game) {
+  console.log("startGame");
   fireStore.collection("lobbies").doc(lobbyId).set(
     {
       startTime: firebase.firestore.FieldValue.serverTimestamp(),
@@ -158,6 +170,7 @@ function startGame(lobbyId, game) {
 
 function getPlayerTeam(player, teams) {
   debugger;
+  console.log("getPlayerTeam");
   try {
     return teams && teams.find((x) => x.players.includes(player));
   } catch {
@@ -166,6 +179,7 @@ function getPlayerTeam(player, teams) {
 }
 
 function addTeam(lobby, team, player, noPlayers = false) {
+  console.log("addTeam");
   return !noPlayers
     ? fireStore
         .collection("lobbies")
@@ -185,6 +199,7 @@ function addTeam(lobby, team, player, noPlayers = false) {
         });
 }
 function leaveTeam(lobbyId, teamName, playerName, players) {
+  console.log("leaveTeam");
   return players === 1
     ? fireStore
         .collection("lobbies")
@@ -202,6 +217,7 @@ function leaveTeam(lobbyId, teamName, playerName, players) {
         });
 }
 function playerJoinTeam(lobby, team, playerName) {
+  console.log("playerJoinTeam");
   return fireStore
     .collection("lobbies")
     .doc(lobby)
@@ -212,14 +228,15 @@ function playerJoinTeam(lobby, team, playerName) {
     });
 }
 function leaveLobby(username, team) {
+  console.log("leaveLobby");
   let res = kickLobby(username, team);
   res.then(() => {
     window.localStorage.removeItem("currentLobby");
-    window.localStorage.removeItem("joinedTeam");
   });
   return res;
 }
 function kickLobby(username, team) {
+  console.log("kickLobby");
   try {
     fireStore
       .collection("lobbies")
@@ -240,6 +257,7 @@ function kickLobby(username, team) {
 }
 
 function postLobby(game) {
+  console.log("postLobby");
   var lobbyRef = fireStore.collection("lobbies");
   return lobbyRef.add({ ...game, lobbyCreatedDate: Date.now() });
 }
@@ -254,6 +272,7 @@ async function getLobby(lobbyId) {
 }
 
 function getTeams(lobbyId) {
+  console.log("getTeams");
   let teams = [];
   return fireStore
     .collection("lobbies")
@@ -275,6 +294,7 @@ function deleteLobby(id) {
 }
 
 async function getLobbies(password) {
+  console.log("getLobbies");
   const snapshot = await fireStore
     .collection("lobbies")
     .where("password", "==", password)

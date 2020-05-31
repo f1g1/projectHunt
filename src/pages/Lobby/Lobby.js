@@ -37,7 +37,6 @@ import useTeamChanges from "../../services/CustomHooks/useTeamChanges";
 
 export default function Lobby(props) {
   const lobbyChanging = useGameChanges(LobbyService.getCurrentLobby());
-  const [joinedTeam, setJoinedTeam] = useState();
   const teams = useTeamChanges(props.location.lobbyId);
   const [currentTeamDetails, setcurrentTeamDetails] = useState();
   const [showChatModal, setShowChatModal] = useState(false);
@@ -61,7 +60,12 @@ export default function Lobby(props) {
 
   useEffect(() => {
     return () => {
-      if (lobbyChanging && lobbyChanging.startTime) leaveLobby();
+      if (lobbyChanging && lobbyChanging.startTime) {
+        console.log(
+          "      if (lobbyChanging && lobbyChanging.startTime          "
+        );
+        leaveLobby();
+      }
     };
   }, []);
 
@@ -79,9 +83,17 @@ export default function Lobby(props) {
 
   const passGameStarted = (lobbyChanging) => {
     if (lobbyChanging && lobbyChanging.startTime)
-      if (joinedTeam || LobbyService.ImAdmin(lobbyChanging))
+      if (
+        LobbyService.getPlayerTeam(
+          UserService.getCurrentPlayer().name,
+          teams
+        ) ||
+        LobbyService.ImAdmin(lobbyChanging)
+      )
         props.history.replace("/play");
       else {
+        debugger;
+
         leaveLobby();
       }
   };
@@ -101,31 +113,17 @@ export default function Lobby(props) {
       .then(setUsernameToBan());
   };
 
-  useEffect(() => {
-    currentTeamDetails &&
-      setcurrentTeamDetails(
-        teams.filter((x) => x.name === currentTeamDetails.name)[0]
-      );
-    if (!joinedTeam) {
-      let joined = teams.filter((x) =>
-        x.players.includes(UserService.getCurrentPlayer().name)
-      );
-      if (joined.length > 0) {
-        setJoinedTeam(joined[0].name);
-      }
-    } else {
-      setJoinedTeam();
-    }
-  }, [teams]);
   let startGame = () => {
     LobbyService.startGame(LobbyService.getCurrentLobby(), lobbyChanging);
   };
   const leaveLobby = () => {
-    if (joinedTeam) {
+    if (
+      LobbyService.getPlayerTeam(UserService.getCurrentPlayer().name, teams)
+    ) {
       leaveTeam(
         LobbyService.getCurrentLobby(),
         UserService.getCurrentPlayer.name,
-        teams.find((x) => x.name === joinedTeam)
+        LobbyService.getPlayerTeam(UserService.getCurrentPlayer().name, teams)
       );
     }
     LobbyService.leaveLobby(
@@ -138,15 +136,10 @@ export default function Lobby(props) {
       LobbyService.getCurrentLobby(),
       team,
       UserService.getCurrentPlayer().name
-    ).then(() => setJoinedTeam(team));
+    );
   };
   const leaveTeam = (lobbyId, player, team) => {
-    LobbyService.leaveTeam(
-      lobbyId,
-      team.name,
-      player,
-      team.players.length
-    ).then(() => setJoinedTeam());
+    LobbyService.leaveTeam(lobbyId, team.name, player, team.players.length);
   };
 
   return (
@@ -158,7 +151,13 @@ export default function Lobby(props) {
               <IonTitle>Lobby for: </IonTitle>
               <IonTitle color="danger">{lobbyChanging.title}</IonTitle>
               <IonButtons slot="end">
-                <IonButton color="danger" onClick={leaveLobby}>
+                <IonButton
+                  color="danger"
+                  onClick={() => {
+                    console.log("clicked");
+                    leaveLobby();
+                  }}
+                >
                   Leave
                 </IonButton>
               </IonButtons>
@@ -224,7 +223,10 @@ export default function Lobby(props) {
                     showThisTeam={showThisTeam}
                     addPlayer
                     isAdmin={LobbyService.ImAdmin(lobbyChanging)}
-                    joinedTeam={joinedTeam}
+                    joinedTeam={LobbyService.getPlayerTeam(
+                      UserService.getCurrentPlayer().name,
+                      teams
+                    )}
                     currentTeamDetails={currentTeamDetails}
                     handleKick={handleKick}
                     leaveTeam={leaveTeam}

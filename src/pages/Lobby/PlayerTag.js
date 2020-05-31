@@ -70,6 +70,7 @@ export default function PlayerTag(props) {
       <IonRow
         style={isCurrentPlayer() ? { color: "#008b8b", opacity: 0.6 } : null}
         style={{ borderBottom: "1px solid black" }}
+        className="ion-justify-content-center"
       >
         <IonCol style={{ margin: "auto", verticalAlign: "middle" }}>
           {props.game.muted && props.game.muted.includes(props.playerName) && (

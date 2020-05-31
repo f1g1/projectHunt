@@ -1,9 +1,9 @@
 import {
   IonButton,
-  IonButtons,
   IonContent,
   IonHeader,
   IonLabel,
+  IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
@@ -34,7 +34,7 @@ export default function SeeClue(props) {
   };
 
   useEffect(() => {
-    if (props.activeWaitings && props.myTeam) {
+    if (props.activeWaitings && props.myTeam && getCurrentWaiting()) {
       let thisStep = getCurrentWaiting().find((x) => true);
       if (thisStep) {
         setStatus(2);
@@ -95,15 +95,20 @@ export default function SeeClue(props) {
   return (
     <>
       <IonHeader>
-        <IonToolbar color={status !== 2 ? "primary" : "danger"}>
-          <IonButtons>
-            <IonButton onclick={props.handleClose} color="danger">
+        <IonToolbar color={status != 2 ? "primary" : "danger"}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <IonButton
+              color="danger"
+              onClick={props.handleClose}
+              className="ion-padding-start ion-float-left"
+              style={{ display: "inline-block" }}
+            >
               X
             </IonButton>
-            <IonLabel className="ion-padding-start">
+            <IonTitle style={{ display: "inline-block" }}>
               Challenge #{props.step.index + 1}
-            </IonLabel>
-          </IonButtons>
+            </IonTitle>
+          </div>
         </IonToolbar>
       </IonHeader>
       <IonContent>

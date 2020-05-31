@@ -1,4 +1,4 @@
-import { IonCheckbox, IonItem, IonLabel, IonTitle } from "@ionic/react";
+import { IonCheckbox, IonItem, IonItemDivider, IonLabel } from "@ionic/react";
 import React, { useState } from "react";
 
 import { PhotoViewer } from "@ionic-native/photo-viewer";
@@ -11,15 +11,19 @@ export default function SeeClueChallenge(props) {
       &nbsp;
       {props.step && (
         <>
-          <img
-            src={props.step.image}
-            style={{ maxHeight: "400px" }}
-            onClick={() => PhotoViewer.show(props.step.image)}
-          />
-          <IonTitle>
-            <h1>{props.step.clue}</h1>
-          </IonTitle>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <img
+              src={props.step.image}
+              style={{ maxHeight: "400px" }}
+              onClick={() => PhotoViewer.show(props.step.image)}
+            />
+          </div>
 
+          <IonLabel>
+            <h2 className="ion-text-wrap ion-padding">{props.step.clue}</h2>
+          </IonLabel>
+
+          <IonItemDivider />
           <div>
             <SeeClueInput
               answerType={props.step.answerType}

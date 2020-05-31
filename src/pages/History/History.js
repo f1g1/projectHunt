@@ -65,14 +65,15 @@ export default function History(props) {
             duration={5000}
           />
 
-          {loading === false && lobbies === undefined && (
-            <IonTitle
-              className="ion-text-center ion-padding-top"
-              style={{ visible: !loading, marginTop: "10vh" }}
-            >
-              <h1>You need to play some games to see your history!</h1>
-            </IonTitle>
-          )}
+          {(loading === false && lobbies === undefined) ||
+            (lobbies.length === 0 && (
+              <IonTitle
+                className="ion-text-center ion-padding-top"
+                style={{ visible: !loading, marginTop: "10vh" }}
+              >
+                <h1>You need to play some games to see your history!</h1>
+              </IonTitle>
+            ))}
           <IonRow className="ion-padding-top">
             <IonCol sizeXl="6" size="12" offsetXl="3">
               {!loading && lobbies && lobbies.length > 0 && (

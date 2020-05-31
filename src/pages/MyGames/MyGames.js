@@ -133,14 +133,14 @@ export default function MyGames(props) {
                                   style={{
                                     height: "100px",
                                     width: "auto",
-                                    maxWidth: "220px",
+                                    maxWidth: "130px",
                                   }}
-                                ></img>
+                                />
                               )}
                             </IonCol>
                             <IonCol sizeXl="3" size="6">
                               <h2>Title:</h2>
-                              <h3>{x.title}</h3>
+                              <h3 style={{ fontWeight: "bold" }}>{x.title}</h3>
                               <p style={{ marginTop: "5px" }}>Date:</p>
                               {moment(x.createdDate).format("DD/MM/YYYY")}
                             </IonCol>
