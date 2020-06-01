@@ -4,7 +4,18 @@ const MiscService = {
   getCachedGeolocation,
   getQr,
   getLiveGeolocation,
+  getNotificationSettings,
+  setNotificationSettings,
+  setChatNr,
+  getChatNr,
 };
+
+function getChatNr() {
+  return window.localStorage["chatNo"] || 0;
+}
+function setChatNr(nr) {
+  window.localStorage["chatNo"] = nr;
+}
 
 function getQr(data, color) {
   const controller = new AbortController();
@@ -27,6 +38,19 @@ function getQr(data, color) {
   controller.abort();
 }
 
+function getNotificationSettings() {
+  if (window.localStorage["notificationSettings"])
+    return JSON.parse(window.localStorage["notificationSettings"]);
+
+  let n = { message: true, adminMessage: true, map: true, area: true };
+  window.localStorage["notificationSettings"] = JSON.stringify(n);
+  return n;
+}
+function setNotificationSettings(notificationSettings) {
+  window.localStorage["notificationSettings"] = JSON.stringify(
+    notificationSettings
+  );
+}
 async function getCachedGeolocation() {
   // let parsed;
   // try {

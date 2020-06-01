@@ -15,9 +15,9 @@ import {
 
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import HistoryIcon from "@material-ui/icons/History";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import { Plugins } from "@capacitor/core";
 import React from "react";
+import SettingsIcon from "@material-ui/icons/Settings";
 import { UserService } from "../../services/UserSerivce";
 import { menuController } from "@ionic/core";
 
@@ -30,6 +30,10 @@ export default function Menu(props) {
 
   const handleGoHistory = () => {
     props.history.push("/history");
+    menuController.close();
+  };
+  const handleGoNotifications = () => {
+    props.history.push("/settings");
     menuController.close();
   };
 
@@ -46,9 +50,9 @@ export default function Menu(props) {
       </IonHeader>
       <IonContent>
         <IonList>
-          <IonItem>
-            <NotificationsIcon />
-            <IonLabel className="menu-label">Notifications</IonLabel>
+          <IonItem button onClick={handleGoNotifications}>
+            <SettingsIcon />
+            <IonLabel className="menu-label">Settings</IonLabel>
           </IonItem>
           <IonItem button onClick={handleGoHistory}>
             <HistoryIcon />

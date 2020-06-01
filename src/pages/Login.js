@@ -8,7 +8,6 @@ import {
   IonCol,
   IonContent,
   IonHeader,
-  IonImg,
   IonPage,
   IonRow,
 } from "@ionic/react";
@@ -78,7 +77,10 @@ const Login = (props) => {
       <IonContent className="ion-padding">
         <IonRow>
           <IonCol className="text-center">
-            <IonImg className="title-img" src="assets/capacitor.png"></IonImg>
+            <img
+              style={{ width: "200px", height: "200px", marginTop: "100px" }}
+              src={require("../resources/logo1.png")}
+            />
           </IonCol>
         </IonRow>
 

@@ -19,6 +19,7 @@ import { LobbyService } from "../services/LobbyService";
 import Menu from "../components/Menu/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import { PlayService } from "../services/PlayService";
+import { UserService } from "../services/UserSerivce";
 import { menuController } from "@ionic/core";
 
 const INITIAL_STATE = {
@@ -30,17 +31,18 @@ export default function Home(props) {
   const [state, setState] = useState({ ...INITIAL_STATE });
 
   useEffect(() => {
-    PlayService.checkActiveGame().then((activeGame) => {
-      if (activeGame) {
-        PlayService.setActiveGame(activeGame);
-        LobbyService.setLobby(activeGame);
-        props.history.replace("/play", activeGame);
-      } else {
-        PlayService.setActiveGame();
-        LobbyService.setLobby();
-        setState({ ...state, noActiveGame: true });
-      }
-    });
+    UserService.getCurrentPlayer() &&
+      PlayService.checkActiveGame().then((activeGame) => {
+        if (activeGame) {
+          PlayService.setActiveGame(activeGame);
+          LobbyService.setLobby(activeGame);
+          props.history.replace("/play", activeGame);
+        } else {
+          PlayService.setActiveGame();
+          LobbyService.setLobby();
+          setState({ ...state, noActiveGame: true });
+        }
+      });
   }, []);
 
   return (

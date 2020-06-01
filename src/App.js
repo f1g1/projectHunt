@@ -27,12 +27,13 @@ import MyGames from "./pages/MyGames/MyGames";
 import Play from "./pages/Play/Play";
 import React from "react";
 import SeeClue from "./pages/Play/SeeClueChallenge";
+import Settings from "./pages/Settings/Settings";
 import UserName from "./pages/Username/UserName";
 import { UserService } from "./services/UserSerivce";
 
-function WithRedirect(props) {
-  return props.login ? props.children : <Redirect to="/login" />;
-}
+// function WithRedirect(props) {
+//   return props.login ? props.children : <Redirect to="/login" />;
+// }
 
 export default function App() {
   return (
@@ -56,6 +57,7 @@ export default function App() {
           <Route path="/gameDashboard" component={Dashboard} exact={true} />
           <Route path="/finishedGame" component={FinishedGame} exact={true} />
           <Route path="/history" component={History} exact={true} />
+          <Route path="/settings" component={Settings} exact={true} />
           {/* </WithRedirect> */}
 
           <Route

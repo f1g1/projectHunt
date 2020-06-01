@@ -59,12 +59,13 @@ export default function Play(props) {
     openChat
   );
 
+  useEffect(() => {});
   useEffect(() => {
     MiscService.getCachedGeolocation().then((x) => setGeolocation(x));
   }, []);
 
   useEffect(() => {
-    console.log(messages);
+    // messages.length > 0 && MiscService.setChatNr(messages.length);
   }, [messages]);
 
   useEffect(() => {
@@ -103,6 +104,11 @@ export default function Play(props) {
       );
     });
   };
+  const handleOpenChat = () => {
+    setShowChatModal(true);
+    setopenChat(openChat + 1);
+    MiscService.setChatNr(messages.length);
+  };
 
   return (
     <IonPage>
@@ -135,11 +141,12 @@ export default function Play(props) {
               <IonButtons>
                 <IonButton
                   onClick={() => {
-                    setShowChatModal(true);
-                    setopenChat(openChat + 1);
+                    handleOpenChat();
                   }}
                 >
-                  Chat
+                  Chat{" "}
+                  {MiscService.getChatNr() < messages.length &&
+                    "(" + (messages.length - MiscService.getChatNr()) + ")"}
                 </IonButton>
                 <IonButton onClick={() => setShowLeaderBoardModal(true)}>
                   LeaderBoard
