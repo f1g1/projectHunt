@@ -77,6 +77,10 @@ export default function GameMap(props) {
   const [selectedPosition, setSelectedPosition] = useState();
   const [visibleChallenges, setVisibleChallenges] = useState();
   const [incrV, setincrV] = useState();
+  const [breadcrumbs, setBreadcrumbs] = useState();
+  const [modifyingBreadcrumbs, setModifyingBreadcrumbs] = useState();
+  const [line, setLine] = useState();
+
   const handleSavePoint = () => {
     setSelectedPosition();
     setHandlingPoint(false);
@@ -89,6 +93,10 @@ export default function GameMap(props) {
         setErrorToast("Point was not placed!");
       });
   };
+  useEffect(() => {
+    modifyingArea && shape.setOptions({ visible: true });
+  }, [modifyingArea]);
+
   useEffect(() => {
     let team = props.teams.filter((x) =>
       x.players.includes(UserService.getCurrentPlayer().name)
@@ -112,18 +120,29 @@ export default function GameMap(props) {
     setincrV(incrV + 1);
   }, [props.teams, props.game]);
 
-  useEffect(() => {
-    console.log(visibleChallenges);
-  }, [visibleChallenges]);
-
   const handleMarkCenter = () => {
     setSelectedPosition(mapCenter);
   };
   const cancelArea = () => {
-    setBounds(props.game.bounds);
-    shape.setOptions({ editable: false });
+    setBounds(props.game.area);
+    if (props.game.area)
+      shape.setOptions({ editable: false, path: props.game.area });
+    else {
+      shape.setOptions({ visible: false });
+    }
     setModifyingArea(false);
   };
+
+  const cancleBreadcrumbs = () => {
+    setBreadcrumbs(props.game.breadcrumbs);
+    if (props.game.breadcrumbs)
+      line.setOptions({ editable: false, path: props.game.breadcrumbs });
+    else {
+      line.setOptions({ visible: false });
+    }
+    setModifyingBreadcrumbs(false);
+  };
+
   const cancelPoint = () => {
     setHandlingPoint(false);
     setSelectedPosition();
@@ -149,6 +168,29 @@ export default function GameMap(props) {
         setErrorToast("Can't update area right now, try later");
       });
   };
+
+  const saveBreadcrumbs = () => {
+    var polygonBounds = line.getPath();
+    var auxBounds = [];
+    for (var i = 0; i < polygonBounds.length; i++) {
+      var point = {
+        lat: polygonBounds.getAt(i).lat(),
+        lng: polygonBounds.getAt(i).lng(),
+      };
+      auxBounds.push(point);
+    }
+    PlayService.saveBreadcrumbs(auxBounds)
+      .then(() => {
+        line.setOptions({ editable: false });
+        setModifyingBreadcrumbs(false);
+        setMessageToast("Breadcrumbs updated succesfully");
+        setBounds(auxBounds);
+      })
+      .catch((e) => {
+        setErrorToast("Can't update breadcrumbs right now, try later");
+      });
+  };
+
   const shareLocation = () => {
     let team = props.teams.filter((x) =>
       x.players.includes(UserService.getCurrentPlayer().name)
@@ -177,13 +219,34 @@ export default function GameMap(props) {
         lng: props.geolocation.longitude + 0.01,
       },
     ];
-    let pathBounds = bounds;
-    if (!bounds) {
+
+    let pathBounds = props.game.area;
+    if (!pathBounds) {
       setBounds(initialBounds);
       pathBounds = initialBounds;
     }
     shape.setOptions({ path: pathBounds, editable: true });
     setModifyingArea(true);
+  };
+  const handleBreadcrumbs = () => {
+    let initialBounds = [
+      {
+        lat: props.geolocation.latitude + 0.01,
+        lng: props.geolocation.longitude,
+      },
+      {
+        lat: props.geolocation.latitude - 0.01,
+        lng: props.geolocation.longitude,
+      },
+    ];
+
+    let pathBounds = props.game.breadcrumbs;
+    if (!pathBounds) {
+      setBreadcrumbs(initialBounds);
+      pathBounds = initialBounds;
+    }
+    line.setOptions({ path: pathBounds, editable: true });
+    setModifyingBreadcrumbs(true);
   };
 
   const initShape = (google) => {
@@ -197,6 +260,18 @@ export default function GameMap(props) {
     });
     shape.setMap(google.map);
     setShape(shape);
+  };
+
+  const initLine = (google) => {
+    var line = new google.maps.Polyline({
+      path: breadcrumbs,
+      geodesic: true,
+      strokeOpacity: 1,
+      strokeWeight: 2,
+      strokeColor: "#ff6600",
+    });
+    line.setMap(google.map);
+    setLine(line);
   };
 
   const handlePoint = () => {
@@ -232,7 +307,10 @@ export default function GameMap(props) {
                 lng: map.getCenter().lng(),
               });
             }}
-            onGoogleApiLoaded={(x) => initShape(x)}
+            onGoogleApiLoaded={(x) => {
+              initShape(x);
+              initLine(x);
+            }}
           >
             {visibleChallenges &&
               visibleChallenges.map((x) => {
@@ -305,14 +383,29 @@ export default function GameMap(props) {
 
               {!modifyingArea ? (
                 <IonButton onClick={handleArea} color="tertiary">
-                  Handle Area
+                  Area
                 </IonButton>
               ) : (
                 <div>
                   <IonButton onClick={saveArea} color="success">
-                    Save Area
+                    Save!
                   </IonButton>
                   <IonButton color="danger" onclick={cancelArea}>
+                    X
+                  </IonButton>
+                </div>
+              )}
+
+              {!modifyingBreadcrumbs ? (
+                <IonButton onClick={handleBreadcrumbs} color="tertiary">
+                  Breadcrumbs
+                </IonButton>
+              ) : (
+                <div>
+                  <IonButton onClick={saveBreadcrumbs} color="success">
+                    Save!
+                  </IonButton>
+                  <IonButton color="danger" onclick={cancleBreadcrumbs}>
                     X
                   </IonButton>
                 </div>

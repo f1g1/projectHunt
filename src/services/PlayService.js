@@ -19,6 +19,7 @@ export const PlayService = {
   submitAnswerImage,
   shareLocation,
   saveArea,
+  saveBreadcrumbs,
   saveAdminPoint,
   getAllActiveSteps,
   setActiveGame,
@@ -57,6 +58,13 @@ function saveArea(area) {
     .collection("lobbies")
     .doc(LobbyService.getCurrentLobby())
     .set({ area: area }, { merge: true });
+}
+
+function saveBreadcrumbs(line) {
+  return fireStore
+    .collection("lobbies")
+    .doc(LobbyService.getCurrentLobby())
+    .set({ breadcrumbs: line }, { merge: true });
 }
 
 function shareLocation(location, team) {

@@ -92,8 +92,6 @@ export default function Lobby(props) {
       )
         props.history.replace("/play");
       else {
-        debugger;
-
         leaveLobby();
       }
   };
@@ -242,15 +240,12 @@ export default function Lobby(props) {
           <IonFooter className="ion-no-border">
             <IonToolbar>
               <IonButtons>
-                {lobbyChanging.owner ===
-                  UserService.getCurrentUser().userName && (
-                  <IonButton
-                    color="primary"
-                    onClick={() => setShowAlert1(true)}
-                  >
-                    Start Game
-                  </IonButton>
-                )}
+                {/* {lobbyChanging.owner ===
+                  UserService.getCurrentUser().userName && ( */}
+                <IonButton color="primary" onClick={() => setShowAlert1(true)}>
+                  Start Game
+                </IonButton>
+                {/* )} */}
 
                 <IonButton full onClick={() => setShowChatModal(true)}>
                   Chat

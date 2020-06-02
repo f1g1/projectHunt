@@ -97,6 +97,9 @@ let reducer = (state, action) => {
     case "setArea": {
       return { ...state, area: action.value };
     }
+    case "setBreadcrumbs": {
+      return { ...state, breadcrumbs: action.value };
+    }
     case "setSteps": {
       return {
         ...state,

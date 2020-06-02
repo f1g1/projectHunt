@@ -117,10 +117,15 @@ export default function TeamDashboard(props) {
             </IonItem>
           </IonCol>
           <IonRow className="ion-justify-content-center">
-            <IonCol>
-              <IonButton onClick={() => setShowPopover(true)} color="tertiary">
-                Adjustments
-              </IonButton>
+            <IonCol size="12">
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <IonButton
+                  onClick={() => setShowPopover(true)}
+                  color="tertiary"
+                >
+                  See Adjustments
+                </IonButton>
+              </div>
             </IonCol>
           </IonRow>
         </IonRow>

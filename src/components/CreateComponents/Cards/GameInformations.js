@@ -68,6 +68,12 @@ export default function GameInformations(props) {
       value: area,
     });
   };
+  const setBreadcrumbs = (line) => {
+    dispatch({
+      type: "setBreadcrumbs",
+      value: line,
+    });
+  };
 
   const onChoosePhoto = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -174,6 +180,8 @@ export default function GameInformations(props) {
                 onChange={onChoosePhoto}
               />
               <AreaPicker
+                setBreadcrumbs={setBreadcrumbs}
+                breadcrumbs={state.breadcrumbs}
                 setBounds={setArea}
                 bounds={state.area}
                 geolocation={props.geolocation}
