@@ -25,16 +25,16 @@ export default function Dashboardteams(props) {
         <IonCardContent>
           <IonRow color="priamry">
             <IonCol>
-              <h2 style={{ textDecoration: "bold" }}>Team</h2>
+              <h2 style={{ textDecoration: "bold" }}>Team:</h2>
             </IonCol>
             <IonCol>
-              <IonLabel>Completed</IonLabel>
+              <IonLabel>Completed:</IonLabel>
             </IonCol>
             <IonCol>
-              <IonLabel>Points</IonLabel>
+              <IonLabel>Points:</IonLabel>
             </IonCol>
             <IonCol>
-              <IonLabel>Last Completed</IonLabel>
+              <IonLabel>Last Completed:</IonLabel>
             </IonCol>
           </IonRow>
         </IonCardContent>

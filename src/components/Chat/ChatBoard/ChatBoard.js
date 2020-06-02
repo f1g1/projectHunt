@@ -15,6 +15,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { LobbyService } from "../../../services/LobbyService";
 import MessageIn from "./MessageIn";
 import MessageOut from "./MessageOut";
+import MiscService from "../../../services/MiscService";
 import PermMediaIcon from "@material-ui/icons/PermMedia";
 import SendIcon from "@material-ui/icons/Send";
 import { UserService } from "../../../services/UserSerivce";
@@ -39,7 +40,10 @@ export default function ChatBoard(props) {
   let currentPhotoFile = null;
 
   useEffect(() => {
-    scrollToBottom();
+    if (props.listMessage.length > 0) {
+      MiscService.setChatNr(props.listMessage.length);
+      props.setUnread(props.listMessage.length - MiscService.getChatNr());
+    }
   }, [props.listMessage]);
 
   const onSendMessage = (content, type) => {
@@ -47,6 +51,10 @@ export default function ChatBoard(props) {
     if (content.trim() === "") {
       return;
     }
+    MiscService.setChatNr(props.listMessage.length + 1);
+
+    props.setUnread(props.listMessage.length + 1 - MiscService.getChatNr());
+
     const timestamp = moment().valueOf().toString();
 
     const itemMessage = {
@@ -159,12 +167,13 @@ export default function ChatBoard(props) {
   };
 
   const scrollToBottom = () => {
-    if (ref) {
+    if (ref.current) {
       ref.current.scrollIntoView({});
     }
   };
 
   const renderListMessage = () => {
+    console.log("renderlistmessages");
     if (props.listMessage.length > 0) {
       let viewListMessage = [];
       props.listMessage.forEach((item, index) => {
@@ -199,17 +208,17 @@ export default function ChatBoard(props) {
         <IonButtons>
           <IonButton onclick={props.handleClose}>
             <CloseIcon />
+            <div className="headerChatBoard">
+              <span className="textHeaderChatBoard">Game chat!</span>
+            </div>
           </IonButton>
         </IonButtons>
       </IonToolbar>
       <div className="viewChatBoard">
-        <div className="headerChatBoard">
-          <span className="textHeaderChatBoard">Game chat!</span>
-        </div>
-
         <div className="viewListContentChat" style={{ overflowY: "scroll" }}>
           {renderListMessage()}
-          <div style={{ float: "left", clear: "both" }} ref={ref} />
+          <div ref={ref} />
+          {scrollToBottom()}
         </div>
         {props.muted && console.log("muted")}
         {!props.muted ? (

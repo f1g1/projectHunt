@@ -17,6 +17,7 @@ import GoogleMap from "google-map-react";
 import { LobbyService } from "../../services/LobbyService";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import ModalCardCreate from "../../components/CreateComponents/ModalCardCreate/ModalCardCreate";
+import { PhotoViewer } from "@ionic-native/photo-viewer";
 
 const types = ["Text", "Qr Code", "Photo"];
 const LocationMarker = ({ lat, lng }) => (
@@ -63,6 +64,7 @@ export default function DashboardGame(props) {
         >
           <IonCardContent>
             <IonCardTitle>Challenge #{x.index + 1}</IonCardTitle>
+
             <IonRow>
               <IonCol sizeXl="3">
                 {!x.image ? (
@@ -81,6 +83,7 @@ export default function DashboardGame(props) {
                       width: "auto",
                       maxWidth: "220px",
                     }}
+                    onClick={() => PhotoViewer.show(x.image)}
                   ></img>
                 )}
               </IonCol>

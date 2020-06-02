@@ -23,14 +23,14 @@ export default function DasboardApprove(props) {
       <IonCard color="light" style={{ marginBottom: "30px" }}>
         <IonCardContent>
           <IonRow color="priamry">
-            <IonCol>
-              <h2 style={{ textDecoration: "bold" }}>Team</h2>
+            <IonCol size="4">
+              <h2 style={{ textDecoration: "bold" }}>Team:</h2>
             </IonCol>
-            <IonCol>
-              <IonLabel>challenge</IonLabel>
+            <IonCol size="4">
+              <IonLabel>Challenge:</IonLabel>
             </IonCol>
-            <IonCol>
-              <IonLabel>Timestamp</IonLabel>
+            <IonCol size="4">
+              <IonLabel>Timestamp:</IonLabel>
             </IonCol>
           </IonRow>
         </IonCardContent>

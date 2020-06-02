@@ -2,6 +2,7 @@ import "./Play.scss";
 
 import {
   IonAlert,
+  IonBadge,
   IonButton,
   IonButtons,
   IonContent,
@@ -9,7 +10,6 @@ import {
   IonHeader,
   IonModal,
   IonPage,
-  IonToast,
   IonToolbar,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
@@ -22,6 +22,7 @@ import GameMap from "./GameMap/GameMap";
 import LeaderBoard from "./LeaderBoard";
 import { LobbyService } from "../../services/LobbyService";
 import MiscService from "../../services/MiscService";
+import NotificationHandler from "./NotificationHandler";
 import { PlayService } from "../../services/PlayService";
 import { UserService } from "../../services/UserSerivce";
 import useGameChanges from "../../services/CustomHooks/useGameChanges";
@@ -51,6 +52,7 @@ export default function Play(props) {
   const [openChat, setopenChat] = useState(0);
   const [myTeam, setMyTeam] = useState();
   const teams = useTeamChanges();
+  const [unread, setUnread] = useState();
   const gameChanging = useGameChanges();
   const messages = useMessageChanges(
     teams,
@@ -65,7 +67,15 @@ export default function Play(props) {
   }, []);
 
   useEffect(() => {
-    // messages.length > 0 && MiscService.setChatNr(messages.length);
+    debugger;
+    if (messages.length > 0) {
+      setUnread(messages.length - MiscService.getChatNr());
+      if (
+        messages[messages.length - 1].idFrom !==
+        UserService.getCurrentPlayer().name
+      )
+        setShowToast1("Caution, game area as been modified!");
+    }
   }, [messages]);
 
   useEffect(() => {
@@ -108,6 +118,7 @@ export default function Play(props) {
     setShowChatModal(true);
     setopenChat(openChat + 1);
     MiscService.setChatNr(messages.length);
+    setUnread(messages.length - MiscService.getChatNr());
   };
 
   return (
@@ -145,8 +156,11 @@ export default function Play(props) {
                   }}
                 >
                   Chat{" "}
-                  {MiscService.getChatNr() < messages.length &&
-                    "(" + (messages.length - MiscService.getChatNr()) + ")"}
+                  {unread > 0 && (
+                    <IonBadge color="danger" style={{ marginLeft: "10px" }}>
+                      ({unread}){" "}
+                    </IonBadge>
+                  )}
                 </IonButton>
                 <IonButton onClick={() => setShowLeaderBoardModal(true)}>
                   LeaderBoard
@@ -208,6 +222,7 @@ export default function Play(props) {
               game.muted &&
               game.muted.includes(UserService.getCurrentPlayer().name)
             }
+            setUnread={setUnread}
           />
         )}
       </IonModal>
@@ -233,15 +248,12 @@ export default function Play(props) {
           game={game}
         />
       </IonModal>
-      <IonToast
-        isOpen={showToast1 !== undefined}
-        onDidDismiss={() => setShowToast1()}
-        message={showToast1}
-        duration={2000}
-        position="top"
-        color="light"
-        mode="ios"
-      />
+      {
+        <NotificationHandler
+          showToast1={showToast1}
+          setShowToast1={setShowToast1}
+        />
+      }
     </IonPage>
   );
 }
