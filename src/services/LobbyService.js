@@ -169,8 +169,6 @@ function startGame(lobbyId, game) {
 }
 
 function getPlayerTeam(player, teams) {
-  debugger;
-  console.log("getPlayerTeam");
   try {
     return teams && teams.find((x) => x.players.includes(player));
   } catch {
