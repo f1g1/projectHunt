@@ -57,7 +57,7 @@ function getCurrentPlayer() {
   let user;
   try {
     user = { ...JSON.parse(window.localStorage["user"]) };
-    console.log("stored user is ", user);
+    // console.log("stored user is ", user);
   } catch {
     user = {};
   }

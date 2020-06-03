@@ -1,4 +1,4 @@
-import { IonItem, IonReorder, IonReorderGroup } from "@ionic/react";
+import { IonReorder, IonReorderGroup } from "@ionic/react";
 import React, { useContext } from "react";
 
 import { AppContext } from "../../StateCreateGame";
@@ -13,32 +13,29 @@ export default function ReorderableCards(props) {
     dispatch({
       type: "swapSteps",
       from: event.detail.from,
-      to: event.detail.to
+      to: event.detail.to,
     });
     event.detail.complete();
   }
   const deleteCard = (id) => {
     dispatch({
       type: "deleteStep",
-      id
+      id,
     });
-  }
-
+  };
 
   return (
     <>
       <IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
-        {state.cloneSteps.map(x => (
-          <IonItem lines="none" key={x.id}>
-            <InnerCard step={x} delete={deleteCard} edit={props.edit}>
-              <div className="arrow">
-                <IonReorder slot="start" />
-              </div>
-              <div className="arrow">
-                <KeyboardArrowDownIcon />
-              </div>
-            </InnerCard>
-          </IonItem>
+        {state.cloneSteps.map((x) => (
+          <InnerCard step={x} delete={deleteCard} edit={props.edit}>
+            <div className="arrow">
+              <IonReorder slot="start" />
+            </div>
+            <div className="arrow">
+              <KeyboardArrowDownIcon />
+            </div>
+          </InnerCard>
         ))}
       </IonReorderGroup>
     </>

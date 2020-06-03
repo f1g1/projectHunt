@@ -1,6 +1,7 @@
 import {
   IonButton,
   IonItem,
+  IonItemDivider,
   IonLabel,
   IonList,
   IonSelect,
@@ -34,14 +35,20 @@ export default function Challenge(props) {
   };
   return (
     <IonList>
-      {
-        <img
-          src={props.step.image}
-          style={{ maxHeight: "500px" }}
-          className="ion-padding-vertical"
-        ></img>
-      }
-      <IonButton onClick={() => refInput.current.click()}>Add Photo</IonButton>
+      {props.step.image && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img
+            src={props.step.image}
+            style={{ maxHeight: "500px" }}
+            className="ion-padding-vertical"
+          />
+        </div>
+      )}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <IonButton onClick={() => refInput.current.click()}>
+          Add Photo
+        </IonButton>
+      </div>
       <input
         ref={refInput}
         accept="image/*"
@@ -49,6 +56,7 @@ export default function Challenge(props) {
         type="file"
         onChange={onChoosePhoto}
       />{" "}
+      <IonItemDivider />
       <IonItem>
         <IonLabel position="stacked">Clue</IonLabel>
         <IonTextarea
@@ -67,7 +75,6 @@ export default function Challenge(props) {
           onIonChange={(e) =>
             props.setStep({ ...props.step, answerType: e.target.value })
           }
-          value={props.step.answerType}
           placeholder="Choose answer type"
         >
           <IonSelectOption value={0}>Text</IonSelectOption>

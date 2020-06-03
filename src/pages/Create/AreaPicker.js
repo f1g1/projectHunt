@@ -6,8 +6,8 @@ import { IonButton } from "@ionic/react";
 export default function AreaPicker(props) {
   const [shape, setShape] = useState();
   const [line, setLine] = useState();
-  const [bounds, setBounds] = useState();
-  const [breadcrumbs, setBreadcrumbs] = useState();
+  const [bounds, setBounds] = useState([]);
+  const [breadcrumbs, setBreadcrumbs] = useState([]);
   const [modifyingArea, setModifyingArea] = useState(-1);
   const [modifyingBreadcrumbs, setModifyingBreadcrumbs] = useState(-1);
 

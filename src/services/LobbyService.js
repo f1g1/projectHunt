@@ -225,10 +225,12 @@ function playerJoinTeam(lobby, team, playerName) {
       players: firebase.firestore.FieldValue.arrayUnion(playerName),
     });
 }
-function leaveLobby(username, team) {
-  console.log("leaveLobby");
+function leaveLobby(username, team, admin) {
+  let lobby = LobbyService.getCurrentLobby();
   let res = kickLobby(username, team);
+
   res.then(() => {
+    if (admin) fireStore.collection("lobbies").doc(lobby).delete();
     window.localStorage.removeItem("currentLobby");
   });
   return res;

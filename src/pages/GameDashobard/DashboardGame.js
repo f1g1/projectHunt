@@ -121,9 +121,10 @@ export default function DashboardGame(props) {
               <IonCol>
                 <IonLabel>Type: {types[x.answerType]} </IonLabel>
                 <br />
-                {x.needsValidation && (
-                  <IonLabel color="danger">(Needs validation)</IonLabel>
-                )}
+                {x.needsValidation ||
+                  (x.freeAnswer && (
+                    <IonLabel color="danger">(Needs validation)</IonLabel>
+                  ))}
               </IonCol>
               <IonCol>
                 <IonLabel>Answer:</IonLabel>

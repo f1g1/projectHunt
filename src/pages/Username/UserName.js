@@ -64,7 +64,7 @@ export default function UserName(props) {
       <IonContent color="primary">
         <IonGrid style={{ marginTop: "200px" }}>
           <IonRow>
-            <IonCol size="5" offset="3">
+            <IonCol sizeXl="5" offsetXl="3">
               <h1>Choose your adventurer name:</h1>
               <IonItem>
                 <IonInput

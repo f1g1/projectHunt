@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { LobbyService } from "../LobbyService";
 import { UserService } from "../UserSerivce";
 import { fireStore } from "../../firebase";
+import firebase from "firebase";
 
 export default function useMessageChanges(teams, gameChatId, lobby, openChat) {
   const [finalMessages, setMessages] = useState([]);
@@ -20,7 +21,10 @@ export default function useMessageChanges(teams, gameChatId, lobby, openChat) {
         .onSnapshot((snapshot) => {
           snapshot.docChanges().forEach((change) => {
             if (change.type === "added") {
-              messages = [...messages, { ...change.doc.data() }];
+              let x = change.doc.data();
+              if (x.timestamp === null)
+                x.timestamp = firebase.firestore.Timestamp.now();
+              messages = [...messages, { ...x }];
               setMessages([
                 ...messages.sort((x, y) => x.timestamp - y.timestamp),
               ]);
@@ -35,11 +39,12 @@ export default function useMessageChanges(teams, gameChatId, lobby, openChat) {
           .onSnapshot((snapshot) => {
             snapshot.docChanges().forEach((change) => {
               if (change.type === "added") {
-                messages = [...messages, { ...change.doc.data() }];
+                let x = change.doc.data();
+                if (x.timestamp === null)
+                  x.timestamp = firebase.firestore.Timestamp.now();
+                messages = [...messages, { ...x }];
 
-                setMessages([
-                  ...messages.sort((x, y) => x.timestamp - y.timestamp),
-                ]);
+                setMessages([...messages]);
               }
             });
           });
@@ -59,11 +64,12 @@ export default function useMessageChanges(teams, gameChatId, lobby, openChat) {
             .onSnapshot((snapshot) => {
               snapshot.docChanges().forEach((change) => {
                 if (change.type === "added") {
-                  messages = [...messages, { ...change.doc.data() }];
+                  let x = change.doc.data();
+                  if (x.timestamp === null)
+                    x.timestamp = firebase.firestore.Timestamp.now();
+                  messages = [...messages, { ...x }];
 
-                  setMessages([
-                    ...messages.sort((x, y) => x.timestamp - y.timestamp),
-                  ]);
+                  setMessages([...messages]);
                 }
               });
             });
@@ -76,6 +82,6 @@ export default function useMessageChanges(teams, gameChatId, lobby, openChat) {
       unsubsscribeC && unsubsscribeC();
     };
   }, []);
-
-  return finalMessages.sort((x) => x.timestamp);
+  console.log(finalMessages);
+  return finalMessages.sort((x, y) => x.timestamp - y.timestamp);
 }

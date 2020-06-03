@@ -77,7 +77,7 @@ export default function GameMap(props) {
   const [selectedPosition, setSelectedPosition] = useState();
   const [visibleChallenges, setVisibleChallenges] = useState();
   const [incrV, setincrV] = useState();
-  const [breadcrumbs, setBreadcrumbs] = useState();
+  const [breadcrumbs, setBreadcrumbs] = useState(props.game.breadcrumbs);
   const [modifyingBreadcrumbs, setModifyingBreadcrumbs] = useState();
   const [line, setLine] = useState();
 
@@ -179,6 +179,7 @@ export default function GameMap(props) {
       };
       auxBounds.push(point);
     }
+    debugger;
     PlayService.saveBreadcrumbs(auxBounds)
       .then(() => {
         line.setOptions({ editable: false });

@@ -213,7 +213,7 @@ export default function TeamDashboard(props) {
         ) : (
           <IonLabel>
             <p style={{ fontSize: "1.5em" }} className="ion-padding">
-              There are no active challenges! completed
+              There are no active challenges!
             </p>
           </IonLabel>
         )}

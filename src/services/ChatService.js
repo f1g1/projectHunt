@@ -1,4 +1,5 @@
 import { fireStore } from "../firebase";
+import firebase from "firebase";
 
 export const ChatService = {
   sendMessageAll,
@@ -13,7 +14,11 @@ function sendMessageAll(gameChatId, timestamp, itemMessage, fromAdmin = false) {
     .doc(gameChatId)
     .collection(gameChatId)
     .doc(timestamp + itemMessage.idFrom)
-    .set({ ...itemMessage, fromAdmin });
+    .set({
+      ...itemMessage,
+      fromAdmin,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
 }
 
 function sendMessageTeam(gameChatId, to, timestamp, itemMessage) {
@@ -22,7 +27,11 @@ function sendMessageTeam(gameChatId, to, timestamp, itemMessage) {
     .doc(gameChatId)
     .collection(to)
     .doc(timestamp + itemMessage.idFrom)
-    .set({ ...itemMessage, toTeam: to });
+    .set({
+      ...itemMessage,
+      toTeam: to,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
 }
 
 function sendMessageAdminTeam(gameChatId, to, timestamp, itemMessage) {
@@ -31,14 +40,24 @@ function sendMessageAdminTeam(gameChatId, to, timestamp, itemMessage) {
     .doc(gameChatId)
     .collection("admin")
     .doc(timestamp + itemMessage.idFrom)
-    .set({ ...itemMessage, fromAdmin: true, toTeam: to })
+    .set({
+      ...itemMessage,
+      fromAdmin: true,
+      toTeam: to,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    })
     .then(
       fireStore
         .collection("messages")
         .doc(gameChatId)
         .collection(to)
         .doc(timestamp + itemMessage.idFrom)
-        .set({ ...itemMessage, fromAdmin: true, toTeam: to })
+        .set({
+          ...itemMessage,
+          fromAdmin: true,
+          toTeam: to,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        })
     );
 }
 
@@ -48,13 +67,23 @@ function sendMessageAdmin(gameChatId, to, timestamp, itemMessage) {
     .doc(gameChatId)
     .collection("admin")
     .doc(timestamp + itemMessage.idFrom)
-    .set({ ...itemMessage, toAdmin: true, toTeam: to })
+    .set({
+      ...itemMessage,
+      toAdmin: true,
+      toTeam: to,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    })
     .then(
       fireStore
         .collection("messages")
         .doc(gameChatId)
         .collection(to)
         .doc(timestamp + itemMessage.idFrom)
-        .set({ ...itemMessage, toAdmin: true, toTeam: to })
+        .set({
+          ...itemMessage,
+          toAdmin: true,
+          toTeam: to,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        })
     );
 }

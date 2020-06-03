@@ -20,6 +20,7 @@ import Dashboard from "../GameDashobard/Dashboard";
 import { DashboardService } from "../../services/DashboardService";
 import GameMap from "./GameMap/GameMap";
 import LeaderBoard from "./LeaderBoard";
+import LobbyPlayers from "../Lobby/LobbyPlayers";
 import { LobbyService } from "../../services/LobbyService";
 import MiscService from "../../services/MiscService";
 import NotificationHandler from "./NotificationHandler";
@@ -54,6 +55,7 @@ export default function Play(props) {
   const teams = useTeamChanges();
   const [unread, setUnread] = useState();
   const gameChanging = useGameChanges();
+  const [showPlayersModal, setShowPlayersModal] = useState(false);
   const messages = useMessageChanges(
     teams,
     LobbyService.getCurrentLobby(),
@@ -74,7 +76,7 @@ export default function Play(props) {
         messages[messages.length - 1].idFrom !==
         UserService.getCurrentPlayer().name
       )
-        setShowToast1("Caution, game area as been modified!");
+        setShowToast1("New message received");
     }
   }, [messages]);
 
@@ -100,6 +102,11 @@ export default function Play(props) {
       props.history.replace("/finishedGame");
     }
   }, [gameChanging]);
+
+  const handleKick = (username) => {
+    let team = LobbyService.getPlayerTeam(username, teams);
+    LobbyService.kickLobby(username, team);
+  };
 
   const closeGame = () => {
     DashboardService.closeGame(
@@ -175,6 +182,9 @@ export default function Play(props) {
                     Close Game!
                   </IonButton>
                 )}
+                <IonButton onClick={() => setShowPlayersModal(true)}>
+                  Players
+                </IonButton>
               </IonButtons>
             </IonToolbar>
           </IonFooter>
@@ -225,6 +235,19 @@ export default function Play(props) {
             setUnread={setUnread}
           />
         )}
+      </IonModal>
+      <IonModal
+        isOpen={showPlayersModal}
+        onDidDismiss={() => setShowPlayersModal(false)}
+      >
+        <LobbyPlayers
+          game={gameChanging}
+          handleClose={() => setShowPlayersModal(false)}
+          handleKick={handleKick}
+          // handleBan={setUsernameToBan}
+          play={true}
+          teams={teams}
+        />
       </IonModal>
       <IonModal
         isOpen={showLeaderBoardModal}

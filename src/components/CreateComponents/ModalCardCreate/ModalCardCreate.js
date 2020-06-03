@@ -27,13 +27,14 @@ export default function ModalCardCreate(props) {
     answerType: 0,
     validateAnswer: false,
     clue: null,
-    wrongResponseTitle: null,
-    wrongResponseAdditionalInfo: null,
-    succesResponseTitle: null,
-    succesResponseAdditionalInfo: null,
+    wrongResponseTitle: "Oh, that's wrong",
+    wrongResponseAdditionalInfo: "But don't worry, and keep going!",
+    succesResponseTitle: "Congratulations",
+    succesResponseAdditionalInfo: "This answer is correct!",
     hidden: false,
     visible: false,
     color: "",
+    waitingTime: 60,
   });
   useEffect(() => {
     if (props.edit) setStep(props.edit);
@@ -55,9 +56,9 @@ export default function ModalCardCreate(props) {
     let errors = "";
     if (!step.clue || step.clue.length < 3)
       errors += "Clue can't be less than 3 characters long.";
-    if (step.answerType < 2 && !step.code)
+    if (step.answerType < 2 && !step.code && !step.freeAnswer)
       errors +=
-        "\nIf the answer is not an image you need to set an response different than null.";
+        "\n If the answer is not an image you need to set an response different than null.";
     return errors;
   };
 

@@ -1,11 +1,12 @@
-import { PhotoViewer } from "@ionic-native/photo-viewer";
 import { IonBadge, IonImg } from "@ionic/react";
+
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import moment from "moment";
+import { PhotoViewer } from "@ionic-native/photo-viewer";
 import React from "react";
+import moment from "moment";
 
 export default function MessageOut(props) {
-  return props.item.type === 0 ? (
+  return (
     <>
       <div
         className="viewWrapItemRight ion-padding-bottom"
@@ -23,29 +24,27 @@ export default function MessageOut(props) {
             <IonBadge color="primary">{props.item.toTeam}</IonBadge>
           </>
         )}
+      </div>
 
-        <div className={"viewItemRight"}>
-          <span className="textContentItem">{props.item.content}</span>
+      {props.item.type === 0 ? (
+        <>
+          <div className={"viewItemRight"}>
+            <span className="textContentItem">{props.item.content}</span>
+          </div>
+        </>
+      ) : (
+        <div className="viewItemRight2" key={props.item.timestamp + "r1"}>
+          <IonImg
+            className="imgItemRight"
+            src={props.item.content}
+            alt="content message"
+            onClick={() => PhotoViewer.show(props.item.content)}
+          />
         </div>
-
-        <span className="textTimeRight" key={props.item.timestamp + "s"}>
-          {moment(Number(props.item.timestamp)).format("DD/MM hh:mm")}
-        </span>
-      </div>
-    </>
-  ) : (
-    <>
-      <div className="viewItemRight2" key={props.item.timestamp + "r1"}>
-        <IonImg
-          className="imgItemRight"
-          src={props.item.content}
-          alt="content message"
-          onClick={() => PhotoViewer.show(props.item.content)}
-        />
-      </div>
-      <span className="textTimeRight" key={props.item.timestamp + "s1"}>
-        {moment(Number(props.item.timestamp)).format("DD/MM hh:mm")}
-      </span>{" "}
+      )}
+      <span className="textTimeRight" key={props.item.timestamp + "s"}>
+        {moment(props.item.timestamp.seconds * 1000).format("DD/MM HH:mm")}
+      </span>
     </>
   );
 }

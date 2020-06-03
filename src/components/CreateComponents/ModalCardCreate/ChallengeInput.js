@@ -23,16 +23,42 @@ const makeid = (length) => {
 
 function TextInput(props) {
   return (
-    <IonItem>
-      <IonLabel>Code:</IonLabel>
-      <IonInput
-        value={props.step.code || null}
-        onIonChange={(e) => {
-          props.setStep({ ...props.step, code: e.target.value });
-        }}
-        maxlength="12"
-      ></IonInput>
-    </IonItem>
+    <>
+      <IonItem>
+        <IonLabel>Code:</IonLabel>
+        <IonInput
+          disabled={props.step.freeAnswer}
+          value={props.step.code || null}
+          onIonChange={(e) => {
+            props.setStep({ ...props.step, code: e.target.value });
+          }}
+          maxlength="12"
+        ></IonInput>
+      </IonItem>
+      <IonItem lines="none">
+        <IonLabel>Admin validation</IonLabel>
+        <IonCheckbox
+          className="ion-no-padding"
+          checked={props.step.freeAnswer || false}
+          onIonChange={(x) =>
+            props.setStep({
+              ...props.step,
+              freeAnswer: x.detail.checked,
+              code: "",
+            })
+          }
+        />
+      </IonItem>
+      <IonItem className="ion-no-padding">
+        <p
+          style={{ fontSize: "small", opacity: 0.5 }}
+          className="ion-margin-start"
+        >
+          Allow any text response and needs to be validated by the admin and
+          rated by admin
+        </p>
+      </IonItem>
+    </>
   );
 }
 function QrInput(props) {
@@ -66,6 +92,7 @@ function QrInput(props) {
       </IonItem>
 
       {qr && <img src={qr}></img>}
+
       <p>
         {qr && (
           <a href={qr.replace("size=200x200", "size=1000x1000")} download>
@@ -101,6 +128,7 @@ export default function ChallengeInput(props) {
         return <QrInput {...props} />;
       case 2:
         return <ImageInput {...props} />;
+
       default:
         return <TextInput {...props} />;
         break;

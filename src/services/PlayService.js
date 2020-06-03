@@ -26,6 +26,7 @@ export const PlayService = {
   checkActiveGame,
   getActiveGame,
   submitOnlyAnswerWrong,
+  submitFreeAnswer,
 };
 
 function setActiveGame(id) {
@@ -113,6 +114,21 @@ function submitAnswerImage(image, step, team, finished) {
             },
           });
   });
+}
+function submitFreeAnswer(answer, step, team, finished) {
+  return fireStore
+    .collection("lobbies")
+    .doc(LobbyService.getCurrentLobby())
+    .collection("teams")
+    .doc(team)
+    .update({
+      toBeValidated: firebase.firestore.FieldValue.arrayUnion(step.id),
+      [step.id]: {
+        answer,
+        time: firebase.firestore.FieldValue.serverTimestamp(),
+        submitedBy: UserService.getCurrentPlayer().name,
+      },
+    });
 }
 
 function getAdjustmentPoints(team) {

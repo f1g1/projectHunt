@@ -94,7 +94,7 @@ export default function GameInformations(props) {
   return (
     <div className="stickyContainer">
       <IonRow>
-        <IonCol sizeXl="6">
+        <IonCol sizeXl="6" className="ion-no-padding ion-no-padding">
           <IonCard>
             <IonCardContent>
               <IonCardTitle>Game Informations</IonCardTitle>
@@ -156,12 +156,10 @@ export default function GameInformations(props) {
           </IonCard>
         </IonCol>
 
-        <IonCol sizeXl="6">
+        <IonCol sizeXl="6" className="ion-no-padding ion-no-padding">
           <IonCard>
             <IonCardContent>
-              <IonCardTitle className="ion-padding-vertical">
-                Miscellaneous
-              </IonCardTitle>
+              <IonCardTitle>Miscellaneous</IonCardTitle>
               <IonButton onClick={() => refInput.current.click()}>
                 Add Game Photo
               </IonButton>
@@ -179,13 +177,15 @@ export default function GameInformations(props) {
                 type="file"
                 onChange={onChoosePhoto}
               />
-              <AreaPicker
-                setBreadcrumbs={setBreadcrumbs}
-                breadcrumbs={state.breadcrumbs}
-                setBounds={setArea}
-                bounds={state.area}
-                geolocation={props.geolocation}
-              />
+              {props.geolocation !== -1 && (
+                <AreaPicker
+                  setBreadcrumbs={setBreadcrumbs}
+                  breadcrumbs={state.breadcrumbs}
+                  setBounds={setArea}
+                  bounds={state.area}
+                  geolocation={props.geolocation}
+                />
+              )}
             </IonCardContent>
           </IonCard>
         </IonCol>

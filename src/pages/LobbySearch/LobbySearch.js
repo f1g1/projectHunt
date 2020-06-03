@@ -24,6 +24,7 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 
+import { BarcodeScanner } from "@ionic-native/barcode-scanner";
 import { LobbyService } from "../../services/LobbyService";
 import { UserService } from "../../services/UserSerivce";
 import moment from "moment";
@@ -35,35 +36,59 @@ export default function LobbySearch(props) {
   const [showLoading, setShowLoading] = useState(false);
   const [Results, setResults] = useState(null);
   const [errorToast, setErrorToast] = useState();
+  const [useCode, setUsecode] = useState(false);
+
+  const openScanner = async () => {
+    BarcodeScanner.scan()
+      .then((barcodeData) => {
+        if (barcodeData.text.length > 2) {
+          setSearchString(barcodeData.text);
+          handleSearch(barcodeData.text);
+          setUsecode(true);
+        }
+      })
+      .catch((err) => {
+        console.log("Qr scan failed");
+      });
+  };
 
   useEffect(() => {
     setdate(new Date());
   }, []);
   const joinLobby = (lobby) => {
-    LobbyService.joinLobby(lobby.lobbyId).then(() => {
-      if (!lobby.startTime)
-        props.history.push({ pathname: "/lobby", lobbyId: lobby.lobbyId });
-      else {
-        LobbyService.setLobby(lobby.lobbyId);
+    try {
+      LobbyService.joinLobby(lobby.lobbyId)
+        .then(() => {
+          if (!lobby.startTime) {
+            LobbyService.setLobby(lobby.lobbyId);
 
-        props.history.push({ pathname: "/play", lobby });
-      }
-    });
-    LobbyService.setLobby(lobby.lobbyId);
+            props.history.push({ pathname: "/lobby", lobbyId: lobby.lobbyId });
+          } else {
+            throw "";
+          }
+        })
+        .catch(() => {
+          setErrorToast("You can't join this lobby anymore!");
+          setlobbies([]);
+          setSearchString("");
+        });
+    } catch {
+      setErrorToast("You can't join this lobby anymore!");
+      setlobbies([]);
+      setSearchString("");
+    }
   };
-  const handleSearch = () => {
-    if (!searchString || searchString.length < 3)
+  const handleSearch = (text) => {
+    if (!text || text.length < 3)
       setErrorToast("Entry Code must be at least 3 characters long!");
     else {
       setShowLoading(true);
-      LobbyService.getLobbies(searchString).then((x) => {
+      LobbyService.getLobbies(text).then((x) => {
         setlobbies(x);
         setShowLoading(false);
         x.length > 0
-          ? setResults(`We found these results with the code: ${searchString}`)
-          : setResults(
-              `We didn't found any results with the code: ${searchString}`
-            );
+          ? setResults(`We found these results with the code: ${text}`)
+          : setResults(`We didn't found any results with the code: ${text}`);
       });
     }
   };
@@ -82,17 +107,82 @@ export default function LobbySearch(props) {
           <IonCol sizeXl="5" sizeSm="12" offsetXl="3.5">
             <IonCard color="light">
               <IonCardContent>
-                <IonItem>
-                  <IonLabel>Entry Code:</IonLabel>
-                  <IonInput
-                    required
-                    value={searchString}
-                    onIonChange={(e) => setSearchString(e.target.value)}
-                    placeholder="Type your Entry code here!"
-                    maxlength="20"
-                  ></IonInput>
-                  <IonButton onClick={handleSearch}>Search</IonButton>
-                </IonItem>
+                {!useCode && (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <IonButton
+                      size="large"
+                      className="ion-no-padding"
+                      onClick={() => {
+                        openScanner();
+                      }}
+                    >
+                      Scan QR!
+                    </IonButton>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <IonLabel
+                        className="ion-text-center ion-padding-vertical"
+                        style={{
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        }}
+                        onClick={() => setUsecode(true)}
+                      >
+                        Use code instead
+                      </IonLabel>
+                    </div>
+                  </div>
+                )}
+                {useCode && (
+                  <>
+                    <IonItem>
+                      <IonLabel>Entry Code:</IonLabel>
+                      <IonInput
+                        required
+                        value={searchString}
+                        onIonChange={(e) => setSearchString(e.target.value)}
+                        placeholder="Type Code!"
+                        maxlength="20"
+                      ></IonInput>
+                      <IonButton
+                        size="default"
+                        onClick={() => handleSearch(searchString)}
+                      >
+                        Search
+                      </IonButton>
+                    </IonItem>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <IonLabel
+                        className="ion-text-center ion-padding-vertical"
+                        style={{
+                          width: "100%",
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        }}
+                        onClick={() => setUsecode(false)}
+                      >
+                        Use QR code instead
+                      </IonLabel>
+                    </div>
+                  </>
+                )}
               </IonCardContent>
             </IonCard>
 

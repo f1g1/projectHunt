@@ -1,6 +1,14 @@
 import "./Card.scss";
 
-import { IonCol, IonFabButton, IonModal, IonRow } from "@ionic/react";
+import {
+  IonCard,
+  IonCardContent,
+  IonCardTitle,
+  IonCol,
+  IonFabButton,
+  IonModal,
+  IonRow,
+} from "@ionic/react";
 import React, { useContext, useState } from "react";
 
 import AddIcon from "@material-ui/icons/Add";
@@ -40,52 +48,59 @@ export default function CardList(props) {
 
   return (
     <>
-      <IonRow>
-        <IonCol>
-          <MarginCard
-            title="Start location"
-            coords={{
-              lat: state.startLat,
-              lng: state.startLng,
-            }}
-            openModal={() => setShowBeginModal(true)}
-            lat={state.startLat}
-            lng={state.startLng}
-          ></MarginCard>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <ReorderableCards edit={handleEditStep} />
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <div className="arrow">
-            <IonFabButton
-              color="light"
-              onClick={() => setShowAddCardModal(true)}
-            >
-              <AddIcon></AddIcon>
-            </IonFabButton>
-          </div>
-        </IonCol>
-      </IonRow>
+      <IonCard>
+        <IonCardContent className="ion-no-padding">
+          <IonCardTitle className="ion-padding-horizontal ion-padding-top">
+            Challenges
+          </IonCardTitle>
+          <IonRow>
+            <IonCol>
+              <MarginCard
+                title="Start location"
+                coords={{
+                  lat: state.startLat,
+                  lng: state.startLng,
+                }}
+                openModal={() => setShowBeginModal(true)}
+                lat={state.startLat}
+                lng={state.startLng}
+              ></MarginCard>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <ReorderableCards edit={handleEditStep} />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <div className="arrow">
+                <IonFabButton
+                  color="light"
+                  onClick={() => setShowAddCardModal(true)}
+                >
+                  <AddIcon></AddIcon>
+                </IonFabButton>
+              </div>
+            </IonCol>
+          </IonRow>
+        </IonCardContent>
+      </IonCard>
 
-      <IonModal
-        isOpen={showBeginModal}
-        onDidDismiss={() => setShowBeginModal(false)}
-        defaultLocation={props.geolocation}
-      >
-        {props.geolocation && (
+      {props.geolocation !== -1 && (
+        <IonModal
+          isOpen={showBeginModal}
+          onDidDismiss={() => setShowBeginModal(false)}
+          defaultLocation={props.geolocation}
+        >
           <ModalMap
             noRadius={true}
             handleClose={handleClose}
             location={props.geolocation}
             save={saveStart}
           />
-        )}
-      </IonModal>
+        </IonModal>
+      )}
       <IonModal
         isOpen={showInnerCardModal}
         onDidDismiss={() => handleCloseModalCreate()}

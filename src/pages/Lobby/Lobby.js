@@ -2,6 +2,7 @@ import "./Lobby.scss";
 
 import {
   IonAlert,
+  IonBadge,
   IonButton,
   IonButtons,
   IonCard,
@@ -28,6 +29,7 @@ import ChatBoard from "../../components/Chat/ChatBoard/ChatBoard";
 import LobbyPlayers from "./LobbyPlayers";
 import { LobbyService } from "../../services/LobbyService";
 import MapWithLocation from "../../components/Map/Map";
+import MiscService from "../../services/MiscService";
 import { PhotoViewer } from "@ionic-native/photo-viewer";
 import TeamsContainer from "./TeamsContainer";
 import { UserService } from "../../services/UserSerivce";
@@ -44,6 +46,8 @@ export default function Lobby(props) {
   const [showAlert1, setShowAlert1] = useState(false);
   const [openChat, setOpenChat] = useState(0);
   const [usernameToBan, setUsernameToBan] = useState();
+  const [unread, setUnread] = useState();
+
   const messages = useMessageChanges(
     teams,
     LobbyService.getCurrentLobby(),
@@ -68,6 +72,17 @@ export default function Lobby(props) {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (messages.length > 0) {
+      setUnread(messages.length - MiscService.getChatNr());
+      // if (
+      //   messages[messages.length - 1].idFrom !==
+      //   UserService.getCurrentPlayer().name
+      // )
+      // setShowToast1("New message received");
+    }
+  }, [messages]);
 
   useEffect(() => {
     let ImInLobby =
@@ -97,13 +112,13 @@ export default function Lobby(props) {
   };
 
   const handleKick = (username) => {
-    let team = teams.find((x) => x.name === currentTeamDetails.name).name;
+    let team = LobbyService.getPlayerTeam(username, teams);
     LobbyService.kickLobby(username, team);
   };
 
   const proceedBan = () => {
     console.log("banned!!!@!#!@");
-    let team = teams.find((x) => x.name === currentTeamDetails.name).name;
+    let team = LobbyService.getPlayerTeam(usernameToBan, teams);
     LobbyService.kickLobby(usernameToBan, team)
       .then(
         LobbyService.banPlayer(usernameToBan, LobbyService.getCurrentLobby())
@@ -126,7 +141,8 @@ export default function Lobby(props) {
     }
     LobbyService.leaveLobby(
       UserService.getCurrentPlayer().name,
-      currentTeamDetails && currentTeamDetails.name
+      currentTeamDetails && currentTeamDetails.name,
+      LobbyService.ImAdmin(lobbyChanging)
     );
   };
   const joinTeam = (team) => {
@@ -249,6 +265,11 @@ export default function Lobby(props) {
 
                 <IonButton full onClick={() => setShowChatModal(true)}>
                   Chat
+                  {unread > 0 && (
+                    <IonBadge color="danger" style={{ marginLeft: "10px" }}>
+                      ({unread}){" "}
+                    </IonBadge>
+                  )}
                 </IonButton>
                 <IonButton full onClick={() => setShowPlayersModal(true)}>
                   Players ({lobbyChanging.players.length})
@@ -282,6 +303,7 @@ export default function Lobby(props) {
       >
         {messages && (
           <ChatBoard
+            setUnread={setUnread}
             listMessage={messages}
             teams={teams}
             gameChatId={LobbyService.getCurrentLobby()}

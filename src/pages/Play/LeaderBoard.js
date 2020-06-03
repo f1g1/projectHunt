@@ -41,7 +41,7 @@ export default function LeaderBoard(props) {
               style={{ display: "inline-block" }}
               className="ion-text-center"
             >
-              {props.endGame && "Final"} LeaderBoard
+              {props.endGame && "Final"} Leaderboard
             </IonTitle>
           </div>
         </IonToolbar>

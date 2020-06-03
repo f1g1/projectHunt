@@ -126,7 +126,6 @@ input::placeholder {
   height: auto;
   align-self: flex-end;
   margin-right: 20px;
-  margin-top: 10px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   border-bottom-left-radius: 8px;
@@ -184,6 +183,7 @@ input::placeholder {
 }
 
 .imgItemRight {
+  background-color: lightgrey;
   object-fit: cover;
   width: 300px;
   height: 300px;

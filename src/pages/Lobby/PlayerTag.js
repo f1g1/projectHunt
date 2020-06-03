@@ -57,19 +57,25 @@ export default function PlayerTag(props) {
   };
   const getCurrentTeam = () => {
     try {
-      return (
-        props.teams &&
-        props.teams.filter((x) => x.players.includes(props.playerName))[0].name
-      );
+      return props.teams.find((x) => x.players.includes(props.playerName)).name;
     } catch {
       return null;
     }
   };
+  const getLabelCurrentTeam = () => {
+    let x = getCurrentTeam();
+
+    console.log(" jegos", x, props.teams, props.playerName);
+    return <IonLabel>{x}</IonLabel>;
+  };
   return (
     <>
       <IonRow
-        style={isCurrentPlayer() ? { color: "#008b8b", opacity: 0.6 } : null}
-        style={{ borderBottom: "1px solid black" }}
+        style={
+          isCurrentPlayer()
+            ? { color: "#508b8b", borderBottom: "1px solid black" }
+            : { borderBottom: "1px solid black" }
+        }
         className="ion-justify-content-center"
       >
         <IonCol style={{ margin: "auto", verticalAlign: "middle" }}>
@@ -78,32 +84,35 @@ export default function PlayerTag(props) {
           )}
           <IonLabel>{props.playerName}</IonLabel>
         </IonCol>
-        {LobbyService.ImAdmin(props.game) && (
+
+        {!isCurrentPlayer() && (
           <>
-            {!isCurrentPlayer() && (
+            <IonCol>
+              {LobbyService.ImAdmin(props.game) ? (
+                <IonSelect
+                  disabled={props.play}
+                  interface="popover"
+                  value={getCurrentTeam()}
+                  onIonChange={(e) =>
+                    changeTeam(getCurrentTeam(), e.detail.value)
+                  }
+                >
+                  <IonSelectOption value="null" key="noteam">
+                    --no team--
+                  </IonSelectOption>
+                  {props.teams.map((x) => (
+                    <IonSelectOption value={x.name} key={x.name}>
+                      {x.name}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+              ) : (
+                getLabelCurrentTeam()
+              )}
+            </IonCol>
+
+            {LobbyService.ImAdmin(props.game) && (
               <>
-                <IonCol>
-                  {props.advanced && LobbyService.ImAdmin(props.game) ? (
-                    <IonSelect
-                      interface="popover"
-                      value={getCurrentTeam()}
-                      onIonChange={(e) =>
-                        changeTeam(getCurrentTeam(), e.detail.value)
-                      }
-                    >
-                      <IonSelectOption value="null" key="noteam">
-                        --no team--
-                      </IonSelectOption>
-                      {props.teams.map((x) => (
-                        <IonSelectOption value={x.name} key={x.name}>
-                          {x.name}
-                        </IonSelectOption>
-                      ))}
-                    </IonSelect>
-                  ) : (
-                    <IonLabel>{getCurrentTeam()}</IonLabel>
-                  )}
-                </IonCol>
                 <IonCol className="ion-text-end">
                   <IonButton
                     className="ion-float-right"
@@ -120,15 +129,17 @@ export default function PlayerTag(props) {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem
-                      onClick={() => {
-                        props.handleKick(props.playerName);
-                        console.log("Initiaded kick");
-                      }}
-                    >
-                      <ClearIcon />
-                      Kick
-                    </MenuItem>
+                    {!props.play && (
+                      <MenuItem
+                        onClick={() => {
+                          props.handleKick(props.playerName);
+                          console.log("Initiaded kick");
+                        }}
+                      >
+                        <ClearIcon />
+                        Kick
+                      </MenuItem>
+                    )}
                     {props.game.muted &&
                     props.game.muted.includes(props.playerName) ? (
                       <MenuItem onClick={handleUnmute}>
@@ -141,12 +152,16 @@ export default function PlayerTag(props) {
                         Mute
                       </MenuItem>
                     )}
-                    <MenuItem onClick={() => props.handleBan(props.playerName)}>
-                      <IonLabel color="danger">
-                        <BlockIcon />
-                        Ban
-                      </IonLabel>
-                    </MenuItem>
+                    {!props.play && (
+                      <MenuItem
+                        onClick={() => props.handleBan(props.playerName)}
+                      >
+                        <IonLabel color="danger">
+                          <BlockIcon />
+                          Ban
+                        </IonLabel>
+                      </MenuItem>
+                    )}
                   </Menu>
                 </IonCol>
               </>

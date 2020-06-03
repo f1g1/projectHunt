@@ -64,9 +64,14 @@ export default function Misc(props) {
   };
   return (
     <>
-      <IonButton onClick={() => setShowMapModal(true)} fill="outline">
-        Location
-      </IonButton>
+      <div
+        style={{ display: "flex", justifyContent: "center" }}
+        className="ion-padding-vertical"
+      >
+        <IonButton onClick={() => setShowMapModal(true)} fill="outline">
+          Location
+        </IonButton>
+      </div>
       <IonItem>
         <IonLabel>Points: {props.step.points && props.step.points}</IonLabel>
         <IonRange

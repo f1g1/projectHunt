@@ -53,7 +53,7 @@ export default function MessageIn(props) {
       </div>
       <span className="textTimeLeft">
         {props.item.idFrom}{" "}
-        {moment(Number(props.item.timestamp)).format("DD/MM hh:mm")}
+        {moment(props.item.timestamp.seconds * 1000).format("DD/MM HH:mm")}
       </span>
     </div>
   ) : (
@@ -76,7 +76,7 @@ export default function MessageIn(props) {
       </div>
       <span className="textTimeLeft">
         {props.item.idFrom}{" "}
-        {moment(Number(props.item.timestamp)).format("DD/MM hh:mm")}
+        {moment(props.item.timestamp.seconds * 1000).format("DD/MM HH:mm")}
       </span>
     </div>
   );

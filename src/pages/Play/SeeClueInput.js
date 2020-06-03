@@ -10,7 +10,10 @@ function TextInput(props) {
 
   const handleSubmit = () => {
     if (input) {
-      if (props.step.code.toString().toLowerCase() === input.toLowerCase()) {
+      if (
+        !props.step.freeAnswer &&
+        props.step.code.toString().toLowerCase() === input.toLowerCase()
+      ) {
         PlayService.submitAnswer(
           input,
           props.step,
@@ -25,21 +28,37 @@ function TextInput(props) {
           })
           .catch((x) => console.log(x));
       } else {
-        if (!props.step.onlyOnce) props.handleWrong();
-        else {
-          PlayService.submitOnlyAnswerWrong(
+        if (props.step.freeAnswer) {
+          PlayService.submitFreeAnswer(
             input,
             props.step,
             props.team,
             props.finished || false
           )
             .then(() => {
-              props.handleWrong();
+              props.handleSucces();
               MiscService.getCachedGeolocation().then((x) =>
                 PlayService.shareLocation(x, props.team)
               );
             })
             .catch((x) => console.log(x));
+        } else {
+          if (!props.step.onlyOnce) props.handleWrong();
+          else {
+            PlayService.submitOnlyAnswerWrong(
+              input,
+              props.step,
+              props.team,
+              props.finished || false
+            )
+              .then(() => {
+                props.handleWrong();
+                MiscService.getCachedGeolocation().then((x) =>
+                  PlayService.shareLocation(x, props.team)
+                );
+              })
+              .catch((x) => console.log(x));
+          }
         }
       }
     }
@@ -47,13 +66,13 @@ function TextInput(props) {
   return (
     <>
       <IonItem className="ion-margin-bottom">
-        <IonLabel>Code:</IonLabel>
+        <IonLabel>Answer:</IonLabel>
         <IonInput
           value={input}
           onIonChange={(e) => {
             setinput(e.target.value);
           }}
-          maxlength="12"
+          maxlength="500"
         ></IonInput>
       </IonItem>
       {props.children}
@@ -151,35 +170,36 @@ function ImageInput(props) {
   };
   return (
     <>
-      <IonButton onClick={() => refInput.current.click()}>Add Photo</IonButton>
-      <input
-        ref={refInput}
-        accept="image/*"
-        className="viewInputGallery"
-        type="file"
-        onChange={onChoosePhoto}
-      />
+      <div style={{ width: "100%", justifyContent: "center", display: "flex" }}>
+        <IonButton
+          onClick={() => refInput.current.click()}
+          className="ionic-padding-vertical"
+        >
+          {!image ? "Add Image!" : "Change Image!"}
+        </IonButton>
+        <input
+          ref={refInput}
+          accept="image/*"
+          className="viewInputGallery"
+          type="file"
+          onChange={onChoosePhoto}
+        />
+      </div>
+
       {props.children}
 
       {image && (
         <>
-          <img src={image} style={{ maxHeight: "350px" }} />
-          <IonButton onClick={handleSend}>Save</IonButton>{" "}
+          <div
+            style={{ width: "100%", justifyContent: "center", display: "flex" }}
+          >
+            <img src={image} style={{ maxHeight: "350px" }} />
+          </div>
+          <IonButton expand="full" onClick={handleSend}>
+            Send!
+          </IonButton>{" "}
         </>
       )}
-      <div
-        style={{ position: "absolute", bottom: "0px" }}
-        className="ion-padding ion-text-center"
-      >
-        {props.step.needsValidation && (
-          <IonLabel>
-            <p>
-              Note: Because this photo proof will still be credited at the time
-              of submission not approval
-            </p>
-          </IonLabel>
-        )}
-      </div>
     </>
   );
 }

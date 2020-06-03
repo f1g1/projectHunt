@@ -67,6 +67,7 @@ export default function LobbyPlayers(props) {
                 handleKick={props.handleKick}
                 teams={props.teams}
                 advanced
+                play={props.play}
                 handleBan={props.handleBan}
               />
             ))}

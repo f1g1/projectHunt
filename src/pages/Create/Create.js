@@ -26,11 +26,21 @@ import QrModal from "./QrModal";
 const Create = (props) => {
   const { state, dispatch } = useContext(CreateGameContext);
   const [isEdit, setisEdit] = useState(false);
-  const [geolocation, setGeolocation] = useState({ lat: 0, lng: 0 });
+  const [geolocation, setGeolocation] = useState();
   const [errorToast, setErrorToast] = useState();
   const [showQrModal, setShowQrModal] = useState(false);
   let handleReceivedLocation = () => {
-    MiscService.getCachedGeolocation().then((x) => setGeolocation(x));
+    MiscService.getCachedGeolocation()
+      .then((x) => {
+        x && setGeolocation(x);
+      })
+      .catch(() => {
+        console.log("EERROR");
+        setGeolocation({
+          latitude: 45.9432,
+          longitude: 24.9668,
+        });
+      });
   };
   useEffect(() => {
     handleReceivedLocation();
@@ -78,10 +88,12 @@ const Create = (props) => {
         <IonGrid>
           <IonRow>
             <IonCol sizeXl="8" sizeLg="6" sizeSm="12">
-              <GameInformations geolocation={geolocation} />
+              {geolocation && <GameInformations geolocation={geolocation} />}
             </IonCol>
-            <IonCol sizeXl="3" sizeLg="6" sizeSm="12">
-              <CardList geolocation={geolocation} />
+            <IonCol sizeXl="4" sizeSm="12">
+              <IonCol sizeXl="4" sizeSm="12">
+                {geolocation && <CardList geolocation={geolocation} />}
+              </IonCol>
             </IonCol>
           </IonRow>
         </IonGrid>

@@ -3,6 +3,7 @@ import {
   IonCardContent,
   IonContent,
   IonHeader,
+  IonLabel,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -32,11 +33,17 @@ export default function ApproveModal(props) {
       <IonContent>
         <IonCardContent>
           {props.image && <img src={props.image} imageViewer></img>}
-          <IonTitle>{props.clue}</IonTitle>
+          <IonTitle className="ion-padding-vertica ion-no-padding">
+            {props.clue}
+          </IonTitle>
 
-          <p>Answer:</p>
+          <p className="ion-padding-top">Answer:</p>
           {props.imageAnswer && <img src={props.imageAnswer} imageViewer></img>}
-          <div className="ion-margin-top">
+          {props.freeAnswer && <IonLabel>{props.answer}</IonLabel>}
+          <div
+            className="ion-margin-top"
+            style={{ width: "100%", display: "flex", justifyContent: "center" }}
+          >
             <IonButton
               color="tertiary"
               onClick={() => {
