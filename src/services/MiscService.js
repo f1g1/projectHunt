@@ -42,7 +42,7 @@ function getNotificationSettings() {
   if (window.localStorage["notificationSettings"])
     return JSON.parse(window.localStorage["notificationSettings"]);
 
-  let n = { message: true, adminMessage: true, map: true, area: true };
+  let n = { message: true, adminMessage: true, map: true, newChallenge: true };
   window.localStorage["notificationSettings"] = JSON.stringify(n);
   return n;
 }

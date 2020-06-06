@@ -1,6 +1,6 @@
 import "./ChatBoard.css";
 
-import { IonButton, IonButtons, IonToolbar } from "@ionic/react";
+import { IonButton, IonButtons, IonLoading, IonToolbar } from "@ionic/react";
 import React, { useEffect, useRef, useState } from "react";
 
 import ChatInput from "./ChatInput";
@@ -18,10 +18,11 @@ const typeMessages = {
 };
 
 export default function ChatBoard(props) {
-  const [isLoading, setIsLoading] = useState();
-  const [currentUserId, currentUserID] = useState(
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentUserId, setCurrentUserId] = useState(
     UserService.getCurrentPlayer().name
   );
+  const [openNr, setOpenNr] = useState(0);
   const ref = useRef();
 
   useEffect(() => {
@@ -31,43 +32,26 @@ export default function ChatBoard(props) {
     }
   }, [props.listMessage]);
 
+  useEffect(() => {
+    scrollToBottom();
+  });
+  useEffect(() => {
+    scrollToBottom();
+  }, [props.openChat]);
+
   const scrollToBottom = () => {
     if (ref.current) {
       ref.current.scrollIntoView({});
     }
   };
 
-  const renderListMessage = () => {
-    console.log("renderlistmessages");
-    if (props.listMessage.length > 0) {
-      let viewListMessage = [];
-      props.listMessage.forEach((item, index) => {
-        item.idFrom === currentUserId
-          ? viewListMessage.push(
-              <MessageOut item={item} owner={props.lobby.owner} />
-            )
-          : viewListMessage.push(
-              <MessageIn
-                item={item}
-                owner={props.lobby.owner}
-                team={
-                  LobbyService.getPlayerTeam(item.idFrom, props.teams) &&
-                  LobbyService.getPlayerTeam(item.idFrom, props.teams).name
-                }
-              />
-            );
-      });
-      return viewListMessage;
-    } else {
-      return (
-        <div className="viewWrapSayHi">
-          {isLoading && <span className="textSayHi">Loading messages</span>}
-        </div>
-      );
-    }
-  };
-
-  return (
+  return !props.isLoadingMessages ? (
+    <IonLoading
+      isOpen={!props.isLoadingMessages}
+      message={"Loading messages..."}
+      duration={5000}
+    />
+  ) : (
     <>
       <IonToolbar>
         <IonButtons>
@@ -81,9 +65,21 @@ export default function ChatBoard(props) {
       </IonToolbar>
       <div className="viewChatBoard">
         <div className="viewListContentChat" style={{ overflowY: "scroll" }}>
-          {renderListMessage()}
-          <div ref={ref} />
-          {scrollToBottom()}
+          {props.listMessage.map((item, index) => {
+            return item.idFrom === currentUserId ? (
+              <MessageOut item={item} owner={props.lobby.owner} />
+            ) : (
+              <MessageIn
+                item={item}
+                owner={props.lobby.owner}
+                team={
+                  LobbyService.getPlayerTeam(item.idFrom, props.teams) &&
+                  LobbyService.getPlayerTeam(item.idFrom, props.teams).name
+                }
+              />
+            );
+          })}
+          <div ref={ref} className="TestTOSCROLL" />
         </div>
         <ChatInput
           listMessage={props.listMessage}

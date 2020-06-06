@@ -50,12 +50,13 @@ export default function Play(props) {
   const [showToast1, setShowToast1] = useState();
   const [showAlert1, setShowAlert1] = useState(false);
   const [chatMessageType, setChatMessageType] = useState("all");
-  const [openChat, setopenChat] = useState(0);
+  const [openChat, setOpenChat] = useState(0);
   const [myTeam, setMyTeam] = useState();
   const teams = useTeamChanges();
   const [unread, setUnread] = useState();
   const gameChanging = useGameChanges();
   const [showPlayersModal, setShowPlayersModal] = useState(false);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const messages = useMessageChanges(
     teams,
     LobbyService.getCurrentLobby(),
@@ -66,17 +67,22 @@ export default function Play(props) {
   useEffect(() => {});
   useEffect(() => {
     MiscService.getCachedGeolocation().then((x) => setGeolocation(x));
+    setOpenChat(1);
   }, []);
 
   useEffect(() => {
-    debugger;
     if (messages.length > 0) {
       setUnread(messages.length - MiscService.getChatNr());
       if (
         messages[messages.length - 1].idFrom !==
         UserService.getCurrentPlayer().name
       )
-        setShowToast1("New message received");
+        if (openChat > 1) {
+          setShowToast1("New message received");
+        } else {
+          setOpenChat(openChat + 1);
+          setShowToast1();
+        }
     }
   }, [messages]);
 
@@ -121,9 +127,10 @@ export default function Play(props) {
       );
     });
   };
+
   const handleOpenChat = () => {
     setShowChatModal(true);
-    setopenChat(openChat + 1);
+    setOpenChat(openChat + 1);
     MiscService.setChatNr(messages.length);
     setUnread(messages.length - MiscService.getChatNr());
   };
@@ -215,7 +222,15 @@ export default function Play(props) {
       />
       <IonModal
         isOpen={showChatModal}
-        onDidDismiss={() => setShowChatModal(false)}
+        onDidDismiss={() => {
+          setShowChatModal(false);
+          setOpenChat(openChat - 10);
+          setIsLoadingMessages(false);
+        }}
+        onDidPresent={() => {
+          setOpenChat(openChat + 10);
+          setIsLoadingMessages(true);
+        }}
       >
         {messages && (
           <ChatBoard
@@ -232,7 +247,9 @@ export default function Play(props) {
               game.muted &&
               game.muted.includes(UserService.getCurrentPlayer().name)
             }
+            isLoadingMessages={isLoadingMessages}
             setUnread={setUnread}
+            openChat={openChat}
           />
         )}
       </IonModal>

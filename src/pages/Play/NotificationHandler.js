@@ -5,7 +5,7 @@ export default function NotificationHandler(props) {
   return (
     <>
       <IonToast
-        isOpen={props.showToast1}
+        isOpen={props.showToast1 !== undefined}
         onDidDismiss={() => props.setShowToast1()}
         message={props.showToast1}
         duration={2000}

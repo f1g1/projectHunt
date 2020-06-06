@@ -9,6 +9,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonListHeader,
   IonPage,
   IonRow,
   IonTitle,
@@ -57,11 +58,11 @@ export default function Settings(props) {
                   >
                     Notifications settings!
                   </IonLabel>
-                  {/* <IonLabel>
-                    <p>Check All</p>
-                  </IonLabel>
-                  <IonCheckbox></IonCheckbox> */}
                 </IonItem>
+                <IonListHeader>
+                  <h2>In game Notifications</h2>
+                </IonListHeader>
+
                 <IonItem>
                   Message Notification
                   <IonCheckbox
@@ -75,7 +76,7 @@ export default function Settings(props) {
                     checked={notifications.message}
                   ></IonCheckbox>
                 </IonItem>
-                <IonItem>
+                {/* <IonItem>
                   Admin Message Notification
                   <IonCheckbox
                     onIonChange={(e) =>
@@ -87,7 +88,11 @@ export default function Settings(props) {
                     slot="end"
                     checked={notifications.adminMessage}
                   ></IonCheckbox>
-                </IonItem>
+                </IonItem> */}
+                <IonListHeader>
+                  <h2>General Notifications</h2>
+                </IonListHeader>
+
                 <IonItem>
                   Map Notification
                   <IonCheckbox
@@ -102,16 +107,16 @@ export default function Settings(props) {
                   ></IonCheckbox>
                 </IonItem>
                 <IonItem>
-                  Area changed Notification
+                  Challenge added Notification
                   <IonCheckbox
                     onIonChange={(e) =>
                       setNotifications({
                         ...notifications,
-                        area: e.detail.checked,
+                        newChallenge: e.detail.checked,
                       })
                     }
                     slot="end"
-                    checked={notifications.area}
+                    checked={notifications.newChallenge}
                   ></IonCheckbox>
                 </IonItem>
               </IonList>
