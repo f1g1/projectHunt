@@ -68,6 +68,11 @@ export default function GameInformations(props) {
       value: area,
     });
   };
+  const handleRecenter = (newLocation) => {
+    setArea(undefined);
+    setBreadcrumbs(undefined);
+    props.setLocation(newLocation);
+  };
   const setBreadcrumbs = (line) => {
     dispatch({
       type: "setBreadcrumbs",
@@ -114,7 +119,7 @@ export default function GameInformations(props) {
                 <IonItem>
                   <IonLabel>Team Size:</IonLabel>
                   <IonInput
-                    type="number"
+                    type="tel"
                     onIonChange={(e) => setMaxPlayers(e.target.value)}
                     value={state.maxPlayers}
                   ></IonInput>
@@ -184,6 +189,7 @@ export default function GameInformations(props) {
                   setBounds={setArea}
                   bounds={state.area}
                   geolocation={props.geolocation}
+                  handleRecenter={handleRecenter}
                 />
               )}
             </IonCardContent>

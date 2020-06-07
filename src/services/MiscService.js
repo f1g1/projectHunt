@@ -18,6 +18,7 @@ function setChatNr(nr) {
 }
 
 function getQr(data, color) {
+  debugger;
   const controller = new AbortController();
   // signal to pass to fetch
   const signal = controller.signal;

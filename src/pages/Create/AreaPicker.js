@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 
+import CloseIcon from "@material-ui/icons/Close";
 import GoogleMap from "google-map-react";
 import { IonButton } from "@ionic/react";
+
+const CenterMapMarker = ({ lat, lng }) => (
+  <>
+    <div className="labelLocation">Center</div>
+    <CloseIcon className="map-user-to-share" lat={lat} lng={lng} />
+  </>
+);
 
 export default function AreaPicker(props) {
   const [shape, setShape] = useState();
@@ -10,7 +18,6 @@ export default function AreaPicker(props) {
   const [breadcrumbs, setBreadcrumbs] = useState([]);
   const [modifyingArea, setModifyingArea] = useState(-1);
   const [modifyingBreadcrumbs, setModifyingBreadcrumbs] = useState(-1);
-
   const handleArea = () => {
     let initialBounds = [
       {
@@ -79,7 +86,14 @@ export default function AreaPicker(props) {
     line.setMap(google.map);
     setLine(line);
   };
-
+  const handleRecenter = () => {
+    let center = shape.getMap().getCenter();
+    line.setOptions({ path: [], editable: false });
+    shape.setOptions({ path: [], editable: false });
+    saveBreadcrumbs();
+    saveArea();
+    props.handleRecenter({ latitude: center.lat(), longitude: center.lng() });
+  };
   const saveArea = () => {
     setModifyingArea(false);
     var polygonBounds = shape.getPath();
@@ -95,17 +109,13 @@ export default function AreaPicker(props) {
     props.setBounds(auxBounds);
   };
   const changeArea = () => {
-    if (modifyingArea === -1) {
-      handleArea();
-    }
+    handleArea();
     shape.setOptions({ editable: true });
     setModifyingArea(true);
   };
 
   const changeBreadcrumbs = () => {
-    if (modifyingBreadcrumbs === -1) {
-      handleBreadcrumbs();
-    }
+    handleBreadcrumbs();
     line.setOptions({ editable: true });
     setModifyingBreadcrumbs(true);
   };
@@ -143,7 +153,12 @@ export default function AreaPicker(props) {
               initShape(x);
               initLine(x);
             }}
-          />
+          >
+            <CenterMapMarker
+              lat={props.geolocation.latitude}
+              lng={props.geolocation.longitude}
+            ></CenterMapMarker>
+          </GoogleMap>
 
           <div
             style={{
@@ -163,6 +178,7 @@ export default function AreaPicker(props) {
                 Save Area!
               </IonButton>
             )}
+            <IonButton onClick={handleRecenter}>Recenter</IonButton>
             {!modifyingBreadcrumbs || modifyingBreadcrumbs === -1 ? (
               <IonButton onClick={changeBreadcrumbs} color="primary">
                 Breadcrumbs

@@ -56,7 +56,7 @@ export default function Play(props) {
   const [unread, setUnread] = useState();
   const gameChanging = useGameChanges();
   const [showPlayersModal, setShowPlayersModal] = useState(false);
-  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+  const [isLoadingMessages, setIsLoadingMessages] = useState(true);
   const messages = useMessageChanges(
     teams,
     LobbyService.getCurrentLobby(),
@@ -225,11 +225,11 @@ export default function Play(props) {
         onDidDismiss={() => {
           setShowChatModal(false);
           setOpenChat(openChat - 10);
-          setIsLoadingMessages(false);
+          setIsLoadingMessages(true);
         }}
         onDidPresent={() => {
           setOpenChat(openChat + 10);
-          setIsLoadingMessages(true);
+          setIsLoadingMessages(false);
         }}
       >
         {messages && (
@@ -261,7 +261,6 @@ export default function Play(props) {
           game={gameChanging}
           handleClose={() => setShowPlayersModal(false)}
           handleKick={handleKick}
-          // handleBan={setUsernameToBan}
           play={true}
           teams={teams}
         />

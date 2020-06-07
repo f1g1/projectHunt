@@ -8,7 +8,7 @@ import {
   IonModal,
   IonRow,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { PlayService } from "../../services/PlayService";
 import TeamDashboard from "./TeamDashboard";
@@ -18,7 +18,11 @@ var moment = require("moment");
 export default function Dashboardteams(props) {
   const [currentTeam, setCurrentTeam] = useState();
   const [showTeamDashboard, setShowTeamDashboard] = useState(false);
-  const [currentTeamName, setCurrentTeamName] = useState();
+  useEffect(() => {
+    if (currentTeam) {
+      setCurrentTeam(props.teams.find((x) => x.name === currentTeam.name));
+    }
+  }, [props.teams]);
 
   return (
     <>
@@ -46,7 +50,7 @@ export default function Dashboardteams(props) {
             <IonItem
               button
               onClick={() => {
-                setCurrentTeam(i);
+                setCurrentTeam(x);
                 setShowTeamDashboard(true);
               }}
               key={x.name}
@@ -91,7 +95,7 @@ export default function Dashboardteams(props) {
           <TeamDashboard
             handleClose={() => setShowTeamDashboard(false)}
             game={props.game}
-            team={props.teams[currentTeam]}
+            team={currentTeam}
             steps={props.game.steps}
           />
         )}

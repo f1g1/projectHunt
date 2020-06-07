@@ -26,6 +26,7 @@ import {
 import React, { useEffect, useState } from "react";
 
 import ChatBoard from "../../components/Chat/ChatBoard/ChatBoard";
+import JoinQrModal from "./JoinQrModal";
 import LobbyPlayers from "./LobbyPlayers";
 import { LobbyService } from "../../services/LobbyService";
 import MapWithLocation from "../../components/Map/Map";
@@ -47,6 +48,8 @@ export default function Lobby(props) {
   const [openChat, setOpenChat] = useState(0);
   const [usernameToBan, setUsernameToBan] = useState();
   const [unread, setUnread] = useState();
+  const [showQrJoinModal, setShowQrJoinModal] = useState();
+  const [isLoadingMessages, setIsLoadingMessages] = useState();
 
   const messages = useMessageChanges(
     teams,
@@ -65,9 +68,7 @@ export default function Lobby(props) {
   useEffect(() => {
     return () => {
       if (lobbyChanging && lobbyChanging.startTime) {
-        console.log(
-          "      if (lobbyChanging && lobbyChanging.startTime          "
-        );
+        console.log("if (lobbyChanging && lobbyChanging.startTime");
         leaveLobby();
       }
     };
@@ -76,12 +77,9 @@ export default function Lobby(props) {
   useEffect(() => {
     if (messages.length > 0) {
       setUnread(messages.length - MiscService.getChatNr());
-      // if (
-      //   messages[messages.length - 1].idFrom !==
-      //   UserService.getCurrentPlayer().name
-      // )
-      // setShowToast1("New message received");
     }
+    isLoadingMessages === undefined && setIsLoadingMessages(true);
+    isLoadingMessages === true && setIsLoadingMessages(false);
   }, [messages]);
 
   useEffect(() => {
@@ -256,12 +254,20 @@ export default function Lobby(props) {
           <IonFooter className="ion-no-border">
             <IonToolbar>
               <IonButtons>
-                {/* {lobbyChanging.owner ===
-                  UserService.getCurrentUser().userName && ( */}
-                <IonButton color="primary" onClick={() => setShowAlert1(true)}>
-                  Start Game
+                {LobbyService.ImAdmin(lobbyChanging) && (
+                  <IonButton
+                    color="primary"
+                    onClick={() => setShowAlert1(true)}
+                  >
+                    Start Game
+                  </IonButton>
+                )}
+                <IonButton
+                  color="primary"
+                  onClick={() => setShowQrJoinModal(true)}
+                >
+                  Show Join Qr
                 </IonButton>
-                {/* )} */}
 
                 <IonButton full onClick={() => setShowChatModal(true)}>
                   Chat
@@ -299,7 +305,15 @@ export default function Lobby(props) {
       </IonModal>
       <IonModal
         isOpen={showChatModal}
-        onDidDismiss={() => setShowChatModal(false)}
+        onDidDismiss={() => {
+          setShowChatModal(false);
+          setOpenChat(openChat - 10);
+          setIsLoadingMessages(true);
+        }}
+        onDidPresent={() => {
+          setOpenChat(openChat + 10);
+          setIsLoadingMessages(false);
+        }}
       >
         {messages && (
           <ChatBoard
@@ -314,9 +328,21 @@ export default function Lobby(props) {
               lobbyChanging.muted &&
               lobbyChanging.muted.includes(UserService.getCurrentPlayer().name)
             }
+            isLoadingMessages={isLoadingMessages}
           />
         )}
       </IonModal>
+      {lobbyChanging && (
+        <IonModal
+          isOpen={showQrJoinModal}
+          onDidDismiss={() => setShowQrJoinModal(false)}
+        >
+          <JoinQrModal
+            handleClose={() => setShowQrJoinModal(false)}
+            entryCode={lobbyChanging.password}
+          />
+        </IonModal>
+      )}
       <IonAlert
         isOpen={usernameToBan !== undefined}
         onDidDismiss={() => setUsernameToBan()}

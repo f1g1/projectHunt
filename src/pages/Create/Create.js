@@ -52,7 +52,9 @@ const Create = (props) => {
       setisEdit(true);
     }
   }, []);
-
+  const setLocation = (loc) => {
+    setGeolocation(loc);
+  };
   const saveGame = () => {
     let errors = validateGame(state);
     if (errors.length === 0) GameService.saveGame(state);
@@ -88,7 +90,12 @@ const Create = (props) => {
         <IonGrid>
           <IonRow>
             <IonCol sizeXl="8" sizeLg="6" sizeSm="12">
-              {geolocation && <GameInformations geolocation={geolocation} />}
+              {geolocation && (
+                <GameInformations
+                  geolocation={geolocation}
+                  setLocation={setLocation}
+                />
+              )}
             </IonCol>
             <IonCol sizeXl="4" sizeSm="12">
               <IonCol sizeXl="4" sizeSm="12">

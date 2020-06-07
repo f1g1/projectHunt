@@ -74,7 +74,7 @@ export default function CardList(props) {
           </IonRow>
           <IonRow>
             <IonCol>
-              <div className="arrow">
+              <div className="arrow ion-padding-vertical">
                 <IonFabButton
                   color="light"
                   onClick={() => setShowAddCardModal(true)}

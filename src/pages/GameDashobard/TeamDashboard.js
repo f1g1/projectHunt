@@ -1,22 +1,10 @@
-import "./Dashboard.scss";
-
-import {
-  IonButton,
-  IonCol,
-  IonContent,
-  IonHeader,
-  IonInput,
-  IonItem,
-  IonLabel,
-  IonPopover,
-  IonRow,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonButton, IonCol, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonPopover, IonRow, IonTitle, IonToolbar } from "@ionic/react";
 import React, { useEffect, useState } from "react";
-
 import { DashboardService } from "../../services/DashboardService";
 import { PlayService } from "../../services/PlayService";
+import "./Dashboard.scss";
+
+
 
 var moment = require("moment");
 
@@ -41,7 +29,12 @@ export default function TeamDashboard(props) {
   }, [props.team]);
 
   const handleAdjustment = () => {
-    DashboardService.adjustPoints(props.team, adjustment);
+    let index = props.team.adjustments ? props.team.adjustments.length : 0;
+    DashboardService.adjustPoints(props.team, { ...adjustment, index });
+  };
+  const handleAdjustmentChange = (value) => {
+    if (value.)
+    setAdjustment({ ...adjustment, value });
   };
 
   return (
@@ -107,9 +100,7 @@ export default function TeamDashboard(props) {
               <IonInput
                 type="number"
                 value={adjustment.value}
-                onIonChange={(e) =>
-                  setAdjustment({ ...adjustment, value: e.target.value })
-                }
+                onIonChange={(e) => handleAdjustmentChange(e.target.value)}
               ></IonInput>
               <IonButton onClick={handleAdjustment} color="tertiary">
                 Adjust
@@ -226,8 +217,8 @@ export default function TeamDashboard(props) {
         style={{ minWidth: "300px" }}
       >
         {props.team.adjustments && props.team.adjustments.length ? (
-          props.team.adjustments.map((adjustment) => (
-            <IonRow>
+          props.team.adjustments.map((adjustment, i) => (
+            <IonRow key={adjustment.reason + i}>
               <IonCol>
                 <IonLabel>{adjustment.reason}</IonLabel>
               </IonCol>

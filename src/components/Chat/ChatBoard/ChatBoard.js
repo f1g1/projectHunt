@@ -45,13 +45,7 @@ export default function ChatBoard(props) {
     }
   };
 
-  return !props.isLoadingMessages ? (
-    <IonLoading
-      isOpen={!props.isLoadingMessages}
-      message={"Loading messages..."}
-      duration={5000}
-    />
-  ) : (
+  return (
     <>
       <IonToolbar>
         <IonButtons>
@@ -63,39 +57,47 @@ export default function ChatBoard(props) {
           </IonButton>
         </IonButtons>
       </IonToolbar>
-      <div className="viewChatBoard">
-        <div className="viewListContentChat" style={{ overflowY: "scroll" }}>
-          {props.listMessage.map((item, index) => {
-            return item.idFrom === currentUserId ? (
-              <MessageOut item={item} owner={props.lobby.owner} />
-            ) : (
-              <MessageIn
-                item={item}
-                owner={props.lobby.owner}
-                team={
-                  LobbyService.getPlayerTeam(item.idFrom, props.teams) &&
-                  LobbyService.getPlayerTeam(item.idFrom, props.teams).name
-                }
-              />
-            );
-          })}
-          <div ref={ref} className="TestTOSCROLL" />
-        </div>
-        <ChatInput
-          listMessage={props.listMessage}
-          setUnread={props.setUnread}
-          gameChatId={props.gameChatId}
-          lobby={props.lobby}
-          chatMessageType={props.chatMessageType}
-          showToast={props.showToast}
-          muted={props.muted}
-          teams={props.teams}
-          setIsLoading={setIsLoading}
-          started={props.started}
-          setChatMessageType={props.setChatMessageType}
+      {props.isLoadingMessages ? (
+        <IonLoading
+          isOpen={props.isLoadingMessages}
+          message={"Loading messages..."}
+          duration={5000}
         />
-        {isLoading ? <div className="viewLoading"></div> : null}
-      </div>
+      ) : (
+        <div className="viewChatBoard">
+          <div className="viewListContentChat" style={{ overflowY: "scroll" }}>
+            {props.listMessage.map((item, index) => {
+              return item.idFrom === currentUserId ? (
+                <MessageOut item={item} owner={props.lobby.owner} />
+              ) : (
+                <MessageIn
+                  item={item}
+                  owner={props.lobby.owner}
+                  team={
+                    LobbyService.getPlayerTeam(item.idFrom, props.teams) &&
+                    LobbyService.getPlayerTeam(item.idFrom, props.teams).name
+                  }
+                />
+              );
+            })}
+            <div ref={ref} className="TestTOSCROLL" />
+          </div>
+          <ChatInput
+            listMessage={props.listMessage}
+            setUnread={props.setUnread}
+            gameChatId={props.gameChatId}
+            lobby={props.lobby}
+            chatMessageType={props.chatMessageType}
+            showToast={props.showToast}
+            muted={props.muted}
+            teams={props.teams}
+            setIsLoading={setIsLoading}
+            started={props.started}
+            setChatMessageType={props.setChatMessageType}
+          />
+          {isLoading ? <div className="viewLoading"></div> : null}
+        </div>
+      )}
     </>
   );
 }
