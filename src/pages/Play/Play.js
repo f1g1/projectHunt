@@ -22,6 +22,7 @@ import GameMap from "./GameMap/GameMap";
 import LeaderBoard from "./LeaderBoard";
 import LobbyPlayers from "../Lobby/LobbyPlayers";
 import { LobbyService } from "../../services/LobbyService";
+import { LocalNotifications } from "@ionic-native/local-notifications";
 import MiscService from "../../services/MiscService";
 import NotificationHandler from "./NotificationHandler";
 import { PlayService } from "../../services/PlayService";
@@ -57,18 +58,30 @@ export default function Play(props) {
   const gameChanging = useGameChanges();
   const [showPlayersModal, setShowPlayersModal] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(true);
+
   const messages = useMessageChanges(
     teams,
     LobbyService.getCurrentLobby(),
-    game,
+    gameChanging,
     openChat
   );
 
   useEffect(() => {});
   useEffect(() => {
-    MiscService.getCachedGeolocation().then((x) => setGeolocation(x));
-    setOpenChat(1);
+    MiscService.getCachedGeolocation()
+      .then((x) => {
+        setGeolocation(x);
+      })
+      .catch(() => MiscService.setAvalaibleLocation(false));
   }, []);
+
+  const notify = (text) => {
+    LocalNotifications.schedule({
+      id: 1,
+      text,
+    });
+    setShowToast1(text);
+  };
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -77,11 +90,13 @@ export default function Play(props) {
         messages[messages.length - 1].idFrom !==
         UserService.getCurrentPlayer().name
       )
-        if (openChat > 1) {
-          setShowToast1("New message received");
-        } else {
-          setOpenChat(openChat + 1);
-          setShowToast1();
+        if (
+          messages.length - MiscService.getChatNr() > 0 &&
+          MiscService.getNotificationSettings().message
+        ) {
+          setShowToast1("New message received!");
+          if (messages[messages.length - 1].idFrom === game.owner)
+            notify("New admin message received!");
         }
     }
   }, [messages]);
@@ -90,12 +105,16 @@ export default function Play(props) {
     setMyTeam(
       LobbyService.getPlayerTeam(UserService.getCurrentPlayer().name, teams)
     );
+    if (gameChanging && teams && openChat === 0) setOpenChat(1);
   }, [teams]);
 
   useEffect(() => {
     if (game && gameChanging && !LobbyService.ImAdmin(game))
       if (!arraysEqual(game.area, gameChanging.area)) {
-        setShowToast1("Caution, game area as been modified!");
+        if (MiscService.getNotificationSettings().map) {
+          setShowToast1("Map has been modified, check it out!");
+          notify("Map has been modified, check it out!");
+        }
       }
     PlayService.setGame(gameChanging || {});
     setGame(gameChanging);
@@ -107,6 +126,7 @@ export default function Play(props) {
       );
       props.history.replace("/finishedGame");
     }
+    if (gameChanging && teams && openChat === 0) setOpenChat(1);
   }, [gameChanging]);
 
   const handleKick = (username) => {

@@ -89,7 +89,7 @@ export default function Home(props) {
                     });
                   }}
                 >
-                  Play!!
+                  Play!
                 </IonButton>
                 <IonButton
                   expand="full"

@@ -12,6 +12,7 @@ import { PlayService } from "../../services/PlayService";
 import SeeClueChallenge from "./SeeClueChallenge";
 import SeeClueSucces from "./SeeClueSucces";
 import SeeClueWrong from "./SeeClueWrong";
+import moment from "moment";
 
 export default function SeeClue(props) {
   const [status, setStatus] = useState(props.status || 0);
@@ -62,6 +63,31 @@ export default function SeeClue(props) {
   };
   const handleSuccesOk = () => {
     props.handleClose();
+  };
+
+  const handleDelay = () => {
+    // if (!props.step.freeAnswer && !props.step.needsValidation)
+    return (
+      status == 0 &&
+      (!props.step.onlyOnce ? (
+        <IonLabel className="ion-text-center">
+          {props.step.waitingTime ? (
+            <p>
+              Wrong answer delay{" "}
+              {props.step.waitingTime
+                ? moment.utc(props.step.waitingTime * 1000).format("mm:ss")
+                : 0}
+            </p>
+          ) : (
+            <p>--</p>
+          )}
+        </IonLabel>
+      ) : (
+        <IonLabel color="danger" className="ion-text-center">
+          <p>Careful, you have only 1 chance to respond!</p>
+        </IonLabel>
+      ))
+    );
   };
 
   const handleStatus = () => {
@@ -120,6 +146,7 @@ export default function SeeClue(props) {
               {props.step.answerType === 2 && "(take a photo)"}
             </p>
           )}
+          {handleDelay()}
         </IonLabel>
         {handleStatus()}
       </IonContent>

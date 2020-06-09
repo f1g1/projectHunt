@@ -1,10 +1,27 @@
-import { IonButton, IonCol, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonPopover, IonRow, IonTitle, IonToolbar } from "@ionic/react";
-import React, { useEffect, useState } from "react";
-import { DashboardService } from "../../services/DashboardService";
-import { PlayService } from "../../services/PlayService";
 import "./Dashboard.scss";
 
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCol,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonModal,
+  IonPopover,
+  IonRow,
+  IonTitle,
+  IonToast,
+  IonToolbar,
+} from "@ionic/react";
+import React, { useEffect, useState } from "react";
 
+import AnswerModal from "./AnswerModal";
+import { DashboardService } from "../../services/DashboardService";
+import { PlayService } from "../../services/PlayService";
 
 var moment = require("moment");
 
@@ -14,6 +31,8 @@ export default function TeamDashboard(props) {
   const [adjustment, setAdjustment] = useState({ reason: "", value: 0 });
   const [showPopover, setShowPopover] = useState(false);
   const [finished, setFinished] = useState();
+  const [errorToast, setErrorToast] = useState();
+  const [showAnswerModal, setShowAnswerModal] = useState();
 
   useEffect(() => {
     setActive(
@@ -33,8 +52,19 @@ export default function TeamDashboard(props) {
     DashboardService.adjustPoints(props.team, { ...adjustment, index });
   };
   const handleAdjustmentChange = (value) => {
-    if (value.)
-    setAdjustment({ ...adjustment, value });
+    if (
+      value.includes("e") ||
+      (value.includes("-") && value.indexOf("-") !== 0)
+    ) {
+      setErrorToast("Invalid number!");
+      setAdjustment();
+    } else {
+      setAdjustment({ ...adjustment, value });
+    }
+  };
+  const handleSeeShowAnswer = (x) => {
+    console.log(x);
+    setShowAnswerModal(x);
   };
 
   return (
@@ -102,18 +132,13 @@ export default function TeamDashboard(props) {
                 value={adjustment.value}
                 onIonChange={(e) => handleAdjustmentChange(e.target.value)}
               ></IonInput>
-              <IonButton onClick={handleAdjustment} color="tertiary">
-                Adjust
-              </IonButton>
+              <IonButton onClick={handleAdjustment}>Adjust</IonButton>
             </IonItem>
           </IonCol>
           <IonRow className="ion-justify-content-center">
             <IonCol size="12">
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <IonButton
-                  onClick={() => setShowPopover(true)}
-                  color="tertiary"
-                >
+                <IonButton onClick={() => setShowPopover(true)}>
                   See Adjustments
                 </IonButton>
               </div>
@@ -124,45 +149,86 @@ export default function TeamDashboard(props) {
           <IonTitle>Completed Challenges</IonTitle>
         </IonToolbar>
 
-        <IonItem>
-          <IonLabel>Clue:</IonLabel>
-          <IonLabel>Points</IonLabel>
-          <IonLabel>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date/Time
-          </IonLabel>
-          <IonLabel></IonLabel>
-        </IonItem>
+        <IonCard color="light">
+          <IonRow className="ion-padding">
+            <IonCol className="ion-no-padding" sizeXl="4">
+              <IonLabel>Clue:</IonLabel>
+            </IonCol>
+            <IonCol className="ion-no-padding" sizeXl="3">
+              <IonLabel>Points</IonLabel>
+            </IonCol>
+            <IonCol className="ion-no-padding" sizeXl="3">
+              <IonLabel>Date/Time</IonLabel>
+            </IonCol>
+            <IonCol className="ion-no-padding" sizeXl="2">
+              <IonLabel></IonLabel>
+            </IonCol>{" "}
+          </IonRow>
+        </IonCard>
+
         {completed.length ? (
           completed.map((x) => (
-            <IonItem>
-              <IonLabel
-                color={
-                  props.team.failed &&
-                  props.team.failed.includes(x.id) &&
-                  "danger"
-                }
-              >
-                Challenge #{x.index + 1}
-                <p>{x.hidden && " (hidden)"}</p>
-                <p color="danger">
-                  {props.team.failed &&
-                    props.team.failed.includes(x.id) &&
-                    "failed!"}
-                </p>
-              </IonLabel>
-              <IonLabel>{x.points}</IonLabel>
-              <IonLabel>
-                {x.time && moment(x.time.seconds * 1000).format("DD/MM HH:mm")}
-              </IonLabel>
-              <IonButton
-                color="danger"
-                onClick={() =>
-                  DashboardService.revokeChallenge(props.team.name, x)
-                }
-              >
-                Revoke!
-              </IonButton>
-            </IonItem>
+            <IonCard>
+              <IonCardContent>
+                <IonRow className="ion-no-padding">
+                  <IonCol className="ion-no-padding" sizeXl="4">
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        height: "100%",
+                      }}
+                    >
+                      <IonLabel
+                        color={
+                          props.team.failed &&
+                          props.team.failed.includes(x.id) &&
+                          "danger"
+                        }
+                      >
+                        Challenge #{x.index + 1}
+                        <p>{x.hidden && " (hidden)"}</p>
+                        <p color="danger">
+                          {props.team.failed &&
+                            props.team.failed.includes(x.id) &&
+                            "failed!"}
+                        </p>
+                      </IonLabel>
+                    </div>
+                  </IonCol>
+                  <IonCol className="ion-no-padding" sizeXl="3">
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        height: "100%",
+                      }}
+                    >
+                      <IonLabel>{x.points}</IonLabel>
+                    </div>
+                  </IonCol>
+                  <IonCol className="ion-no-padding" sizeXl="3">
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        height: "100%",
+                      }}
+                    >
+                      <IonLabel>
+                        {x.time &&
+                          moment(x.time.seconds * 1000).format("DD/MM HH:mm")}
+                      </IonLabel>
+                    </div>
+                  </IonCol>
+                  <IonCol className="ion-no-padding" sizeXl="2">
+                    <IonButton onClick={() => handleSeeShowAnswer(x)}>
+                      See answer!
+                    </IonButton>
+                  </IonCol>
+                </IonRow>
+              </IonCardContent>
+            </IonCard>
           ))
         ) : (
           <IonLabel>
@@ -174,32 +240,73 @@ export default function TeamDashboard(props) {
         <IonToolbar color="tertiary" className="ion-margin-top">
           <IonTitle>Active Challenges</IonTitle>
         </IonToolbar>
-        <IonItem>
-          <IonLabel>Clue:</IonLabel>
-          <IonLabel>Points</IonLabel>
-          <IonLabel></IonLabel>
-        </IonItem>
+        <IonCard color="light">
+          <IonRow className="ion-padding">
+            <IonCol className="ion-no-padding" size="4">
+              <IonLabel>Clue:</IonLabel>
+            </IonCol>
+            <IonCol className="ion-no-padding" size="4">
+              <IonLabel>Points</IonLabel>
+            </IonCol>
+            <IonCol className="ion-no-padding" size="4">
+              <IonLabel></IonLabel>
+            </IonCol>
+          </IonRow>
+        </IonCard>
 
         {active && active.length ? (
           active.map((x) => (
-            <IonItem>
-              <IonLabel>
-                Challenge #{x.index + 1}
-                <p>{x.hidden && " (hidden)"}</p>
-              </IonLabel>
-              <IonLabel>{x.points}</IonLabel>
-              <IonButton
-                onClick={() =>
-                  DashboardService.completeChallenge(
-                    props.team.name,
-                    x,
-                    finished
-                  )
-                }
-              >
-                Complete!
-              </IonButton>
-            </IonItem>
+            <IonCard>
+              <IonCardContent>
+                <IonRow className="ion-no-padding">
+                  <IonCol className="ion-no-padding" size="4">
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        height: "100%",
+                      }}
+                    >
+                      <IonLabel>
+                        Challenge #{x.index + 1}
+                        <p>{x.hidden && " (hidden)"}</p>
+                      </IonLabel>
+                    </div>
+                  </IonCol>
+                  <IonCol className="ion-no-padding" size="4">
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        height: "100%",
+                      }}
+                    >
+                      <IonLabel>{x.points}</IonLabel>
+                    </div>
+                  </IonCol>
+
+                  <IonCol
+                    className="ion-no-padding"
+                    sizeXl="2"
+                    offsetXl="2"
+                    size="3"
+                    offset="1"
+                  >
+                    <IonButton
+                      onClick={() =>
+                        DashboardService.completeChallenge(
+                          props.team.name,
+                          x,
+                          finished
+                        )
+                      }
+                    >
+                      Complete!
+                    </IonButton>
+                  </IonCol>
+                </IonRow>
+              </IonCardContent>
+            </IonCard>
           ))
         ) : (
           <IonLabel>
@@ -217,30 +324,99 @@ export default function TeamDashboard(props) {
         style={{ minWidth: "300px" }}
       >
         {props.team.adjustments && props.team.adjustments.length ? (
-          props.team.adjustments.map((adjustment, i) => (
-            <IonRow key={adjustment.reason + i}>
-              <IonCol>
-                <IonLabel>{adjustment.reason}</IonLabel>
-              </IonCol>
-              <IonLabel className="ion-text-center ion-padding">
-                <p>{adjustment.value}</p>
-              </IonLabel>
-              <IonButton
-                color="danger"
-                onClick={() =>
-                  DashboardService.deleteAdjustment(props.team, adjustment)
-                }
-              >
-                X
-              </IonButton>
-            </IonRow>
-          ))
+          <>
+            <IonCard color="light">
+              <IonCardContent>
+                <IonRow>
+                  <IonCol size="8">
+                    <IonLabel>Reason:</IonLabel>
+                  </IonCol>
+                  <IonCol size="2">
+                    <IonLabel>Points:</IonLabel>
+                  </IonCol>
+                  <IonCol size="1"></IonCol>
+                </IonRow>
+              </IonCardContent>
+            </IonCard>
+
+            {props.team.adjustments.map((adjustment, i) => (
+              <IonCard>
+                <IonCardContent>
+                  <IonRow
+                    key={adjustment.reason + i}
+                    className="ion-no-padding"
+                  >
+                    <IonCol size="8" className="ion-no-padding">
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          height: "100%",
+                        }}
+                      >
+                        {adjustment.reason ? (
+                          <IonLabel>{adjustment.reason}</IonLabel>
+                        ) : (
+                          <IonLabel>No reason given!</IonLabel>
+                        )}
+                      </div>
+                    </IonCol>
+                    <IonCol size="2" className="ion-no-padding">
+                      <IonLabel className="ion-text-center ">
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            height: "100%",
+                          }}
+                        >
+                          {adjustment.value}
+                        </div>
+                      </IonLabel>
+                    </IonCol>
+
+                    <IonCol size="2" className="ion-no-padding">
+                      <IonButton
+                        color="danger"
+                        onClick={() =>
+                          DashboardService.deleteAdjustment(
+                            props.team,
+                            adjustment
+                          )
+                        }
+                      >
+                        X
+                      </IonButton>
+                    </IonCol>
+                  </IonRow>
+                </IonCardContent>
+              </IonCard>
+            ))}
+          </>
         ) : (
           <IonTitle className="ion-padding ion-text-center">
             There are no adjustments set!
           </IonTitle>
         )}
       </IonPopover>
+      <IonToast
+        color="danger"
+        position="top"
+        isOpen={errorToast !== undefined}
+        onDidDismiss={() => setErrorToast()}
+        message={errorToast}
+        duration={2000}
+      />
+      <IonModal
+        isOpen={showAnswerModal !== undefined}
+        onDidDismiss={() => setShowAnswerModal()}
+      >
+        <AnswerModal
+          handleClose={() => setShowAnswerModal()}
+          team={props.team}
+          step={showAnswerModal}
+        />
+      </IonModal>
     </>
   );
 }

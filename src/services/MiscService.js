@@ -8,7 +8,18 @@ const MiscService = {
   setNotificationSettings,
   setChatNr,
   getChatNr,
+  setAvalaibleLocation,
+  getAvalaibleLocation,
 };
+
+function setAvalaibleLocation(value) {
+  window.localStorage["avalaibleLocation"] = value;
+}
+function getAvalaibleLocation() {
+  console.log(window.localStorage["avalaibleLocation"]);
+
+  return window.localStorage["avalaibleLocation"];
+}
 
 function getChatNr() {
   return window.localStorage["chatNo"] || 0;
@@ -40,7 +51,8 @@ function getQr(data, color) {
 }
 
 function getNotificationSettings() {
-  if (window.localStorage["notificationSettings"])
+  debugger;
+  if (JSON.parse(window.localStorage["notificationSettings"]))
     return JSON.parse(window.localStorage["notificationSettings"]);
 
   let n = { message: true, adminMessage: true, map: true, newChallenge: true };
@@ -53,20 +65,9 @@ function setNotificationSettings(notificationSettings) {
   );
 }
 async function getCachedGeolocation() {
-  // let parsed;
-  // try {
-  //   parsed = JSON.parse(window.localStorage["cachedCoords"]);
-  // } catch {}
-  // if (!parsed || !parsed.coords || Date.now() - parsed.timestamp > 3600000) {
+  setAvalaibleLocation(true);
   let coords = await Geolocation.getCurrentPosition();
-  //   window.localStorage["cachedCoords"] = JSON.stringify({
-  //     ...coords.coords,
-  //   });
-
   return coords.coords;
-  // } else {
-  //   return parsed.coords;
-  // }
 }
 
 function getLiveGeolocation(setLocation) {

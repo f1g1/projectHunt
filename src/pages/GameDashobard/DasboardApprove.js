@@ -2,8 +2,6 @@ import {
   IonCard,
   IonCardContent,
   IonCol,
-  IonGrid,
-  IonItem,
   IonLabel,
   IonModal,
   IonRow,
@@ -38,7 +36,7 @@ export default function DasboardApprove(props) {
 
       {props.toBeValidated &&
         props.toBeValidated.map((x) => (
-          <IonItem
+          <IonCard
             style={{ cursor: "pointer" }}
             button
             onClick={() => {
@@ -46,8 +44,9 @@ export default function DasboardApprove(props) {
 
               setShowApproveModal(x);
             }}
+            color="primary"
           >
-            <IonGrid>
+            <IonCardContent>
               <IonRow key={x.name}>
                 <IonCol>{x.name}</IonCol>
                 <IonCol>
@@ -59,8 +58,8 @@ export default function DasboardApprove(props) {
                   </IonLabel>
                 </IonCol>
               </IonRow>
-            </IonGrid>
-          </IonItem>
+            </IonCardContent>
+          </IonCard>
         ))}
 
       <IonModal

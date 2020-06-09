@@ -68,9 +68,14 @@ export default function ChatBoard(props) {
           <div className="viewListContentChat" style={{ overflowY: "scroll" }}>
             {props.listMessage.map((item, index) => {
               return item.idFrom === currentUserId ? (
-                <MessageOut item={item} owner={props.lobby.owner} />
+                <MessageOut
+                  item={item}
+                  owner={props.lobby.owner}
+                  key={item.timestamp + item.idFrom}
+                />
               ) : (
                 <MessageIn
+                  key={item.timestamp + item.idFrom}
                   item={item}
                   owner={props.lobby.owner}
                   team={

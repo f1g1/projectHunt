@@ -10,7 +10,6 @@ import {
   IonTitle,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
-
 import { PlayService } from "../../services/PlayService";
 import SeeClue from "./SeeClue";
 
@@ -59,8 +58,6 @@ export default function ClueList(props) {
   }, [props.game]);
 
   useEffect(() => {
-    console.log("myTEAM", props.myTeam);
-
     let teamFinished =
       props.myTeam.completed &&
       props.myTeam.completed.length >= props.game.steps.length - 1;

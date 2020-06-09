@@ -1,4 +1,5 @@
 import { LobbyService } from "./LobbyService";
+import MediaService from "./MediaService";
 import { PlayService } from "./PlayService";
 import { UserService } from "./UserSerivce";
 import { fireStore } from "../firebase";
@@ -19,12 +20,17 @@ export const DashboardService = {
 };
 
 function addStep(lobbyId, step) {
-  return fireStore
-    .collection("lobbies")
-    .doc(lobbyId)
-    .update({
-      steps: firebase.firestore.FieldValue.arrayUnion(step),
-    });
+  debugger;
+  return MediaService.SaveImage(step.imageFile).then((x) => {
+    step.image = x;
+    delete step.imageFile;
+    return fireStore
+      .collection("lobbies")
+      .doc(lobbyId)
+      .update({
+        steps: firebase.firestore.FieldValue.arrayUnion(step),
+      });
+  });
 }
 
 function closeGame(lobbyId, game, teams) {

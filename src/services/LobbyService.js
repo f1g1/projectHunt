@@ -225,12 +225,19 @@ function playerJoinTeam(lobby, team, playerName) {
       players: firebase.firestore.FieldValue.arrayUnion(playerName),
     });
 }
-function leaveLobby(username, team, admin) {
-  let lobby = LobbyService.getCurrentLobby();
-  let res = kickLobby(username, team);
+function leaveLobby(username, teams, admin, lobby) {
+  let lobbyId = LobbyService.getCurrentLobby();
+
+  if (admin) {
+    lobby.players.forEach((x) => {
+      kickLobby(x, getPlayerTeam(x, teams));
+    });
+  }
+
+  let res = kickLobby(username, getPlayerTeam(username, teams));
 
   res.then(() => {
-    if (admin) fireStore.collection("lobbies").doc(lobby).delete();
+    if (admin) fireStore.collection("lobbies").doc(lobbyId).delete();
     window.localStorage.removeItem("currentLobby");
   });
   return res;

@@ -1,6 +1,7 @@
 import { IonCheckbox, IonItem, IonItemDivider, IonLabel } from "@ionic/react";
 import React, { useState } from "react";
 
+import MiscService from "../../services/MiscService";
 import { PhotoViewer } from "@ionic-native/photo-viewer";
 import SeeClueInput from "./SeeClueInput";
 
@@ -37,9 +38,20 @@ export default function SeeClueChallenge(props) {
                 <IonCheckbox
                   onIonChange={(e) => setShareLocation(e.detail.checked)}
                   slot="end"
-                  checked={shareLocation}
+                  disabled={MiscService.getAvalaibleLocation() === "false"}
+                  checked={
+                    shareLocation &&
+                    MiscService.getAvalaibleLocation() !== "false"
+                  }
                 />
               </IonItem>
+              {MiscService.getAvalaibleLocation() === "false" && (
+                <IonItem lines="none">
+                  <IonLabel color="danger">
+                    <p>Location is not avalaible, to share your location </p>
+                  </IonLabel>
+                </IonItem>
+              )}
             </SeeClueInput>
             <IonLabel className="ion-text-center">
               <p>

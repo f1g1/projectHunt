@@ -55,7 +55,7 @@ export default function Lobby(props) {
     teams,
     LobbyService.getCurrentLobby(),
     lobbyChanging,
-    openChat
+    1
   );
   const showThisTeam = (name) => {
     setcurrentTeamDetails(teams.filter((x) => x.name === name)[0]);
@@ -66,6 +66,7 @@ export default function Lobby(props) {
   }, [lobbyChanging, teams]);
 
   useEffect(() => {
+    MiscService.setChatNr(0);
     return () => {
       if (lobbyChanging && lobbyChanging.startTime) {
         console.log("if (lobbyChanging && lobbyChanging.startTime");
@@ -75,6 +76,7 @@ export default function Lobby(props) {
   }, []);
 
   useEffect(() => {
+    console.log("messages", messages, "unread", MiscService.getChatNr());
     if (messages.length > 0) {
       setUnread(messages.length - MiscService.getChatNr());
     }
@@ -139,8 +141,9 @@ export default function Lobby(props) {
     }
     LobbyService.leaveLobby(
       UserService.getCurrentPlayer().name,
-      currentTeamDetails && currentTeamDetails.name,
-      LobbyService.ImAdmin(lobbyChanging)
+      teams,
+      LobbyService.ImAdmin(lobbyChanging),
+      lobbyChanging
     );
   };
   const joinTeam = (team) => {

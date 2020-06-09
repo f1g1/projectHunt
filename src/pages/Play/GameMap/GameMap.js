@@ -16,6 +16,7 @@ import GoogleMap from "google-map-react";
 import { LobbyService } from "../../../services/LobbyService";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
+import MiscService from "../../../services/MiscService";
 import { PlayService } from "../../../services/PlayService";
 import { UserService } from "../../../services/UserSerivce";
 
@@ -79,6 +80,7 @@ export default function GameMap(props) {
   const [incrV, setincrV] = useState();
   const [breadcrumbs, setBreadcrumbs] = useState(props.game.breadcrumbs);
   const [modifyingBreadcrumbs, setModifyingBreadcrumbs] = useState();
+  const [avalaibleLocation, setAvalaibleLocation] = useState(false);
   const [line, setLine] = useState();
 
   const handleSavePoint = () => {
@@ -93,6 +95,14 @@ export default function GameMap(props) {
         setErrorToast("Point was not placed!");
       });
   };
+  useEffect(() => {
+    setAvalaibleLocation(MiscService.getAvalaibleLocation());
+  }, [props.geolocation]);
+
+  useEffect(() => {
+    console.log("avalaible!!!!", avalaibleLocation);
+  }, [avalaibleLocation]);
+
   useEffect(() => {
     modifyingArea && shape.setOptions({ visible: true });
   }, [modifyingArea]);
@@ -415,7 +425,12 @@ export default function GameMap(props) {
           )}
           {!LobbyService.ImAdmin(props.game) && (
             <div className="bottomContainer">
-              <IonButton onClick={shareLocation}>Share Location</IonButton>
+              <IonButton
+                onClick={shareLocation}
+                disabled={avalaibleLocation === "false"}
+              >
+                Share Location
+              </IonButton>
             </div>
           )}
         </div>
