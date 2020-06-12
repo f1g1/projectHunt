@@ -57,8 +57,10 @@ const Create = (props) => {
   };
   const saveGame = () => {
     let errors = validateGame(state);
-    if (errors.length === 0) GameService.saveGame(state);
-    else {
+    if (errors.length === 0) {
+      GameService.saveGame(state);
+      props.history.replace("/myGames");
+    } else {
       setErrorToast(errors);
     }
   };

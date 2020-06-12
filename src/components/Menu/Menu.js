@@ -13,6 +13,8 @@ import {
   IonToolbar,
 } from "@ionic/react";
 
+import AddIcon from "@material-ui/icons/Add";
+import BugReportIcon from "@material-ui/icons/BugReport";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import HistoryIcon from "@material-ui/icons/History";
 import { Plugins } from "@capacitor/core";
@@ -58,9 +60,17 @@ export default function Menu(props) {
             <HistoryIcon />
             <IonLabel className="menu-label">History</IonLabel>
           </IonItem>
+          <IonItem button onClick={() => props.history.push("/game")}>
+            <AddIcon />
+            <IonLabel className="menu-label">Create new Treasure Hunt</IonLabel>
+          </IonItem>
         </IonList>
       </IonContent>
       <IonFooter mode="ios" translucent>
+        <IonItem button onClick={() => props.history.push("/ReportBug")}>
+          <BugReportIcon />
+          <IonLabel className="menu-label">Report Bug</IonLabel>
+        </IonItem>
         <IonItem
           button
           color="danger"

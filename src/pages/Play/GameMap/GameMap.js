@@ -189,7 +189,6 @@ export default function GameMap(props) {
       };
       auxBounds.push(point);
     }
-    debugger;
     PlayService.saveBreadcrumbs(auxBounds)
       .then(() => {
         line.setOptions({ editable: false });

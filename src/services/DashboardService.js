@@ -20,7 +20,6 @@ export const DashboardService = {
 };
 
 function addStep(lobbyId, step) {
-  debugger;
   return MediaService.SaveImage(step.imageFile).then((x) => {
     step.image = x;
     delete step.imageFile;

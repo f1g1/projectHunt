@@ -26,6 +26,7 @@ import Login from "./pages/Login";
 import MyGames from "./pages/MyGames/MyGames";
 import Play from "./pages/Play/Play";
 import React from "react";
+import ReportBug from "./pages/ReportBug/ReportBug";
 import SeeClue from "./pages/Play/SeeClueChallenge";
 import Settings from "./pages/Settings/Settings";
 import UserName from "./pages/Username/UserName";
@@ -53,6 +54,7 @@ export default function App() {
             exact={true}
           />
           <Route path="/seeClue" component={SeeClue} exact={true} />
+          <Route path="/ReportBug" component={ReportBug} exact={true} />
           <Route path="/username" component={UserName} exact={true} />
           <Route path="/gameDashboard" component={Dashboard} exact={true} />
           <Route path="/finishedGame" component={FinishedGame} exact={true} />

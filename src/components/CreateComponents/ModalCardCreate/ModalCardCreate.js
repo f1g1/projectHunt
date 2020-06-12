@@ -59,6 +59,10 @@ export default function ModalCardCreate(props) {
     if (step.answerType < 2 && !step.code && !step.freeAnswer)
       errors +=
         "\n If the answer is not an image you need to set an response different than null.";
+    if ((step.hidden || step.visible) && !step.coords)
+      errors += "\n You need to specify location, if hidden or visible.";
+    if (!(step.hidden || step.visible) && step.coords)
+      errors += "\n You need to specify if this challenge hidden or visible.";
     return errors;
   };
 

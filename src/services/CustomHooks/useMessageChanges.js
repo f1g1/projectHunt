@@ -12,7 +12,6 @@ export default function useMessageChanges(teams, gameChatId, lobby, openChat) {
   let messages = [];
 
   useEffect(() => {
-    debugger;
     if (openChat === 1 && lobby) {
       messages = messages;
       unsubscribe = fireStore

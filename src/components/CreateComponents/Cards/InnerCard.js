@@ -16,7 +16,8 @@ let answerTypes = { 0: "Text", 1: "QR code", 2: "Image" };
 
 export default function InnerCard(props) {
   return (
-    <div style={{ height: "100%", width: "100%" }}>
+    // <div style={{ height: "100%", width: "100%" }}>
+    <div>
       {props.step && (
         <IonCard color="light" className="full">
           <IonCardHeader slot="end">

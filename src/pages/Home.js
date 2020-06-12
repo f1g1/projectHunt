@@ -12,6 +12,7 @@ import {
   IonPage,
   IonRow,
   IonToolbar,
+  useIonViewDidEnter,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 
@@ -44,6 +45,31 @@ export default function Home(props) {
         }
       });
   }, []);
+  useIonViewDidEnter(() => {
+    UserService.getCurrentPlayer() &&
+      PlayService.checkActiveGame().then((activeGame) => {
+        if (activeGame) {
+          PlayService.setActiveGame(activeGame);
+          LobbyService.setLobby(activeGame);
+          props.history.replace("/play", activeGame);
+        } else {
+          PlayService.setActiveGame();
+          LobbyService.setLobby();
+          setState({ ...state, noActiveGame: true });
+        }
+      });
+    console.log("triggered thing");
+  });
+
+  useIonViewDidEnter(() => {
+    document.addEventListener("ionBackButton", (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      ev.detail.register(10, () => {
+        console.log("PRESSED BACJ");
+      });
+    });
+  });
 
   return (
     <>
@@ -72,6 +98,7 @@ export default function Home(props) {
 
               <IonList style={{ marginTop: "10vh" }}>
                 <IonButton
+                  mode="ios"
                   style={{
                     minHeight: "100px",
                     marginBottom: "30px",

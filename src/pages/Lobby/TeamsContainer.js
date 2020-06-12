@@ -32,7 +32,6 @@ export default function TeamsContainer(props) {
         setnewTeamName();
       })
       .catch((x) => {
-        debugger;
         setErrorToast("Something went wron when creating team, try again!");
       });
     // !props.isAdmin && LobbyService.setCurrentTeam(newTeamName);

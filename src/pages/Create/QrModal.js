@@ -35,7 +35,7 @@ export default function QrModal(props) {
           >
             {props.steps.length > 0
               ? "Qrs needed for the challenges"
-              : "You didn't set any challenge that requires Qr"}
+              : "You didn't set any challenge that requires a QR code"}
           </IonTitle>
         </IonListHeader>
         {props.steps.map((step) => {

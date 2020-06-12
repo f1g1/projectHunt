@@ -67,12 +67,6 @@ export default function Lobby(props) {
 
   useEffect(() => {
     MiscService.setChatNr(0);
-    return () => {
-      if (lobbyChanging && lobbyChanging.startTime) {
-        console.log("if (lobbyChanging && lobbyChanging.startTime");
-        leaveLobby();
-      }
-    };
   }, []);
 
   useEffect(() => {
@@ -131,20 +125,25 @@ export default function Lobby(props) {
   };
   const leaveLobby = () => {
     if (
-      LobbyService.getPlayerTeam(UserService.getCurrentPlayer().name, teams)
+      lobbyChanging &&
+      lobbyChanging.players.includes(UserService.getCurrentPlayer().name)
     ) {
-      leaveTeam(
-        LobbyService.getCurrentLobby(),
-        UserService.getCurrentPlayer.name,
+      if (
         LobbyService.getPlayerTeam(UserService.getCurrentPlayer().name, teams)
+      ) {
+        leaveTeam(
+          LobbyService.getCurrentLobby(),
+          UserService.getCurrentPlayer.name,
+          LobbyService.getPlayerTeam(UserService.getCurrentPlayer().name, teams)
+        );
+      }
+      LobbyService.leaveLobby(
+        UserService.getCurrentPlayer().name,
+        teams,
+        LobbyService.ImAdmin(lobbyChanging),
+        lobbyChanging
       );
     }
-    LobbyService.leaveLobby(
-      UserService.getCurrentPlayer().name,
-      teams,
-      LobbyService.ImAdmin(lobbyChanging),
-      lobbyChanging
-    );
   };
   const joinTeam = (team) => {
     LobbyService.playerJoinTeam(
@@ -186,7 +185,7 @@ export default function Lobby(props) {
                   sizeXl="3"
                   sizeMd="5"
                   sizeXs="12"
-                  offsetXl="1.5"
+                  offsetXl="3"
                 >
                   {lobbyChanging.image && (
                     <IonCard>

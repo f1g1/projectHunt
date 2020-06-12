@@ -76,19 +76,7 @@ export default function Settings(props) {
                     checked={notifications.message}
                   ></IonCheckbox>
                 </IonItem>
-                {/* <IonItem>
-                  Admin Message Notification
-                  <IonCheckbox
-                    onIonChange={(e) =>
-                      setNotifications({
-                        ...notifications,
-                        adminMessage: e.detail.checked,
-                      })
-                    }
-                    slot="end"
-                    checked={notifications.adminMessage}
-                  ></IonCheckbox>
-                </IonItem> */}
+
                 <IonListHeader>
                   <h2>General Notifications</h2>
                 </IonListHeader>

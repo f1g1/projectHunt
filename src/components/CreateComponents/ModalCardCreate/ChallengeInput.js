@@ -90,8 +90,15 @@ function QrInput(props) {
           <IonSelectOption value="0f0">green</IonSelectOption>
         </IonSelect>
       </IonItem>
-
-      {qr && <img src={qr}></img>}
+      <div
+        className="ion-padding-top"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        {qr && <img style={{ width: "60%", height: "auto" }} src={qr}></img>}
+      </div>
 
       <p>
         {qr && (

@@ -29,7 +29,6 @@ function setChatNr(nr) {
 }
 
 function getQr(data, color) {
-  debugger;
   const controller = new AbortController();
   // signal to pass to fetch
   const signal = controller.signal;
@@ -51,13 +50,18 @@ function getQr(data, color) {
 }
 
 function getNotificationSettings() {
-  debugger;
-  if (JSON.parse(window.localStorage["notificationSettings"]))
+  try {
     return JSON.parse(window.localStorage["notificationSettings"]);
-
-  let n = { message: true, adminMessage: true, map: true, newChallenge: true };
-  window.localStorage["notificationSettings"] = JSON.stringify(n);
-  return n;
+  } catch {
+    let n = {
+      message: true,
+      adminMessage: true,
+      map: true,
+      newChallenge: true,
+    };
+    window.localStorage["notificationSettings"] = JSON.stringify(n);
+    return n;
+  }
 }
 function setNotificationSettings(notificationSettings) {
   window.localStorage["notificationSettings"] = JSON.stringify(

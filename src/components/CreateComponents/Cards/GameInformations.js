@@ -170,7 +170,7 @@ export default function GameInformations(props) {
               </IonButton>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <img
-                  src={image}
+                  src={image ? image : state.image}
                   style={{ maxHeight: "350px", width: "auto" }}
                   className="ion-padding-vertical"
                 ></img>

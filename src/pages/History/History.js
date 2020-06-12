@@ -71,7 +71,9 @@ export default function History(props) {
                 className="ion-text-center ion-padding-top"
                 style={{ visible: !loading, marginTop: "10vh" }}
               >
-                <h1>You need to play some games to see your history!</h1>
+                <h1 className="ion-text-wrap">
+                  You need to play some games to see your history!
+                </h1>
               </IonTitle>
             ))}
           <IonRow className="ion-padding-top">

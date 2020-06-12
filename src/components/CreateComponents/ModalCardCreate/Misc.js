@@ -60,7 +60,11 @@ export default function Misc(props) {
     setShowMapModal(false);
   };
   const saveLocation = (lat, lng, radius) => {
-    props.setStep({ ...props.step, coords: { lat, lng }, radius });
+    props.setStep({
+      ...props.step,
+      coords: { lat, lng },
+      radius,
+    });
   };
   return (
     <>
@@ -121,9 +125,9 @@ export default function Misc(props) {
           className="ion-no-padding"
           disabled={props.step.hidden}
           checked={props.step.visible || false}
-          onIonChange={(x) =>
-            props.setStep({ ...props.step, visible: x.detail.checked })
-          }
+          onIonChange={(x) => {
+            props.setStep({ ...props.step, visible: x.detail.checked });
+          }}
         />
       </IonItem>
       <IonItem className="ion-no-padding">
@@ -163,6 +167,22 @@ export default function Misc(props) {
           This is the requiered time a team must wait to respond again, if the
         </p>
       </IonItem>
+      <div className="ion-padding-top">
+        {
+          <>
+            {(props.step.hidden || props.step.visible) && !props.step.coords && (
+              <IonLabel color="danger" className="ion-text-center">
+                <p>You need to specify location, if hidden or visible</p>
+              </IonLabel>
+            )}
+            {!(props.step.hidden || props.step.visible) && props.step.coords && (
+              <IonLabel color="danger" className="ion-text-center">
+                <p>You need to specify if this challenge hidden or visible</p>
+              </IonLabel>
+            )}
+          </>
+        }
+      </div>
       <IonRow>
         <IonCol>
           {props.step.coords && (
@@ -185,13 +205,7 @@ export default function Misc(props) {
           )}
         </IonCol>
       </IonRow>
-      <div className="ion-padding-top">
-        {(props.step.hidden || props.step.visible) && !props.step.coords && (
-          <IonLabel color="danger" className="ion-text-center">
-            <p>You need to specify location, if hidden or visible</p>
-          </IonLabel>
-        )}
-      </div>
+
       <IonModal
         isOpen={showMapModal}
         onDidDismiss={() => handleCloseMap(false)}
