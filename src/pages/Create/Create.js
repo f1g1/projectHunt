@@ -110,10 +110,21 @@ const Create = (props) => {
       <IonFooter>
         <IonToolbar>
           <IonButtons className="ion-padding-horizontal">
-            <IonButton slot="end" onClick={() => saveGame()} color="primary">
+            <IonButton
+              shape="round"
+              shape="round"
+              slot="end"
+              onClick={() => saveGame()}
+              color="primary"
+            >
               SaveGame
             </IonButton>
-            <IonButton slot="end" onClick={() => setShowQrModal(true)}>
+            <IonButton
+              shape="round"
+              shape="round"
+              slot="end"
+              onClick={() => setShowQrModal(true)}
+            >
               QRs
             </IonButton>
           </IonButtons>

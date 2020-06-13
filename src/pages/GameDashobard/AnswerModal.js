@@ -19,7 +19,7 @@ export default function AnswerModal(props) {
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons style={{ display: "inline-block" }}>
-            <IonButton onclick={props.handleClose}>
+            <IonButton shape="round" shape="round" onclick={props.handleClose}>
               <CloseIcon />
             </IonButton>
           </IonButtons>
@@ -47,7 +47,7 @@ export default function AnswerModal(props) {
             </div>
           )}
           <h2 style={{ paddingTop: "50px" }}>Clue:</h2>
-          <IonTitle>{props.step.clue}</IonTitle>
+          <IonTitle className="ion-text-wrap">{props.step.clue}</IonTitle>
           {props.step.code && props.step.code !== "" && (
             <>
               <h2>Expected Answer:</h2>
@@ -88,6 +88,7 @@ export default function AnswerModal(props) {
           )}
 
           <IonButton
+            shape="round"
             color="danger"
             onClick={() => {
               DashboardService.revokeChallenge(props.team.name, props.step);

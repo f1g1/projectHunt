@@ -14,6 +14,7 @@ import React, { useEffect, useRef, useState } from "react";
 import GoogleMap from "google-map-react";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import LocationSearchingRoundedIcon from "@material-ui/icons/LocationSearchingRounded";
+import { mapStyle } from "../../resources/mapStyle";
 
 let Marker = (lat, lng) => (
   <div lat={lat} lng={lng} hover="false">
@@ -57,7 +58,9 @@ let ModalMap = (props) => {
       setpolyline(ppolyline);
     }
   };
-
+  const mapOptions = {
+    styles: mapStyle,
+  };
   return (
     <>
       <IonHeader>
@@ -98,6 +101,7 @@ let ModalMap = (props) => {
       </IonHeader>
       <div style={{ height: "100%", width: "100%" }}>
         <GoogleMap
+          options={mapOptions}
           ref={refMap}
           bootstrapURLKeys={{
             key: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA",
@@ -154,6 +158,7 @@ let ModalMap = (props) => {
                 )}
                 <IonCol size="12" className="ion-justify-content-between">
                   <IonButton
+                    shape="round"
                     color="success"
                     onClick={() => {
                       props.save(mapCenter.lat, mapCenter.lng, radius);
@@ -162,7 +167,12 @@ let ModalMap = (props) => {
                   >
                     Save
                   </IonButton>
-                  <IonButton color="danger" onClick={props.handleClose}>
+                  <IonButton
+                    shape="round"
+                    shape="round"
+                    color="danger"
+                    onClick={props.handleClose}
+                  >
                     X
                   </IonButton>
                 </IonCol>
@@ -170,10 +180,20 @@ let ModalMap = (props) => {
             ) : (
               <IonCol>
                 <div className="ion-justify-content-between">
-                  <IonButton onClick={handleGetCenter}>
+                  <IonButton
+                    shape="round"
+                    shape="round"
+                    shape="round"
+                    onClick={handleGetCenter}
+                  >
                     Select Position
                   </IonButton>
-                  <IonButton color="danger" onClick={props.handleClose}>
+                  <IonButton
+                    shape="round"
+                    shape="round"
+                    color="danger"
+                    onClick={props.handleClose}
+                  >
                     X
                   </IonButton>
                 </div>

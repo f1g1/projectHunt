@@ -32,6 +32,7 @@ export default function TeamPanel(props) {
               (x) => x === UserService.getCurrentPlayer().name
             ).length > 0 ? (
               <IonButton
+                shape="round"
                 color="primary"
                 expand="full"
                 disabled={props.canJoin || props.team.length / props.max === 1}
@@ -41,6 +42,7 @@ export default function TeamPanel(props) {
               </IonButton>
             ) : (
               <IonButton
+                shape="round"
                 disabled="false"
                 expand="full"
                 color="danger"
@@ -57,6 +59,7 @@ export default function TeamPanel(props) {
             )
           ) : (
             <IonButton
+              shape="round"
               expand="full"
               color="danger"
               onClick={() => disbandTeam(props.team.name)}

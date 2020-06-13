@@ -58,7 +58,12 @@ export default function Response(props) {
                   src={props.step.succesResponseImage}
                 />
               )}
-              <IonButton full onClick={() => refSuccesInput.current.click()}>
+              <IonButton
+                shape="round"
+                shape="round"
+                full
+                onClick={() => refSuccesInput.current.click()}
+              >
                 Add Photo
               </IonButton>
               <input
@@ -106,6 +111,7 @@ export default function Response(props) {
                 />
               )}
               <IonButton
+                shape="round"
                 color="light"
                 full
                 onClick={() => refWrongInput.current.click()}

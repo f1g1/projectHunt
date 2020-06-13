@@ -3,6 +3,7 @@ import {
   IonCardContent,
   IonContent,
   IonHeader,
+  IonLabel,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -17,6 +18,7 @@ export default function ApproveModal(props) {
       <IonHeader>
         <IonToolbar color="primary">
           <IonButton
+            shape="round"
             color="danger"
             onClick={props.handleClose}
             className="ion-padding-start ion-float-left"
@@ -34,7 +36,9 @@ export default function ApproveModal(props) {
           {props.image && <img src={props.image} imageViewer></img>}
           <div className="ion-padding-vertical ion-no-padding">
             Clue:
-            <IonTitle>{props.clue}</IonTitle>
+            <IonLabel className="ion-text-wrap">
+              <h2 style={{ fontWeight: "bold" }}>{props.clue}</h2>
+            </IonLabel>
           </div>
           <div className="ion-padding-vertical ion-no-padding">
             Answer:
@@ -52,6 +56,7 @@ export default function ApproveModal(props) {
               }}
             ></div>
             <IonButton
+              shape="round"
               size="large"
               expand="full"
               onClick={() => {
@@ -67,6 +72,7 @@ export default function ApproveModal(props) {
             </IonButton>
             <div style={{ bottom: "20px" }}>
               <IonButton
+                shape="round"
                 className="ion-padding-vertical"
                 expand="full"
                 color="danger"

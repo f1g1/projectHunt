@@ -166,6 +166,7 @@ export default function Lobby(props) {
               <IonTitle color="danger">{lobbyChanging.title}</IonTitle>
               <IonButtons slot="end">
                 <IonButton
+                  shape="round"
                   color="danger"
                   onClick={() => {
                     console.log("clicked");
@@ -258,6 +259,7 @@ export default function Lobby(props) {
               <IonButtons>
                 {LobbyService.ImAdmin(lobbyChanging) && (
                   <IonButton
+                    shape="round"
                     color="primary"
                     onClick={() => setShowAlert1(true)}
                   >
@@ -265,13 +267,19 @@ export default function Lobby(props) {
                   </IonButton>
                 )}
                 <IonButton
+                  shape="round"
                   color="primary"
                   onClick={() => setShowQrJoinModal(true)}
                 >
                   Show Join Qr
                 </IonButton>
 
-                <IonButton full onClick={() => setShowChatModal(true)}>
+                <IonButton
+                  shape="round"
+                  shape="round"
+                  full
+                  onClick={() => setShowChatModal(true)}
+                >
                   Chat
                   {unread > 0 && (
                     <IonBadge color="danger" style={{ marginLeft: "10px" }}>
@@ -279,7 +287,12 @@ export default function Lobby(props) {
                     </IonBadge>
                   )}
                 </IonButton>
-                <IonButton full onClick={() => setShowPlayersModal(true)}>
+                <IonButton
+                  shape="round"
+                  shape="round"
+                  full
+                  onClick={() => setShowPlayersModal(true)}
+                >
                   Players ({lobbyChanging.players.length})
                 </IonButton>
               </IonButtons>

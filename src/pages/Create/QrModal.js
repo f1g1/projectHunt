@@ -18,6 +18,7 @@ export default function QrModal(props) {
       <IonHeader>
         <IonToolbar color="primary" className="ion-text-center">
           <IonButton
+            shape="round"
             color="danger"
             onClick={props.handleClose}
             className="ion-padding-start ion-float-left"

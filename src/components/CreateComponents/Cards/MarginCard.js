@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 
 import GoogleMap from "google-map-react";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
+import { mapStyle } from "../../../resources/mapStyle";
 
 const LocationMarker = ({ lat, lng }) => (
   <LocationOnRoundedIcon
@@ -45,12 +46,19 @@ export default function MarginCard(props) {
     ppolyline.setMap(google.map);
     setpolyline(ppolyline);
   };
+  const mapOptions = {
+    styles: mapStyle,
+  };
   return (
     <div style={{ height: "100%", width: "100%" }}>
       <IonCard>
         <IonCardHeader>
           <IonCardTitle>{props.title}</IonCardTitle>
-          <IonButton onClick={props.openModal} fill="outline">
+          <IonButton
+            shape="round"
+            onClick={props.openModal}
+            fill={props.lat ? "solid" : "outline"}
+          >
             Location
           </IonButton>
         </IonCardHeader>
@@ -59,6 +67,7 @@ export default function MarginCard(props) {
             <div style={{ height: "100%", width: "100%" }}>
               {props.lat && (
                 <GoogleMap
+                  options={mapOptions}
                   bootstrapURLKeys={{
                     key: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA",
                   }}

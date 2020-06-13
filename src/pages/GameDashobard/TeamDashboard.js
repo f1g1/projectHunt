@@ -70,8 +70,9 @@ export default function TeamDashboard(props) {
   return (
     <>
       <IonHeader>
-        <IonToolbar color="tertiary" className="ion-text-center">
+        <IonToolbar color="primary" className="ion-text-center">
           <IonButton
+            shape="round"
             color="danger"
             onClick={props.handleClose}
             className="ion-padding-start ion-float-left"
@@ -132,20 +133,26 @@ export default function TeamDashboard(props) {
                 value={adjustment.value}
                 onIonChange={(e) => handleAdjustmentChange(e.target.value)}
               ></IonInput>
-              <IonButton onClick={handleAdjustment}>Adjust</IonButton>
+              <IonButton shape="round" shape="round" onClick={handleAdjustment}>
+                Adjust
+              </IonButton>
             </IonItem>
           </IonCol>
           <IonRow className="ion-justify-content-center">
             <IonCol size="12">
               <div style={{ display: "flex", justifyContent: "center" }}>
-                <IonButton onClick={() => setShowPopover(true)}>
+                <IonButton
+                  shape="round"
+                  shape="round"
+                  onClick={() => setShowPopover(true)}
+                >
                   See Adjustments
                 </IonButton>
               </div>
             </IonCol>
           </IonRow>
         </IonRow>
-        <IonToolbar color="tertiary">
+        <IonToolbar color="primary">
           <IonTitle>Completed Challenges</IonTitle>
         </IonToolbar>
 
@@ -222,7 +229,11 @@ export default function TeamDashboard(props) {
                     </div>
                   </IonCol>
                   <IonCol className="ion-no-padding" sizeXl="2">
-                    <IonButton onClick={() => handleSeeShowAnswer(x)}>
+                    <IonButton
+                      shape="round"
+                      shape="round"
+                      onClick={() => handleSeeShowAnswer(x)}
+                    >
                       See answer!
                     </IonButton>
                   </IonCol>
@@ -237,7 +248,7 @@ export default function TeamDashboard(props) {
             </p>
           </IonLabel>
         )}
-        <IonToolbar color="tertiary" className="ion-margin-top">
+        <IonToolbar color="primary" className="ion-margin-top">
           <IonTitle>Active Challenges</IonTitle>
         </IonToolbar>
         <IonCard color="light">
@@ -293,6 +304,7 @@ export default function TeamDashboard(props) {
                     offset="1"
                   >
                     <IonButton
+                      shape="round"
                       onClick={() =>
                         DashboardService.completeChallenge(
                           props.team.name,
@@ -377,6 +389,7 @@ export default function TeamDashboard(props) {
 
                     <IonCol size="2" className="ion-no-padding">
                       <IonButton
+                        shape="round"
                         color="danger"
                         onClick={() =>
                           DashboardService.deleteAdjustment(

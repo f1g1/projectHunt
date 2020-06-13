@@ -1,4 +1,5 @@
 import { Geolocation } from "@capacitor/core";
+import { fireStore } from "../firebase";
 
 const MiscService = {
   getCachedGeolocation,
@@ -10,7 +11,12 @@ const MiscService = {
   getChatNr,
   setAvalaibleLocation,
   getAvalaibleLocation,
+  sendBugReport,
 };
+
+function sendBugReport(value) {
+  return fireStore.collection("bugReport").add(value);
+}
 
 function setAvalaibleLocation(value) {
   window.localStorage["avalaibleLocation"] = value;

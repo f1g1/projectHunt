@@ -19,6 +19,7 @@ import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
 import MiscService from "../../../services/MiscService";
 import { PlayService } from "../../../services/PlayService";
 import { UserService } from "../../../services/UserSerivce";
+import { mapStyle } from "../../../resources/mapStyle";
 
 const MyLocationMarker = ({ lat, lng }) => (
   <>
@@ -146,7 +147,11 @@ export default function GameMap(props) {
   const cancleBreadcrumbs = () => {
     setBreadcrumbs(props.game.breadcrumbs);
     if (props.game.breadcrumbs)
-      line.setOptions({ editable: false, path: props.game.breadcrumbs });
+      line.setOptions({
+        editable: false,
+        path: props.game.breadcrumbs,
+        strokeOpacity: 0,
+      });
     else {
       line.setOptions({ visible: false });
     }
@@ -191,7 +196,7 @@ export default function GameMap(props) {
     }
     PlayService.saveBreadcrumbs(auxBounds)
       .then(() => {
-        line.setOptions({ editable: false });
+        line.setOptions({ editable: false, strokeOpacity: 0 });
         setModifyingBreadcrumbs(false);
         setMessageToast("Breadcrumbs updated succesfully");
         setBounds(auxBounds);
@@ -255,7 +260,7 @@ export default function GameMap(props) {
       setBreadcrumbs(initialBounds);
       pathBounds = initialBounds;
     }
-    line.setOptions({ path: pathBounds, editable: true });
+    line.setOptions({ path: pathBounds, editable: true, strokeOpacity: 1 });
     setModifyingBreadcrumbs(true);
   };
 
@@ -273,12 +278,25 @@ export default function GameMap(props) {
   };
 
   const initLine = (google) => {
+    var lineSymbol = {
+      path: "M 0,-1 0,1",
+      strokeOpacity: 1,
+      scale: 2,
+      fill: "#2d545e",
+    };
+
     var line = new google.maps.Polyline({
       path: breadcrumbs,
+      strokeOpacity: 0,
       geodesic: true,
-      strokeOpacity: 1,
-      strokeWeight: 2,
-      strokeColor: "#ff6600",
+      icons: [
+        {
+          icon: lineSymbol,
+          offset: "0",
+          repeat: "20px",
+          fill: "#2d545e",
+        },
+      ],
     });
     line.setMap(google.map);
     setLine(line);
@@ -287,13 +305,16 @@ export default function GameMap(props) {
   const handlePoint = () => {
     setHandlingPoint(true);
   };
+  const mapOptions = {
+    styles: mapStyle,
+  };
 
   return (
     <>
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons>
-            <IonButton onclick={props.handleClose}>
+            <IonButton shape="round" shape="round" onclick={props.handleClose}>
               <CloseIcon />
             </IonButton>
           </IonButtons>
@@ -302,6 +323,7 @@ export default function GameMap(props) {
       <IonContent>
         <div style={{ height: "100%", width: "100%" }}>
           <GoogleMap
+            options={mapOptions}
             bootstrapURLKeys={{
               key: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA",
             }}
@@ -371,20 +393,43 @@ export default function GameMap(props) {
           {LobbyService.ImAdmin(props.game) && (
             <div className="leftContainer">
               {!handlingPoint ? (
-                <IonButton onClick={handlePoint} color="tertiary">
+                <IonButton
+                  shape="round"
+                  shape="round"
+                  shape="round"
+                  onClick={handlePoint}
+                  color="primary"
+                >
                   Set Admin point
                 </IonButton>
               ) : (
                 <>
                   <div>
                     {!selectedPosition ? (
-                      <IonButton color="success" onclick={handleMarkCenter}>
+                      <IonButton
+                        shape="round"
+                        shape="round"
+                        color="success"
+                        onclick={handleMarkCenter}
+                      >
                         Mark Here
                       </IonButton>
                     ) : (
-                      <IonButton onclick={handleSavePoint}>Save!</IonButton>
+                      <IonButton
+                        shape="round"
+                        shape="round"
+                        shape="round"
+                        onclick={handleSavePoint}
+                      >
+                        Save!
+                      </IonButton>
                     )}
-                    <IonButton color="danger" onclick={cancelPoint}>
+                    <IonButton
+                      shape="round"
+                      shape="round"
+                      color="danger"
+                      onclick={cancelPoint}
+                    >
                       X
                     </IonButton>
                   </div>
@@ -392,30 +437,63 @@ export default function GameMap(props) {
               )}
 
               {!modifyingArea ? (
-                <IonButton onClick={handleArea} color="tertiary">
+                <IonButton
+                  shape="round"
+                  shape="round"
+                  shape="round"
+                  onClick={handleArea}
+                  color="primary"
+                >
                   Area
                 </IonButton>
               ) : (
                 <div>
-                  <IonButton onClick={saveArea} color="success">
+                  <IonButton
+                    shape="round"
+                    shape="round"
+                    shape="round"
+                    onClick={saveArea}
+                    color="success"
+                  >
                     Save!
                   </IonButton>
-                  <IonButton color="danger" onclick={cancelArea}>
+                  <IonButton
+                    shape="round"
+                    shape="round"
+                    shape="round"
+                    color="danger"
+                    onclick={cancelArea}
+                  >
                     X
                   </IonButton>
                 </div>
               )}
 
               {!modifyingBreadcrumbs ? (
-                <IonButton onClick={handleBreadcrumbs} color="tertiary">
+                <IonButton
+                  shape="round"
+                  shape="round"
+                  onClick={handleBreadcrumbs}
+                  color="primary"
+                >
                   Breadcrumbs
                 </IonButton>
               ) : (
                 <div>
-                  <IonButton onClick={saveBreadcrumbs} color="success">
+                  <IonButton
+                    shape="round"
+                    shape="round"
+                    onClick={saveBreadcrumbs}
+                    color="success"
+                  >
                     Save!
                   </IonButton>
-                  <IonButton color="danger" onclick={cancleBreadcrumbs}>
+                  <IonButton
+                    shape="round"
+                    shape="round"
+                    color="danger"
+                    onclick={cancleBreadcrumbs}
+                  >
                     X
                   </IonButton>
                 </div>
@@ -425,6 +503,7 @@ export default function GameMap(props) {
           {!LobbyService.ImAdmin(props.game) && (
             <div className="bottomContainer">
               <IonButton
+                shape="round"
                 onClick={shareLocation}
                 disabled={avalaibleLocation === "false"}
               >

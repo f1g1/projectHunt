@@ -73,7 +73,13 @@ export default function UserName(props) {
                   maxlength="25"
                   minlength="3"
                 />
-                <IonButton onClick={handleSubmit} size="large">
+                <IonButton
+                  shape="round"
+                  shape="round"
+                  shape="round"
+                  onClick={handleSubmit}
+                  size="large"
+                >
                   Save!
                 </IonButton>
               </IonItem>

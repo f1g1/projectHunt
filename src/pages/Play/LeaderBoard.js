@@ -26,6 +26,7 @@ export default function LeaderBoard(props) {
           <div style={{ display: "flex", alignItems: "center" }}>
             {!props.endGame ? (
               <IonButton
+                shape="round"
                 onclick={props.handleClose}
                 color="danger"
                 className="ion-padding-start"

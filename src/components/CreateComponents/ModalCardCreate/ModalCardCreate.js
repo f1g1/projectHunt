@@ -57,8 +57,7 @@ export default function ModalCardCreate(props) {
     if (!step.clue || step.clue.length < 3)
       errors += "Clue can't be less than 3 characters long.";
     if (step.answerType < 2 && !step.code && !step.freeAnswer)
-      errors +=
-        "\n If the answer is not an image you need to set an response different than null.";
+      errors += "\n If the answer is not an image you need to set an response.";
     if ((step.hidden || step.visible) && !step.coords)
       errors += "\n You need to specify location, if hidden or visible.";
     if (!(step.hidden || step.visible) && step.coords)
@@ -101,13 +100,20 @@ export default function ModalCardCreate(props) {
       <IonHeader>
         <IonToolbar color="primary">
           <IonButton
+            shape="round"
             color="danger"
             onClick={props.handleClose}
             className="ion-padding-horizontal"
           >
             X
           </IonButton>
-          <IonButton onClick={saveNewStep} color="success">
+          <IonButton
+            shape="round"
+            shape="round"
+            shape="round"
+            onClick={saveNewStep}
+            color="success"
+          >
             Save!
           </IonButton>
         </IonToolbar>

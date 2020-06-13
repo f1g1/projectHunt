@@ -154,6 +154,7 @@ export default function MyGames(props) {
                             <IonCol sizeXl="3" size="12">
                               <p>
                                 <IonButton
+                                  shape="round"
                                   expand="full"
                                   size="default"
                                   onClick={(e) => {
@@ -176,6 +177,7 @@ export default function MyGames(props) {
                                     }}
                                   >
                                     <IonButton
+                                      shape="round"
                                       color="dark"
                                       onClick={() => handleEdit(x)}
                                       className="ion-margin-start"
@@ -183,6 +185,7 @@ export default function MyGames(props) {
                                       Edit
                                     </IonButton>
                                     <IonButton
+                                      shape="round"
                                       className="ion-margin-horizontal"
                                       color="dark"
                                       onClick={() => setShowQrModal(x.steps)}
@@ -194,6 +197,7 @@ export default function MyGames(props) {
                               </IonRow>
                               <p className="ion-justify-content-center">
                                 <IonButton
+                                  shape="round"
                                   expand="full"
                                   color="danger"
                                   size="default"
@@ -223,6 +227,7 @@ export default function MyGames(props) {
                       </div>
 
                       <IonButton
+                        shape="round"
                         className="ion-padding-vertical"
                         expand="full"
                         onClick={() => props.history.replace("/game")}

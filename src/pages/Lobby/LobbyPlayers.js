@@ -37,7 +37,7 @@ export default function LobbyPlayers(props) {
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons style={{ display: "inline-block" }}>
-            <IonButton onclick={props.handleClose}>
+            <IonButton shape="round" shape="round" onclick={props.handleClose}>
               <CloseIcon />
             </IonButton>
           </IonButtons>

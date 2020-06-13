@@ -89,7 +89,7 @@ export default function DashboardGame(props) {
               </IonCol>
               <IonCol sizeXl="6" sizeXs="12">
                 <p>Clue:</p>
-                <IonLabel>{x.clue}</IonLabel>
+                <IonLabel className="ion-text-wrap">{x.clue}</IonLabel>
               </IonCol>
               <IonCol className="ion-text-center">
                 <IonLabel>

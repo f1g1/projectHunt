@@ -16,6 +16,7 @@ import GoogleMap from "google-map-react";
 import LocationOnRoundedIcon from "@material-ui/icons/LocationOnRounded";
 import MiscService from "../../../services/MiscService";
 import ModalMap from "../ModalMap";
+import { mapStyle } from "../../../resources/mapStyle";
 
 const LocationMarker = ({ lat, lng }) => (
   <LocationOnRoundedIcon
@@ -66,13 +67,21 @@ export default function Misc(props) {
       radius,
     });
   };
+  const mapOptions = {
+    styles: mapStyle,
+  };
+
   return (
     <>
       <div
         style={{ display: "flex", justifyContent: "center" }}
         className="ion-padding-vertical"
       >
-        <IonButton onClick={() => setShowMapModal(true)} fill="outline">
+        <IonButton
+          shape="round"
+          onClick={() => setShowMapModal(true)}
+          fill={props.step.coords ? "solid" : "outline"}
+        >
           Location
         </IonButton>
       </div>
@@ -189,6 +198,7 @@ export default function Misc(props) {
             <div style={{ height: "250px" }}>
               <div style={{ height: "100%", width: "100%" }}>
                 <GoogleMap
+                  options={mapOptions}
                   bootstrapURLKeys={{
                     key: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA",
                   }}

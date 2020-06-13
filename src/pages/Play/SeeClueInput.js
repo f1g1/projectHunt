@@ -77,6 +77,7 @@ function TextInput(props) {
       </IonItem>
       {props.children}
       <IonButton
+        shape="round"
         className="ion-margin-top"
         expand="full"
         onClick={handleSubmit}
@@ -126,8 +127,9 @@ function QrInput(props) {
       {props.children}
 
       <IonButton
+        shape="round"
         size="largest"
-        color="tertiary"
+        color="primary"
         expand="full"
         onClick={openScanner}
         style={{ minHieght: "50px" }}
@@ -172,6 +174,7 @@ function ImageInput(props) {
     <>
       <div style={{ width: "100%", justifyContent: "center", display: "flex" }}>
         <IonButton
+          shape="round"
           onClick={() => refInput.current.click()}
           className="ionic-padding-vertical"
         >
@@ -195,7 +198,13 @@ function ImageInput(props) {
           >
             <img src={image} style={{ maxHeight: "350px" }} />
           </div>
-          <IonButton expand="full" onClick={handleSend}>
+          <IonButton
+            shape="round"
+            shape="round"
+            shape="round"
+            expand="full"
+            onClick={handleSend}
+          >
             Send!
           </IonButton>{" "}
         </>

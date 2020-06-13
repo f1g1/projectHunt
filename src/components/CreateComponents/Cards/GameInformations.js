@@ -136,10 +136,7 @@ export default function GameInformations(props) {
                 </IonItem>
                 <IonItem>
                   <IonLabel position="floating">Description:</IonLabel>
-                  <IonTextarea
-                    onIonChange={(e) => setDescription(e.target.value)}
-                    value={state.description}
-                  ></IonTextarea>
+                  <IonTextarea></IonTextarea>
                 </IonItem>
                 <IonItem lines="none">
                   <IonLabel>Entry Code*:</IonLabel>
@@ -165,8 +162,12 @@ export default function GameInformations(props) {
           <IonCard>
             <IonCardContent>
               <IonCardTitle>Miscellaneous</IonCardTitle>
-              <IonButton onClick={() => refInput.current.click()}>
-                Add Game Photo
+              <IonButton
+                shape="round"
+                onClick={() => refInput.current.click()}
+                fill={state.image || image ? "solid" : "outline"}
+              >
+                Game Photo
               </IonButton>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <img

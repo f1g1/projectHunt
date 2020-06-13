@@ -85,6 +85,7 @@ const Login = (props) => {
         </IonRow>
 
         <IonButton
+          shape="round"
           style={{
             minHeight: "50px",
             marginBottom: "30px",

@@ -1,32 +1,32 @@
-.closeModal{
+.closeModal {
   position: absolute;
   bottom: 30px;
 }
-.bottomContainer{
+.bottomContainer {
   display: flex;
-  flex:1;
+  flex: 1;
   justify-content: space-between;
   position: absolute;
   bottom: 5px;
-  left: 5px; 
+  left: 5px;
 }
 .iconSize {
   height: 24px;
   width: 24px;
 }
-.vcentered{
+.vcentered {
   display: flex;
   align-items: center;
 }
-.inpt{
-  width:10%;
-  border:1px solid black  
+.inpt {
+  width: 10%;
+  border: 1px solid black;
 }
 
-.mapBox{
-  width:500px !important;
-  height:300px !important;
-  position: relative; 
+.mapBox {
+  width: 500px !important;
+  height: 300px !important;
+  position: relative;
 }
 .markerFixed {
   z-index: 10000;
@@ -34,26 +34,27 @@
   position: absolute;
   top: 50%;
 }
-.marker{  position: absolute;
+.marker {
+  position: absolute;
   z-index: 5;
   background-color: #fff;
   padding: 5px;
   border: 1px solid #999;
   text-align: center;
-  font-family: 'Roboto','sans-serif';
+  font-family: "Roboto", "sans-serif";
   line-height: 30px;
-  padding-left: 10px;}
+  padding-left: 10px;
+}
 
-  .locationPin{
-    transform: translate(-50%, -100%);
-    height: 40px;
-    width: 40px;
-    color: orange;
-  }
-  
-  .locationCrosshair{
-    transform: translate(-50%, -50%);
-    height: 40px;
-    width: 40px;
+.locationPin {
+  transform: translate(-50%, -100%);
+  height: 40px;
+  width: 40px;
+  color: #2d545e;
+}
 
-  }
+.locationCrosshair {
+  transform: translate(-50%, -50%);
+  height: 40px;
+  width: 40px;
+}

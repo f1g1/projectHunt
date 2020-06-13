@@ -69,6 +69,8 @@ export default function SeeClue(props) {
     // if (!props.step.freeAnswer && !props.step.needsValidation)
     return (
       status == 0 &&
+      !props.step.freeAnswer &&
+      !props.step.needsValidation &&
       (!props.step.onlyOnce ? (
         <IonLabel className="ion-text-center">
           {props.step.waitingTime ? (
@@ -124,6 +126,7 @@ export default function SeeClue(props) {
         <IonToolbar color={status != 2 ? "primary" : "danger"}>
           <div style={{ display: "flex", alignItems: "center" }}>
             <IonButton
+              shape="round"
               color="danger"
               onClick={props.handleClose}
               className="ion-padding-start ion-float-left"

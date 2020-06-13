@@ -6,7 +6,7 @@
   width: 30px;
   height: 30px;
   transform: translate(-50%, -100%);
-  color: orange;
+  color: #2d545e;
 }
 .map-admin-point {
   position: relative;
@@ -18,7 +18,7 @@
   transform: translate(-50%, -100%);
   color: red;
 }
-.map-admin-point.notSetted{
+.map-admin-point.notSetted {
   opacity: 0.2;
 }
 .map-user-to-share {

@@ -116,6 +116,7 @@ export default function LobbySearch(props) {
                     }}
                   >
                     <IonButton
+                      shape="round"
                       size="large"
                       className="ion-no-padding"
                       onClick={() => {
@@ -156,6 +157,7 @@ export default function LobbySearch(props) {
                         maxlength="20"
                       ></IonInput>
                       <IonButton
+                        shape="round"
                         size="default"
                         onClick={() => handleSearch(searchString)}
                       >
@@ -223,6 +225,7 @@ export default function LobbySearch(props) {
                                     </IonLabel>
                                   ) : (
                                     <IonButton
+                                      shape="round"
                                       size="default"
                                       onClick={() => joinLobby(x)}
                                     >

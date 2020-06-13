@@ -115,6 +115,7 @@ export default function PlayerTag(props) {
               <>
                 <IonCol className="ion-text-end">
                   <IonButton
+                    shape="round"
                     className="ion-float-right"
                     onClick={handleClick}
                     fill="clear"

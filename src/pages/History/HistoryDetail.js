@@ -21,6 +21,7 @@ export default function HistoryDetail(props) {
         <IonToolbar color="primary">
           <div style={{ display: "flex", alignItems: "center" }}>
             <IonButton
+              shape="round"
               onclick={props.handleClose}
               color="danger"
               className="ion-padding-horizontal"

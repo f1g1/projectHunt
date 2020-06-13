@@ -98,6 +98,9 @@ export default function Home(props) {
 
               <IonList style={{ marginTop: "10vh" }}>
                 <IonButton
+                  shape="round"
+                  shape="round"
+                  shape="round"
                   mode="ios"
                   style={{
                     minHeight: "100px",
@@ -119,6 +122,8 @@ export default function Home(props) {
                   Play!
                 </IonButton>
                 <IonButton
+                  shape="round"
+                  shape="round"
                   expand="full"
                   style={{
                     minHeight: "50px",
@@ -139,6 +144,8 @@ export default function Home(props) {
                   New hunt!
                 </IonButton>
                 <IonButton
+                  shape="round"
+                  shape="round"
                   style={{
                     minHeight: "50px",
                     marginBottom: "15px",

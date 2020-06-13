@@ -22,12 +22,14 @@ export default function InnerCard(props) {
         <IonCard color="light" className="full">
           <IonCardHeader slot="end">
             <IonButton
+              shape="round"
               color="danger"
               onClick={() => props.delete(props.step.id)}
             >
               x
             </IonButton>
             <IonButton
+              shape="round"
               onClick={() => {
                 props.edit(props.step);
               }}
@@ -53,7 +55,9 @@ export default function InnerCard(props) {
             )}
             <br />
             Clue:
-            <IonCardTitle>{props.step.clue}</IonCardTitle>
+            <IonCardTitle className="ion-text-wrap">
+              {props.step.clue}
+            </IonCardTitle>
             <br></br>
             <IonRow>
               <IonCol sizeXl="3">

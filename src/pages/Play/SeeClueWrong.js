@@ -44,6 +44,7 @@ export default function SeeClueWrong(props) {
           {props.timer <= 0 ||
             (!props.timer && (
               <IonButton
+                shape="round"
                 className="ion-padding-vertical"
                 expand="full"
                 onClick={props.ok}

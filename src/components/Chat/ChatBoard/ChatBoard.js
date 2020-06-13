@@ -49,7 +49,7 @@ export default function ChatBoard(props) {
     <>
       <IonToolbar>
         <IonButtons>
-          <IonButton onclick={props.handleClose}>
+          <IonButton shape="round" shape="round" onclick={props.handleClose}>
             <CloseIcon />
             <div className="headerChatBoard">
               <span className="textHeaderChatBoard">Game chat!</span>

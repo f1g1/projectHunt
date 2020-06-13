@@ -161,7 +161,7 @@ export default function Play(props) {
         <>
           <IonHeader>
             <IonToolbar
-              color={LobbyService.ImAdmin(game) ? "tertiary" : "primary"}
+              color={LobbyService.ImAdmin(game) ? "primary" : "primary"}
             >
               <h1
                 style={{ display: "inline-block" }}
@@ -185,6 +185,7 @@ export default function Play(props) {
             <IonToolbar>
               <IonButtons>
                 <IonButton
+                  shape="round"
                   onClick={() => {
                     handleOpenChat();
                   }}
@@ -196,12 +197,24 @@ export default function Play(props) {
                     </IonBadge>
                   )}
                 </IonButton>
-                <IonButton onClick={() => setShowLeaderBoardModal(true)}>
+                <IonButton
+                  shape="round"
+                  shape="round"
+                  onClick={() => setShowLeaderBoardModal(true)}
+                >
                   LeaderBoard
                 </IonButton>
-                <IonButton onClick={() => setShowMap(true)}>Map</IonButton>
+                <IonButton
+                  shape="round"
+                  shape="round"
+                  shape="round"
+                  onClick={() => setShowMap(true)}
+                >
+                  Map
+                </IonButton>
                 {LobbyService.ImAdmin(game) && (
                   <IonButton
+                    shape="round"
                     color="danger"
                     slot="block"
                     onClick={() => setShowAlert1(true)}
@@ -209,7 +222,11 @@ export default function Play(props) {
                     Close Game!
                   </IonButton>
                 )}
-                <IonButton onClick={() => setShowPlayersModal(true)}>
+                <IonButton
+                  shape="round"
+                  shape="round"
+                  onClick={() => setShowPlayersModal(true)}
+                >
                   Players
                 </IonButton>
               </IonButtons>

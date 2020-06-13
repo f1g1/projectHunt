@@ -114,6 +114,7 @@ export default function TeamsContainer(props) {
               disabled={props.joinedTeam}
             ></IonInput>
             <IonButton
+              shape="round"
               onClick={addTeam}
               size="default"
               disabled={
