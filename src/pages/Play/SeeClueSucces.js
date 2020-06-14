@@ -13,7 +13,6 @@ import React from "react";
 export default function SeeClueSucces(props) {
   return (
     <div>
-      {" "}
       &nbsp;
       {props.step && (
         <>
@@ -37,7 +36,12 @@ export default function SeeClueSucces(props) {
               {props.step.succesResponseAdditionalInfo}
             </IonLabel>
           </IonCardContent>
-          <IonButton shape="round" shape="round" onClick={props.handleSucces}>
+          <IonButton
+            shape="round"
+            shape="round"
+            onClick={props.handleSucces}
+            expand="full"
+          >
             Ok!
           </IonButton>
         </>

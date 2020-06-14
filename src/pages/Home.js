@@ -12,7 +12,7 @@ import {
   IonPage,
   IonRow,
   IonToolbar,
-  useIonViewDidEnter,
+  useIonViewDidEnter
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 
@@ -99,8 +99,6 @@ export default function Home(props) {
               <IonList style={{ marginTop: "10vh" }}>
                 <IonButton
                   shape="round"
-                  shape="round"
-                  shape="round"
                   mode="ios"
                   style={{
                     minHeight: "100px",
@@ -144,7 +142,6 @@ export default function Home(props) {
                   New hunt!
                 </IonButton>
                 <IonButton
-                  shape="round"
                   shape="round"
                   style={{
                     minHeight: "50px",

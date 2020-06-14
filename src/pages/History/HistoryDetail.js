@@ -50,7 +50,7 @@ export default function HistoryDetail(props) {
                 <IonLabel>Points</IonLabel>
               </IonCol>
               <IonCol>
-                <IonLabel>Last Completed</IonLabel>
+                <IonLabel>Ti me</IonLabel>
               </IonCol>
               <IonCol>
                 <IonLabel>Players</IonLabel>

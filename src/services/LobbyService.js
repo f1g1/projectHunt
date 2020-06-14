@@ -40,12 +40,16 @@ export const LobbyService = {
 };
 
 async function getHistoryGames(listIds) {
-  console.log("getGHistoryGames");
+  let xz = listIds.slice(0, 9);
+  debugger;
+
   let snapshot = await fireStore
     .collection("lobbies")
-    .where(firebase.firestore.FieldPath.documentId(), "in", listIds.slice(0, 9))
+    .where(firebase.firestore.FieldPath.documentId(), "in", xz)
     .get();
   let z = snapshot.docs.map((doc) => {
+    console.log("sakdask");
+    console.log(doc.data());
     return { ...doc.data(), lobbyId: doc.id };
   });
   return z;

@@ -3,6 +3,7 @@ import "./ModalCard.scss";
 import {
   IonButton,
   IonContent,
+  IonFooter,
   IonHeader,
   IonLabel,
   IonSegment,
@@ -107,15 +108,6 @@ export default function ModalCardCreate(props) {
           >
             X
           </IonButton>
-          <IonButton
-            shape="round"
-            shape="round"
-            shape="round"
-            onClick={saveNewStep}
-            color="success"
-          >
-            Save!
-          </IonButton>
         </IonToolbar>
       </IonHeader>
 
@@ -137,6 +129,16 @@ export default function ModalCardCreate(props) {
         </IonSegment>
         {RenderSegment()}
       </IonContent>
+      <IonFooter>
+        <IonButton
+          shape="round"
+          onClick={saveNewStep}
+          color="success"
+          expand="full"
+        >
+          Save!
+        </IonButton>
+      </IonFooter>
       <IonToast
         isOpen={showToast1}
         onDidDismiss={() => setShowToast1(false)}

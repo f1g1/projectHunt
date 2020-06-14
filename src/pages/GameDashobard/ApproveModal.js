@@ -1,5 +1,6 @@
 import {
   IonButton,
+  IonButtons,
   IonCardContent,
   IonContent,
   IonHeader,
@@ -8,6 +9,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 
+import CloseIcon from "@material-ui/icons/Close";
 import { DashboardService } from "../../services/DashboardService";
 import React from "react";
 
@@ -17,18 +19,24 @@ export default function ApproveModal(props) {
     <>
       <IonHeader>
         <IonToolbar color="primary">
-          <IonButton
+          {/* <IonButton
             shape="round"
             color="danger"
             onClick={props.handleClose}
             className="ion-padding-start ion-float-left"
           >
             X
-          </IonButton>
-
-          <IonTitle className="ion-padding-top">
-            Challenge {props.index + 1}
-          </IonTitle>
+          </IonButton> */}
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <IonButtons style={{ display: "inline-block" }}>
+              <IonButton shape="round" onclick={props.handleClose}>
+                <CloseIcon />
+              </IonButton>
+            </IonButtons>
+            <IonTitle style={{ display: "inline-block" }}>
+              Challenge {props.index + 1}
+            </IonTitle>
+          </div>
         </IonToolbar>
       </IonHeader>
       <IonContent>

@@ -1,10 +1,11 @@
 import {
   IonBackButton,
   IonButtons,
+  IonCard,
+  IonCardContent,
   IonCol,
   IonContent,
   IonHeader,
-  IonItem,
   IonLabel,
   IonLoading,
   IonModal,
@@ -32,6 +33,7 @@ export default function History(props) {
     if (myLobbies && myLobbies.length > 0)
       LobbyService.getHistoryGames(myLobbies.map((x) => x.lobbyId))
         .then((x) => {
+          console.log(x);
           setLobbies(x);
           setloading(false);
         })
@@ -86,25 +88,41 @@ export default function History(props) {
 
                   {lobbies.map((x) => {
                     return (
-                      <IonItem
-                        color="light"
-                        button
-                        onClick={() => setSelected(x)}
-                      >
-                        <IonTitle>Title: {x.title}</IonTitle>
+                      <IonCard color="light" onClick={() => setSelected(x)}>
+                        <IonCardContent>
+                          <IonRow>
+                            <IonCol size="4">
+                              <h2>Title:</h2>
+                              <IonLabel>
+                                <h2 style={{ fontWeight: "bold" }}>
+                                  {" "}
+                                  {x.title}
+                                </h2>
+                              </IonLabel>
+                            </IonCol>
+                            <IonCol size="4">
+                              <h2>Date:</h2>
 
-                        <IonLabel>
-                          Date:
-                          {x.finishTime &&
-                            moment(x.finishTime.seconds * 1000).format(
-                              "DD/MM HH:mm"
-                            )}
-                        </IonLabel>
-                        <IonLabel>
-                          Created by:
-                          <p>{x.owner}</p>
-                        </IonLabel>
-                      </IonItem>
+                              <IonLabel>
+                                <h2 style={{ fontWeight: "bold" }}>
+                                  {x.finishTime &&
+                                    moment(x.finishTime.seconds * 1000).format(
+                                      "DD/MM HH:mm"
+                                    )}
+                                </h2>
+                              </IonLabel>
+                            </IonCol>
+                            <IonCol size="4">
+                              <h2>Creadet by</h2>
+                              <IonLabel>
+                                <h2 style={{ fontWeight: "bold" }}>
+                                  {x.owner}
+                                </h2>
+                              </IonLabel>
+                            </IonCol>
+                          </IonRow>
+                        </IonCardContent>
+                      </IonCard>
                     );
                   })}
                 </>

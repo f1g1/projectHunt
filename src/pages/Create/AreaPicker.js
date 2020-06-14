@@ -19,6 +19,13 @@ export default function AreaPicker(props) {
   const [breadcrumbs, setBreadcrumbs] = useState([]);
   const [modifyingArea, setModifyingArea] = useState(-1);
   const [modifyingBreadcrumbs, setModifyingBreadcrumbs] = useState(-1);
+  // useEffect(() => {
+  //   setModifyingArea(true);
+  //   setModifyingBreadcrumbs(true);
+
+  //   setModifyingArea(-1);
+  //   setModifyingBreadcrumbs(-1);
+  // }, []);
   const handleArea = () => {
     let initialBounds = [
       {

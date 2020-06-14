@@ -1,5 +1,6 @@
 import {
   IonButton,
+  IonButtons,
   IonContent,
   IonHeader,
   IonItemDivider,
@@ -9,6 +10,7 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 
+import CloseIcon from "@material-ui/icons/Close";
 import MiscService from "../../services/MiscService";
 
 export default function JoinQrModal(props) {
@@ -26,14 +28,21 @@ export default function JoinQrModal(props) {
     <>
       <IonHeader>
         <IonToolbar color="primary" className="ion-text-center">
-          <IonButton
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {/* <IonButton
             shape="round"
             color="danger"
             onClick={props.handleClose}
             className="ion-padding-start ion-float-left"
           >
             X
-          </IonButton>
+          </IonButton> */}
+            <IonButtons style={{ display: "inline-block" }}>
+              <IonButton shape="round" onclick={props.handleClose}>
+                <CloseIcon />
+              </IonButton>
+            </IonButtons>
+          </div>
         </IonToolbar>
       </IonHeader>
       <IonContent>

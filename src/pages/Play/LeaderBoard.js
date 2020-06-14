@@ -13,6 +13,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 
+import CloseIcon from "@material-ui/icons/Close";
 import { PlayService } from "../../services/PlayService";
 import React from "react";
 
@@ -25,23 +26,25 @@ export default function LeaderBoard(props) {
         <IonToolbar color="primary">
           <div style={{ display: "flex", alignItems: "center" }}>
             {!props.endGame ? (
-              <IonButton
-                shape="round"
-                onclick={props.handleClose}
-                color="danger"
-                className="ion-padding-start"
-              >
-                X
-              </IonButton>
+              // <IonButton
+              //   shape="round"
+              //   onclick={props.handleClose}
+              //   color="danger"
+              //   className="ion-margin-start"
+              // >
+              //   X
+              // </IonButton>
+              <IonButtons style={{ display: "inline-block" }}>
+                <IonButton shape="round" onclick={props.handleClose}>
+                  <CloseIcon />
+                </IonButton>
+              </IonButtons>
             ) : (
               <IonButtons style={{ display: "inline-block" }}>
                 <IonBackButton defaultHref="/home"></IonBackButton>
               </IonButtons>
             )}
-            <IonTitle
-              style={{ display: "inline-block" }}
-              className="ion-text-center"
-            >
+            <IonTitle style={{ display: "inline-block" }}>
               {props.endGame && "Final"} Leaderboard
             </IonTitle>
           </div>

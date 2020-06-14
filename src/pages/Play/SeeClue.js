@@ -1,5 +1,6 @@
 import {
   IonButton,
+  IonButtons,
   IonContent,
   IonHeader,
   IonLabel,
@@ -8,6 +9,7 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 
+import CloseIcon from "@material-ui/icons/Close";
 import { PlayService } from "../../services/PlayService";
 import SeeClueChallenge from "./SeeClueChallenge";
 import SeeClueSucces from "./SeeClueSucces";
@@ -125,15 +127,20 @@ export default function SeeClue(props) {
       <IonHeader>
         <IonToolbar color={status != 2 ? "primary" : "danger"}>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <IonButton
+            {/* <IonButton
               shape="round"
               color="danger"
               onClick={props.handleClose}
-              className="ion-padding-start ion-float-left"
+              className="ion-margin-start ion-float-left"
               style={{ display: "inline-block" }}
             >
               X
-            </IonButton>
+            </IonButton> */}
+            <IonButtons style={{ display: "inline-block" }}>
+              <IonButton shape="round" onclick={props.handleClose}>
+                <CloseIcon />
+              </IonButton>
+            </IonButtons>
             <IonTitle style={{ display: "inline-block" }}>
               Challenge #{props.step.index + 1}
             </IonTitle>

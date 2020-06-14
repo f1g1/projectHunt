@@ -2,6 +2,7 @@ import "./Dashboard.scss";
 
 import {
   IonButton,
+  IonButtons,
   IonCard,
   IonCardContent,
   IonCol,
@@ -20,6 +21,7 @@ import {
 import React, { useEffect, useState } from "react";
 
 import AnswerModal from "./AnswerModal";
+import CloseIcon from "@material-ui/icons/Close";
 import { DashboardService } from "../../services/DashboardService";
 import { PlayService } from "../../services/PlayService";
 
@@ -71,17 +73,27 @@ export default function TeamDashboard(props) {
     <>
       <IonHeader>
         <IonToolbar color="primary" className="ion-text-center">
-          <IonButton
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {/* <IonButton
             shape="round"
             color="danger"
             onClick={props.handleClose}
             className="ion-padding-start ion-float-left"
           >
             X
-          </IonButton>
-          <IonTitle className="ion-padding-top">
-            Manage team: {props.team.name}
-          </IonTitle>
+          </IonButton> */}
+            <IonButtons style={{ display: "inline-block" }}>
+              <IonButton shape="round" onclick={props.handleClose}>
+                <CloseIcon />
+              </IonButton>
+            </IonButtons>
+            <IonTitle
+              // className="ion-padding-top"
+              style={{ display: "inline-block" }}
+            >
+              Manage team: {props.team.name}
+            </IonTitle>
+          </div>
         </IonToolbar>
       </IonHeader>
       <IonContent>

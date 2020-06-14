@@ -91,7 +91,7 @@ const Create = (props) => {
       <IonContent>
         <IonGrid>
           <IonRow>
-            <IonCol sizeXl="8" sizeLg="6" sizeSm="12">
+            <IonCol sizeXl="8" sizeMd="12">
               {geolocation && (
                 <GameInformations
                   geolocation={geolocation}
@@ -100,9 +100,7 @@ const Create = (props) => {
               )}
             </IonCol>
             <IonCol sizeXl="4" sizeSm="12">
-              <IonCol sizeXl="4" sizeSm="12">
-                {geolocation && <CardList geolocation={geolocation} />}
-              </IonCol>
+              {geolocation && <CardList geolocation={geolocation} />}
             </IonCol>
           </IonRow>
         </IonGrid>

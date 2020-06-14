@@ -4,6 +4,7 @@ import {
   IonCardContent,
   IonContent,
   IonHeader,
+  IonLabel,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -47,7 +48,9 @@ export default function AnswerModal(props) {
             </div>
           )}
           <h2 style={{ paddingTop: "50px" }}>Clue:</h2>
-          <IonTitle className="ion-text-wrap">{props.step.clue}</IonTitle>
+          <IonLabel className="ion-text-wrap">
+            <h1>{props.step.clue}</h1>
+          </IonLabel>
           {props.step.code && props.step.code !== "" && (
             <>
               <h2>Expected Answer:</h2>

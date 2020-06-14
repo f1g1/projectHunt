@@ -45,12 +45,7 @@ export default function Challenge(props) {
         </div>
       )}
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <IonButton
-          shape="round"
-          shape="round"
-          shape="round"
-          onClick={() => refInput.current.click()}
-        >
+        <IonButton shape="round" onClick={() => refInput.current.click()}>
           Add Photo
         </IonButton>
       </div>
