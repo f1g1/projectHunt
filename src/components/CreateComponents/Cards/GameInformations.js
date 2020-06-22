@@ -10,8 +10,8 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  IonRow,
   IonTextarea,
+  IonTitle,
 } from "@ionic/react";
 import React, { useContext, useRef, useState } from "react";
 
@@ -97,9 +97,9 @@ export default function GameInformations(props) {
   };
 
   return (
-    <div className="stickyContainer">
-      <IonRow>
-        <IonCol sizeXl="6" className="ion-no-padding ion-no-padding">
+    <>
+      <IonCol sizeXl="4" size="12">
+        <div className="stickyContainer">
           <IonCard>
             <IonCardContent>
               <IonCardTitle>Game Informations</IonCardTitle>
@@ -156,9 +156,11 @@ export default function GameInformations(props) {
               </IonList>
             </IonCardContent>
           </IonCard>
-        </IonCol>
+        </div>
+      </IonCol>
 
-        <IonCol sizeXl="6" className="ion-no-padding ion-no-padding">
+      <IonCol sizeXl="4" size="12">
+        <div className="stickyContainer">
           <IonCard>
             <IonCardContent>
               <IonCardTitle>Miscellaneous</IonCardTitle>
@@ -183,7 +185,7 @@ export default function GameInformations(props) {
                 type="file"
                 onChange={onChoosePhoto}
               />
-              {props.geolocation !== -1 && (
+              {props.geolocation ? (
                 <AreaPicker
                   setBreadcrumbs={setBreadcrumbs}
                   breadcrumbs={state.breadcrumbs}
@@ -192,11 +194,13 @@ export default function GameInformations(props) {
                   geolocation={props.geolocation}
                   handleRecenter={handleRecenter}
                 />
+              ) : (
+                <IonTitle>Loading location...</IonTitle>
               )}
             </IonCardContent>
           </IonCard>
-        </IonCol>
-      </IonRow>
-    </div>
+        </div>
+      </IonCol>
+    </>
   );
 }

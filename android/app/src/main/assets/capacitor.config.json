@@ -13,11 +13,7 @@
       "serverClientId": "735459026668-6pdua5gu4fmuh1trjqirnupudvqtjhdq.apps.googleusercontent.com"
     },
     "SplashScreen": {
-      "launchShowDuration": 3000
+      "launchShowDuration": 5000
     }
-  },
-  "server": {
-    "url": "http://192.168.0.103:8101",
-    "originalUrl": "http://192.168.0.102:8100"
   }
 }

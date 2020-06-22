@@ -79,6 +79,7 @@ export default function AreaPicker(props) {
       fillColor: "#42656e",
       fillOpacity: 0.3,
     });
+    google.map.zoomControl = false;
     shape.setMap(google.map);
     setShape(shape);
   };
@@ -167,6 +168,7 @@ export default function AreaPicker(props) {
             bootstrapURLKeys={{
               key: "AIzaSyAueqYGiXRddw8fmqzkN01aBJXu_SbkAnA",
             }}
+            zoomControl="false"
             defaultCenter={{
               lat: props.geolocation.latitude,
               lng: props.geolocation.longitude,
@@ -190,45 +192,47 @@ export default function AreaPicker(props) {
               bottom: "10px",
               display: "flex",
               justifyContent: "center",
-              width: "100%",
+              width: "90%",
             }}
           >
             {!modifyingArea || modifyingArea === -1 ? (
               <IonButton
                 shape="round"
-                shape="round"
-                shape="round"
                 onClick={changeArea}
                 color="primary"
+                size="small"
               >
                 Area
               </IonButton>
             ) : (
               <IonButton
                 shape="round"
-                shape="round"
-                shape="round"
                 onClick={saveArea}
                 color="success"
+                size="small"
               >
                 Save Area!
               </IonButton>
             )}
-            <IonButton shape="round" shape="round" onClick={handleRecenter}>
+            <IonButton
+              shape="round"
+              shape="round"
+              onClick={handleRecenter}
+              size="small"
+            >
               Recenter
             </IonButton>
             {!modifyingBreadcrumbs || modifyingBreadcrumbs === -1 ? (
               <IonButton
                 shape="round"
-                shape="round"
                 onClick={changeBreadcrumbs}
                 color="primary"
+                size="small"
               >
                 Breadcrumbs
               </IonButton>
             ) : (
               <IonButton
-                shape="round"
                 shape="round"
                 onClick={saveBreadcrumbs}
                 color="success"

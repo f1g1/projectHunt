@@ -6,6 +6,8 @@ import {
   IonCol,
   IonHeader,
   IonInput,
+  IonItem,
+  IonLabel,
   IonRange,
   IonRow,
 } from "@ionic/react";
@@ -26,27 +28,35 @@ let Marker = (lat, lng) => (
 );
 
 let ModalMap = (props) => {
-  const [mapCenter, setMapCenter] = useState();
-  const [positionSelected, setpositionSelected] = useState(false);
+  const [google, setGoogle] = useState();
+  const [positionSelected, setpositionSelected] = useState();
   const [polyline, setpolyline] = useState();
-  const [selectedPosition, setSelectedPosition] = useState();
-  const [radius, setRadius] = useState(100);
+  const [selectedPosition, setSelectedPosition] = useState({
+    lat: props.location.latitude || 0,
+    lng: props.location.longitude || 0,
+  });
+  const [radius, setRadius] = useState(props.raidus || 100);
   let refMap = useRef(null);
 
   const handleGetCenter = () => {
-    setSelectedPosition(mapCenter);
-    setpositionSelected(true);
+    let center = google.map.getCenter();
+    setSelectedPosition({ lat: center.lat(), lng: center.lng() });
   };
-
   useEffect(() => {
-    //changePolyLines
-    console.log(radius);
     if (polyline && selectedPosition) {
       polyline.setOptions({ center: selectedPosition, radius });
     }
+    google &&
+      google.map.setCenter(
+        new google.maps.LatLng(selectedPosition.lat, selectedPosition.lng)
+      );
+    positionSelected !== undefined
+      ? setpositionSelected(true)
+      : setpositionSelected(false); 
   }, [selectedPosition, radius]);
 
   const initPolyLines = (google) => {
+    setGoogle(google);
     if (!props.noRadius) {
       let ppolyline = new google.maps.Circle({
         strokeOpacity: 0.3,
@@ -65,37 +75,56 @@ let ModalMap = (props) => {
     <>
       <IonHeader>
         <IonRow>
-          <IonCol size="5">
-            <IonInput
-              placeholder="lat:"
-              value={selectedPosition ? selectedPosition.lat : ""}
-              onChange={(e) => {
-                if (selectedPosition && e.target.value !== selectedPosition.lat)
-                  selectedPosition &&
-                    setSelectedPosition({
-                      ...selectedPosition,
-                      lat: e.target.value,
-                    });
-              }}
-            ></IonInput>
+          <IonCol>
+            <IonButton
+              shape="round"
+              shape="round"
+              color="danger"
+              onClick={props.handleClose}
+            >
+              X
+            </IonButton>
           </IonCol>
 
-          <IonCol align-self-center>/</IonCol>
           <IonCol size="5">
-            <IonInput
-              placeholder="lng:"
-              value={selectedPosition ? selectedPosition.lng : ""}
-              onChange={(e) => {
-                if (e.target.value !== selectedPosition.lng)
-                  selectedPosition &&
-                    setSelectedPosition({
-                      ...selectedPosition,
-                      lng: e.target.value,
-                    });
-              }}
-            >
-              {" "}
-            </IonInput>
+            <IonItem lines="none">
+              <IonLabel>latitude:</IonLabel>
+              <IonInput
+                placeholder="lat:"
+                value={selectedPosition ? selectedPosition.lat : ""}
+                onIonChange={(e) => {
+                  if (
+                    selectedPosition &&
+                    e.target.value !== selectedPosition.lat
+                  )
+                    selectedPosition &&
+                      setSelectedPosition({
+                        ...selectedPosition,
+                        lat: e.target.value,
+                      });
+                }}
+              ></IonInput>
+            </IonItem>
+          </IonCol>
+
+          <IonCol size="5">
+            <IonItem lines="none">
+              <IonLabel>longitude:</IonLabel>
+              <IonInput
+                placeholder="lng:"
+                value={selectedPosition ? selectedPosition.lng : ""}
+                onIonChange={(e) => {
+                  if (e.target.value !== selectedPosition.lng)
+                    selectedPosition &&
+                      setSelectedPosition({
+                        ...selectedPosition,
+                        lng: e.target.value,
+                      });
+                }}
+              >
+                {" "}
+              </IonInput>
+            </IonItem>
           </IonCol>
         </IonRow>
       </IonHeader>
@@ -112,22 +141,8 @@ let ModalMap = (props) => {
             lng: props.location.longitude || 0,
           }}
           defaultZoom={11}
-          onDragsStart={(map) => {
-            setMapCenter({
-              lat: map.getCenter().lat(),
-              lng: map.getCenter().lng(),
-            });
-            setpositionSelected(false);
-          }}
           yesIWantToUseGoogleMapApiInternals
           onGoogleApiLoaded={(x) => initPolyLines(x)}
-          onDragEnd={(map) => {
-            setMapCenter({
-              lat: map.getCenter().lat(),
-              lng: map.getCenter().lng(),
-            });
-            setpositionSelected(false);
-          }}
         >
           {selectedPosition && (
             <Marker lat={selectedPosition.lat} lng={selectedPosition.lng} />
@@ -161,7 +176,11 @@ let ModalMap = (props) => {
                     shape="round"
                     color="success"
                     onClick={() => {
-                      props.save(mapCenter.lat, mapCenter.lng, radius);
+                      props.save(
+                        Number(selectedPosition.lat),
+                        Number(selectedPosition.lng),
+                        radius
+                      );
                       props.handleClose();
                     }}
                   >
@@ -187,14 +206,6 @@ let ModalMap = (props) => {
                     onClick={handleGetCenter}
                   >
                     Select Position
-                  </IonButton>
-                  <IonButton
-                    shape="round"
-                    shape="round"
-                    color="danger"
-                    onClick={props.handleClose}
-                  >
-                    X
                   </IonButton>
                 </div>
               </IonCol>

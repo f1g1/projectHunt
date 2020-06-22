@@ -223,7 +223,14 @@ export default function Misc(props) {
         <ModalMap
           save={saveLocation}
           handleClose={() => handleCloseMap(false)}
-          location={location}
+          location={
+            props.step.coords
+              ? {
+                  latitude: props.step.coords.lat,
+                  longitude: props.step.coords.lng,
+                }
+              : location
+          }
         ></ModalMap>
       </IonModal>
     </>

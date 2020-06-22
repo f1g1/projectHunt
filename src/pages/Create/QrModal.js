@@ -17,14 +17,16 @@ export default function QrModal(props) {
     <IonContent>
       <IonHeader>
         <IonToolbar color="primary" className="ion-text-center">
-          <IonButton
-            shape="round"
-            color="danger"
-            onClick={props.handleClose}
-            className="ion-padding-start ion-float-left"
-          >
-            X
-          </IonButton>
+          <div className="ion-padding-left">
+            <IonButton
+              shape="round"
+              color="danger"
+              onClick={props.handleClose}
+              className="ion-float-left"
+            >
+              X
+            </IonButton>
+          </div>
         </IonToolbar>
       </IonHeader>
 

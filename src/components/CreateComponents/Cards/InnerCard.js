@@ -10,6 +10,7 @@ import {
   IonRow,
 } from "@ionic/react";
 
+import DeleteIcon from "@material-ui/icons/Delete";
 import React from "react";
 
 let answerTypes = { 0: "Text", 1: "QR code", 2: "Image" };
@@ -26,7 +27,7 @@ export default function InnerCard(props) {
               color="danger"
               onClick={() => props.delete(props.step.id)}
             >
-              x
+              <DeleteIcon />
             </IonButton>
             <IonButton
               shape="round"

@@ -5,7 +5,6 @@ import {
   IonCol,
   IonContent,
   IonFooter,
-  IonGrid,
   IonHeader,
   IonModal,
   IonPage,
@@ -35,11 +34,13 @@ const Create = (props) => {
         x && setGeolocation(x);
       })
       .catch(() => {
-        console.log("EERROR");
-        setGeolocation({
-          latitude: 45.9432,
-          longitude: 24.9668,
-        });
+        console.log("SDASDsda");
+        setTimeout(function () {
+          setGeolocation({
+            latitude: 45.9432,
+            longitude: 24.9668,
+          });
+        }, 2000);
       });
   };
   useEffect(() => {
@@ -89,21 +90,13 @@ const Create = (props) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonGrid>
-          <IonRow>
-            <IonCol sizeXl="8" sizeMd="12">
-              {geolocation && (
-                <GameInformations
-                  geolocation={geolocation}
-                  setLocation={setLocation}
-                />
-              )}
-            </IonCol>
-            <IonCol sizeXl="4" sizeSm="12">
-              {geolocation && <CardList geolocation={geolocation} />}
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+        <IonRow>
+          <GameInformations
+            geolocation={geolocation}
+            setLocation={setLocation}
+          />
+          <IonCol sizeXl="4">{<CardList geolocation={geolocation} />}</IonCol>
+        </IonRow>
       </IonContent>
       <IonFooter>
         <IonToolbar>

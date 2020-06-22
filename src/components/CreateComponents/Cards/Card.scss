@@ -1,34 +1,31 @@
 .card {
-  }
-  
-  .arrow {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .toRight {
-    float: right;
-  }
-  .mapContainer {
-    height: 300px;
-    width: 100%;
-  }
-  .gmnoprint img {
-    max-width: none;
-  }
-  .gmaps * {
-    box-sizing: content-box;
-  }
+}
 
-  @media only screen and (min-width: 600px) {
+.arrow {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.toRight {
+  float: right;
+}
+.mapContainer {
+  height: 300px;
+  width: 100%;
+}
+.gmnoprint img {
+  max-width: none;
+}
+.gmaps * {
+  box-sizing: content-box;
+}
 
-    .stickyContainer {
+@media only screen and (min-width: 600px) {
+  .stickyContainer {
     position: sticky;
-      top:30px;
+    top: 0px;
     display: block;
     width: 100%;
-    }
-
   }
- 
+}

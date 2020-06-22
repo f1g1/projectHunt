@@ -82,7 +82,7 @@ export default function PlayerTag(props) {
           {props.game.muted && props.game.muted.includes(props.playerName) && (
             <MicOffIcon color="error" fontSize="small" />
           )}
-          <IonLabel>{props.playerName}</IonLabel>
+          <IonLabel className="ion-padding-left">{props.playerName}</IonLabel>
         </IonCol>
 
         {!isCurrentPlayer() && (

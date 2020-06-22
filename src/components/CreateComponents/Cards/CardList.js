@@ -96,7 +96,11 @@ export default function CardList(props) {
           <ModalMap
             noRadius={true}
             handleClose={handleClose}
-            location={props.geolocation}
+            location={
+              state.startLat && state.startLng
+                ? { latitude: state.startLat, longitude: state.startLng }
+                : props.geolocation
+            }
             save={saveStart}
           />
         </IonModal>

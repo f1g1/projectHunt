@@ -1,7 +1,6 @@
+import { BarcodeScanner } from "@ionic-native/barcode-scanner";
 import { IonButton, IonInput, IonItem, IonLabel } from "@ionic/react";
 import React, { useEffect, useRef, useState } from "react";
-
-import { BarcodeScanner } from "@ionic-native/barcode-scanner";
 import MiscService from "../../services/MiscService";
 import { PlayService } from "../../services/PlayService";
 
@@ -169,6 +168,7 @@ function ImageInput(props) {
     MiscService.getCachedGeolocation().then((x) =>
       PlayService.shareLocation(x, props.team)
     );
+    props.handleClose();
   };
   return (
     <>
