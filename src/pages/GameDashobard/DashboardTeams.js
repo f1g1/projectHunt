@@ -37,7 +37,7 @@ export default function Dashboardteams(props) {
               <IonLabel>Points:</IonLabel>
             </IonCol>
             <IonCol>
-              <IonLabel>Last Completed:</IonLabel>
+              <IonLabel>Last</IonLabel>
             </IonCol>
           </IonRow>
         </IonCardContent>

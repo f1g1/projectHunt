@@ -8,6 +8,7 @@ import {
   IonContent,
   IonFooter,
   IonHeader,
+  IonLabel,
   IonModal,
   IonPage,
   IonToolbar,
@@ -15,6 +16,8 @@ import {
 import React, { useEffect, useState } from "react";
 
 import ChatBoard from "../../components/Chat/ChatBoard/ChatBoard";
+import ChatIcon from "@material-ui/icons/Chat";
+import CloseIcon from "@material-ui/icons/Close";
 import ClueList from "./ClueList";
 import Dashboard from "../GameDashobard/Dashboard";
 import { DashboardService } from "../../services/DashboardService";
@@ -23,8 +26,11 @@ import LeaderBoard from "./LeaderBoard";
 import LobbyPlayers from "../Lobby/LobbyPlayers";
 import { LobbyService } from "../../services/LobbyService";
 import { LocalNotifications } from "@ionic-native/local-notifications";
+import MapIcon from "@material-ui/icons/Map";
 import MiscService from "../../services/MiscService";
+import { Network } from "@ionic-native/network";
 import NotificationHandler from "./NotificationHandler";
+import PeopleIcon from "@material-ui/icons/People";
 import { PlayService } from "../../services/PlayService";
 import { UserService } from "../../services/UserSerivce";
 import useGameChanges from "../../services/CustomHooks/useGameChanges";
@@ -58,6 +64,7 @@ export default function Play(props) {
   const gameChanging = useGameChanges();
   const [showPlayersModal, setShowPlayersModal] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(true);
+  const [offline, setoffline] = useState("");
 
   const messages = useMessageChanges(
     teams,
@@ -73,6 +80,26 @@ export default function Play(props) {
         setGeolocation(x);
       })
       .catch(() => MiscService.setAvalaibleLocation(false));
+
+    let disconnectSubscription = Network.onDisconnect().subscribe(() => {
+      setoffline(true);
+      console.log("network was disconnected :-(");
+    });
+
+    let connectSubscription = Network.onConnect().subscribe(() => {
+      console.log("network connected!");
+      setoffline(false);
+
+      setTimeout(() => {
+        if (Network.type === "wifi") {
+        }
+      }, 3000);
+    });
+
+    return () => {
+      disconnectSubscription.unsubscribe();
+      connectSubscription.unsubscribe();
+    };
   }, []);
 
   const notify = (text) => {
@@ -160,15 +187,35 @@ export default function Play(props) {
       {game && (
         <>
           <IonHeader>
-            <IonToolbar
-              color={LobbyService.ImAdmin(game) ? "primary" : "primary"}
-            >
+            <IonToolbar color="primary">
               <h1
                 style={{ display: "inline-block" }}
                 className="ion-padding-horizontal"
               >
                 {game.title}
+                {offline && (
+                  <IonLabel
+                    color="danger"
+                    style={{ display: "inline-block" }}
+                    className="ion-padding-horizontal ion-text-center"
+                  >
+                    <p className="ion-text-center">Offline!</p>
+                  </IonLabel>
+                )}
               </h1>
+              <IonButtons slot="end">
+                {LobbyService.ImAdmin(game) && (
+                  <IonButton
+                    shape="round"
+                    color="danger"
+                    slot="block"
+                    onClick={() => setShowAlert1(true)}
+                  >
+                    <CloseIcon />
+                    End Game!
+                  </IonButton>
+                )}
+              </IonButtons>
             </IonToolbar>
           </IonHeader>
           <IonContent>
@@ -176,7 +223,12 @@ export default function Play(props) {
               game !== {} &&
               game &&
               (!LobbyService.ImAdmin(game) ? (
-                <ClueList game={game} teams={teams} myTeam={myTeam} />
+                <ClueList
+                  game={game}
+                  teams={teams}
+                  myTeam={myTeam}
+                  offline={offline}
+                />
               ) : (
                 <Dashboard game={game} teams={teams} />
               ))}
@@ -186,22 +238,13 @@ export default function Play(props) {
               <IonButtons>
                 <IonButton
                   shape="round"
-                  onClick={() => {
-                    handleOpenChat();
-                  }}
-                >
-                  Chat{" "}
-                  {unread > 0 && (
-                    <IonBadge color="danger" style={{ marginLeft: "10px" }}>
-                      ({unread}){" "}
-                    </IonBadge>
-                  )}
-                </IonButton>
-                <IonButton
-                  shape="round"
                   shape="round"
                   onClick={() => setShowLeaderBoardModal(true)}
                 >
+                  <img
+                    style={{ width: "auto", height: "100%" }}
+                    src={require("../../resources/leaderboard.png")}
+                  />
                   LeaderBoard
                 </IonButton>
                 <IonButton
@@ -210,24 +253,32 @@ export default function Play(props) {
                   shape="round"
                   onClick={() => setShowMap(true)}
                 >
+                  <MapIcon />
                   Map
                 </IonButton>
-                {LobbyService.ImAdmin(game) && (
-                  <IonButton
-                    shape="round"
-                    color="danger"
-                    slot="block"
-                    onClick={() => setShowAlert1(true)}
-                  >
-                    Close Game!
-                  </IonButton>
-                )}
+              </IonButtons>
+              <IonButtons slot="end">
                 <IonButton
                   shape="round"
                   shape="round"
                   onClick={() => setShowPlayersModal(true)}
                 >
+                  <PeopleIcon />
                   Players
+                </IonButton>
+                <IonButton
+                  shape="round"
+                  onClick={() => {
+                    handleOpenChat();
+                  }}
+                >
+                  <ChatIcon />
+                  Chat{" "}
+                  {unread > 0 && (
+                    <IonBadge color="danger" style={{ marginLeft: "10px" }}>
+                      ({unread}){" "}
+                    </IonBadge>
+                  )}
                 </IonButton>
               </IonButtons>
             </IonToolbar>
@@ -322,6 +373,7 @@ export default function Play(props) {
           geolocation={geolocation}
           teams={teams}
           game={game}
+          offline={offline}
         />
       </IonModal>
       {

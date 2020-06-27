@@ -10,6 +10,7 @@ import {
   IonTitle,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
+
 import { PlayService } from "../../services/PlayService";
 import SeeClue from "./SeeClue";
 
@@ -206,6 +207,7 @@ export default function ClueList(props) {
           teams={props.teams}
           handleClose={() => setShowClueModal(false)}
           game
+          offline={props.offline}
           finished={finished}
           {...clueInfo}
           activeWaitings={props.myTeam}

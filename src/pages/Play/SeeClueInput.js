@@ -1,6 +1,7 @@
-import { BarcodeScanner } from "@ionic-native/barcode-scanner";
 import { IonButton, IonInput, IonItem, IonLabel } from "@ionic/react";
 import React, { useEffect, useRef, useState } from "react";
+
+import { BarcodeScanner } from "@ionic-native/barcode-scanner";
 import MiscService from "../../services/MiscService";
 import { PlayService } from "../../services/PlayService";
 
@@ -76,6 +77,7 @@ function TextInput(props) {
       </IonItem>
       {props.children}
       <IonButton
+        disabled={props.offline}
         shape="round"
         className="ion-margin-top"
         expand="full"
@@ -126,6 +128,7 @@ function QrInput(props) {
       {props.children}
 
       <IonButton
+        disabled={props.offline}
         shape="round"
         size="largest"
         color="primary"
@@ -199,8 +202,7 @@ function ImageInput(props) {
             <img src={image} style={{ maxHeight: "350px" }} />
           </div>
           <IonButton
-            shape="round"
-            shape="round"
+            disabled={props.offline}
             shape="round"
             expand="full"
             onClick={handleSend}

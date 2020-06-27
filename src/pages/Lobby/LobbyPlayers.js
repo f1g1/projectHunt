@@ -53,8 +53,8 @@ export default function LobbyPlayers(props) {
           </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonRow style={{ height: "100%" }} className="ion-justify-content-center">
-        <IonCol offsetXl="1" sizeXl="10" size="12">
+      <IonRow style={{ height: "100%" }}>
+        <IonCol offset="1" size="10">
           <IonList>
             <IonTitle className="ion-no-padding ion-padding-vertical">
               Players:

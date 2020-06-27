@@ -99,11 +99,13 @@ export default function SeeClue(props) {
       case 0:
         return (
           <SeeClueChallenge
+            offline={props.offline}
             step={props.step}
             team={props.team}
             finished={props.finished}
             handleSucces={handleSuccesScreen}
             handleWrong={handleWrong}
+            handleClose={props.handleClose}
           />
         );
       case 1:
@@ -143,6 +145,15 @@ export default function SeeClue(props) {
             </IonButtons>
             <IonTitle style={{ display: "inline-block" }}>
               Challenge #{props.step.index + 1}
+              {props.offline && (
+                <IonLabel
+                  color="danger"
+                  style={{ display: "inline-block" }}
+                  className="ion-padding-horizontal ion-text-center"
+                >
+                  <p className="ion-text-center">Offline!</p>
+                </IonLabel>
+              )}
             </IonTitle>
           </div>
         </IonToolbar>

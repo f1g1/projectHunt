@@ -64,7 +64,7 @@ export default function LeaderBoard(props) {
                 <IonLabel>Points</IonLabel>
               </IonCol>
               <IonCol>
-                <IonLabel>Last Completed</IonLabel>
+                <IonLabel>Last</IonLabel>
               </IonCol>
             </IonRow>
           </IonCardContent>

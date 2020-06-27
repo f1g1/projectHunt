@@ -27,9 +27,11 @@ export default function SeeClueChallenge(props) {
           <IonItemDivider />
           <div>
             <SeeClueInput
+              handleClose={props.handleClose}
               answerType={props.step.answerType}
               {...props}
               shareLocation={shareLocation}
+              offline={props.offline}
             >
               <IonItem className="ion-margin-bottom ion-no-padding">
                 <IonLabel className="ion-padding-start">

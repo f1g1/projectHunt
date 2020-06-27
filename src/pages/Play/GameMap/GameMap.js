@@ -315,6 +315,15 @@ export default function GameMap(props) {
         <IonToolbar color="primary">
           <IonButtons>
             <IonButton shape="round" shape="round" onclick={props.handleClose}>
+              {props.offline && (
+                <IonLabel
+                  color="danger"
+                  style={{ display: "inline-block" }}
+                  className="ion-padding-horizontal ion-text-center"
+                >
+                  <p className="ion-text-center">Offline!</p>
+                </IonLabel>
+              )}
               <CloseIcon />
             </IonButton>
           </IonButtons>
@@ -505,7 +514,7 @@ export default function GameMap(props) {
               <IonButton
                 shape="round"
                 onClick={shareLocation}
-                disabled={avalaibleLocation === "false"}
+                disabled={avalaibleLocation === "false" || props.offline}
               >
                 Share Location
               </IonButton>

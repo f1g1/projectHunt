@@ -26,12 +26,16 @@ import {
 import React, { useEffect, useState } from "react";
 
 import ChatBoard from "../../components/Chat/ChatBoard/ChatBoard";
+import ChatIcon from "@material-ui/icons/Chat";
+import CropFreeIcon from "@material-ui/icons/CropFree";
 import JoinQrModal from "./JoinQrModal";
 import LobbyPlayers from "./LobbyPlayers";
 import { LobbyService } from "../../services/LobbyService";
 import MapWithLocation from "../../components/Map/Map";
 import MiscService from "../../services/MiscService";
+import PeopleIcon from "@material-ui/icons/People";
 import { PhotoViewer } from "@ionic-native/photo-viewer";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import TeamsContainer from "./TeamsContainer";
 import { UserService } from "../../services/UserSerivce";
 import useGameChanges from "../../services/CustomHooks/useGameChanges";
@@ -263,23 +267,29 @@ export default function Lobby(props) {
                     color="primary"
                     onClick={() => setShowAlert1(true)}
                   >
-                    Start Game
+                    <PlayArrowIcon />
+                    Start
                   </IonButton>
                 )}
+
                 <IonButton
                   shape="round"
                   color="primary"
                   onClick={() => setShowQrJoinModal(true)}
                 >
-                  Show Join Qr
+                  <CropFreeIcon />
+                  Join Qr
                 </IonButton>
+              </IonButtons>
 
+              <IonButtons slot="end">
                 <IonButton
                   shape="round"
                   shape="round"
                   full
                   onClick={() => setShowChatModal(true)}
                 >
+                  <ChatIcon />
                   Chat
                   {unread > 0 && (
                     <IonBadge color="danger" style={{ marginLeft: "10px" }}>
@@ -293,6 +303,7 @@ export default function Lobby(props) {
                   full
                   onClick={() => setShowPlayersModal(true)}
                 >
+                  <PeopleIcon />
                   Players ({lobbyChanging.players.length})
                 </IonButton>
               </IonButtons>
