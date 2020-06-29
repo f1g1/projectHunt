@@ -41,7 +41,8 @@ function getQr(data, color) {
 
   // fetch as usual
   return fetch(
-    `https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=${color}&data=${data} `,
+    `https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=${data}`,
+    // `https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=${color}&data=${data} `,
     { signal }
   )
     .then((response) => {

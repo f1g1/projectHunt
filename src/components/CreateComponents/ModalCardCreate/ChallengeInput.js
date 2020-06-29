@@ -100,7 +100,7 @@ function QrInput(props) {
         {qr && <img style={{ width: "60%", height: "auto" }} src={qr}></img>}
       </div>
 
-      <p>
+      <p style={{ display: "flex", justifyContent: "center" }}>
         {qr && (
           <a href={qr.replace("size=200x200", "size=1000x1000")} download>
             Click to open on new page

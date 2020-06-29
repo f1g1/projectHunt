@@ -12,7 +12,7 @@ import {
   IonPage,
   IonRow,
   IonToolbar,
-  useIonViewDidEnter
+  useIonViewDidEnter,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 

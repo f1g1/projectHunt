@@ -81,6 +81,7 @@ export default function Misc(props) {
           shape="round"
           onClick={() => setShowMapModal(true)}
           fill={props.step.coords ? "solid" : "outline"}
+          expand="full"
         >
           Location
         </IonButton>
@@ -173,7 +174,8 @@ export default function Misc(props) {
           style={{ fontSize: "small", opacity: 0.5 }}
           className="ion-margin-start"
         >
-          This is the requiered time a team must wait to respond again, if the
+          This is the requiered time a team must wait to respond again, if they
+          give a wrong answer
         </p>
       </IonItem>
       <div className="ion-padding-top">

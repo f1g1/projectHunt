@@ -19,6 +19,9 @@ import React, { useState } from "react";
 
 import MiscService from "../../services/MiscService";
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 export default function ReportBug(props) {
   const [description, setDescription] = useState("");
   const [email, setEmail] = useState("");
@@ -29,7 +32,9 @@ export default function ReportBug(props) {
     setDescription("");
     setEmail("");
     setShowToast1("Bug report has been submitted!");
-    props.history.replace("/login");
+    sleep(2000).then(() => {
+      props.history.replace("/home");
+    });
   };
   return (
     <IonPage>

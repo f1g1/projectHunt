@@ -19,17 +19,22 @@ export const DashboardService = {
   addStep,
 };
 
+function addStepInternal(lobbyId, step) {
+  return fireStore
+    .collection("lobbies")
+    .doc(lobbyId)
+    .update({
+      steps: firebase.firestore.FieldValue.arrayUnion(step),
+    });
+}
 function addStep(lobbyId, step) {
-  return MediaService.SaveImage(step.imageFile).then((x) => {
-    step.image = x;
-    delete step.imageFile;
-    return fireStore
-      .collection("lobbies")
-      .doc(lobbyId)
-      .update({
-        steps: firebase.firestore.FieldValue.arrayUnion(step),
-      });
-  });
+  if (step.imageFile)
+    return MediaService.SaveImage(step.imageFile).then((x) => {
+      step.image = x;
+      delete step.imageFile;
+      return addStepInternal(lobbyId, step);
+    });
+  return addStepInternal(lobbyId, step);
 }
 
 function closeGame(lobbyId, game, teams) {

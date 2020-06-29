@@ -90,8 +90,6 @@ let reducer = (state, action) => {
       };
     }
     case "setMaxPlayers": {
-      if (action.maxPlayers < 1) action.maxPlayers = 1;
-      if (action.maxPlayers > 20) action.maxPlayers = 20;
       return { ...state, maxPlayers: action.maxPlayers };
     }
     case "setArea": {

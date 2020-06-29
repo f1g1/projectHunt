@@ -52,7 +52,7 @@ let ModalMap = (props) => {
       );
     positionSelected !== undefined
       ? setpositionSelected(true)
-      : setpositionSelected(false); 
+      : setpositionSelected(false);
   }, [selectedPosition, radius]);
 
   const initPolyLines = (google) => {
@@ -188,7 +188,6 @@ let ModalMap = (props) => {
                   </IonButton>
                   <IonButton
                     shape="round"
-                    shape="round"
                     color="danger"
                     onClick={props.handleClose}
                   >
@@ -199,12 +198,7 @@ let ModalMap = (props) => {
             ) : (
               <IonCol>
                 <div className="ion-justify-content-between">
-                  <IonButton
-                    shape="round"
-                    shape="round"
-                    shape="round"
-                    onClick={handleGetCenter}
-                  >
+                  <IonButton shape="round" onClick={handleGetCenter}>
                     Select Position
                   </IonButton>
                 </div>

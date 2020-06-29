@@ -37,7 +37,7 @@ function saveGame(state) {
     );
   });
 
-  Promise.allSettled(wrongAnswerImage)
+  return Promise.allSettled(wrongAnswerImage)
     .then((v) => {
       v.forEach((image, i) => {
         if (

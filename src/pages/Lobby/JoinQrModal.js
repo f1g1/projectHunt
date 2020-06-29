@@ -4,8 +4,8 @@ import {
   IonContent,
   IonHeader,
   IonItemDivider,
+  IonLabel,
   IonLoading,
-  IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
@@ -13,16 +13,22 @@ import React, { useEffect, useState } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import MiscService from "../../services/MiscService";
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export default function JoinQrModal(props) {
   const [qr, setQr] = useState();
+  const [setted, setsetted] = useState(false);
 
   useEffect(() => {
     MiscService.getQr(props.entryCode).then((x) => {
       setQr(x.url);
     });
+    sleep(2000).then(setsetted(true));
   }, []);
 
-  return !qr ? (
+  return !setted ? (
     <IonLoading isOpen={!qr} message={"Loading QR..."} duration={2000} />
   ) : (
     <>
@@ -54,14 +60,14 @@ export default function JoinQrModal(props) {
             alignItems: "center",
           }}
         >
-          <IonTitle className="ion-padding-vertical">
+          <IonLabel className="ion-padding-top">
             <h1>Scan this code to join</h1>
-          </IonTitle>
+          </IonLabel>
           <img width="70%" height="auto" src={qr} />
-          <IonTitle className="ion-padding-vertical">
+          <IonLabel className="ion-padding-vertical">
             <IonItemDivider />
             <h2>Code:{props.entryCode} </h2>
-          </IonTitle>
+          </IonLabel>
         </div>
       </IonContent>
     </>

@@ -14,13 +14,13 @@ import {
   IonRow,
   IonTitle,
   IonToolbar,
+  useIonViewDidEnter,
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Failed from "../../components/Failed";
 import { GameService } from "../../services/GameService";
 import { LobbyService } from "../../services/LobbyService";
-import { Network } from "@ionic-native/network";
 import QrModal from "../Create/QrModal";
 import moment from "moment";
 
@@ -30,37 +30,15 @@ export default function MyGames(props) {
   const [loading, setLoading] = useState(true);
   const [failed, setFailed] = useState(false);
 
-  const [offline, setoffline] = useState("");
-  useEffect(() => {
+  useIonViewDidEnter(() => {
+    setLoading(true);
     GameService.getMyGames()
       .then((x) => {
         setgames(x);
         setLoading(false);
       })
       .catch(() => setFailed(true));
-
-    let disconnectSubscription = Network.onDisconnect().subscribe(() => {
-      setoffline("OFFLINE!");
-      console.log("network was disconnected :-(");
-    });
-
-    let connectSubscription = Network.onConnect().subscribe(() => {
-      console.log("network connected!");
-      setoffline("Online!");
-
-      setTimeout(() => {
-        if (Network.type === "wifi") {
-          console.log("we got a wifi connection, woohoo!");
-        }
-      }, 3000);
-    });
-
-    return () => {
-      disconnectSubscription.unsubscribe();
-      connectSubscription.unsubscribe();
-    };
-  }, []);
-
+  });
   const handleDelete = (id) => {
     GameService.deleteGame(id).then(() => {
       let filtered = games.filter((x) => x.gameId !== id);
@@ -84,7 +62,7 @@ export default function MyGames(props) {
         <IonToolbar color="primary">
           <IonButtons>
             <IonBackButton defaultHref="/home"></IonBackButton>
-            {offline}
+            {/* {offline} */}
             <IonTitle>My hunts</IonTitle>
           </IonButtons>
         </IonToolbar>
@@ -227,8 +205,13 @@ export default function MyGames(props) {
                       </div>
 
                       <IonButton
+                        style={{
+                          minHeight: "50px",
+                          marginBottom: "15px",
+                          fontWeight: "bold",
+                          fontSize: "1.5em",
+                        }}
                         shape="round"
-                        className="ion-padding-vertical"
                         expand="full"
                         onClick={() => props.history.replace("/game")}
                         size="large"

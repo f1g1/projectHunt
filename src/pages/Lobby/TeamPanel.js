@@ -17,6 +17,7 @@ export default function TeamPanel(props) {
             <IonRow key={x}>
               <IonCol>
                 <PlayerTag
+                  teams={props.teams}
                   handleKick={props.handleKick}
                   team={props.team}
                   playerName={props.team.players[index]}

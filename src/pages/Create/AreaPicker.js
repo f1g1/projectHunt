@@ -19,13 +19,7 @@ export default function AreaPicker(props) {
   const [breadcrumbs, setBreadcrumbs] = useState([]);
   const [modifyingArea, setModifyingArea] = useState(-1);
   const [modifyingBreadcrumbs, setModifyingBreadcrumbs] = useState(-1);
-  // useEffect(() => {
-  //   setModifyingArea(true);
-  //   setModifyingBreadcrumbs(true);
 
-  //   setModifyingArea(-1);
-  //   setModifyingBreadcrumbs(-1);
-  // }, []);
   const handleArea = () => {
     let initialBounds = [
       {
@@ -80,7 +74,9 @@ export default function AreaPicker(props) {
       fillOpacity: 0.3,
     });
     google.map.zoomControl = false;
+
     shape.setMap(google.map);
+    props.bounds && shape.setOptions({ path: props.bounds });
     setShape(shape);
   };
 
@@ -104,6 +100,7 @@ export default function AreaPicker(props) {
         },
       ],
     });
+    props.breadcrumbs && line.setOptions({ path: props.breadcrumbs });
     line.setMap(google.map);
     setLine(line);
   };

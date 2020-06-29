@@ -20,7 +20,6 @@ import {
   IonModal,
   IonPage,
   IonRow,
-  IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
@@ -59,7 +58,7 @@ export default function Lobby(props) {
     teams,
     LobbyService.getCurrentLobby(),
     lobbyChanging,
-    1
+    openChat
   );
   const showThisTeam = (name) => {
     setcurrentTeamDetails(teams.filter((x) => x.name === name)[0]);
@@ -166,8 +165,10 @@ export default function Lobby(props) {
         <>
           <IonHeader>
             <IonToolbar color="primary">
-              <IonTitle>Lobby for: </IonTitle>
-              <IonTitle color="danger">{lobbyChanging.title}</IonTitle>
+              <IonLabel className="ion-padding-start">Lobby for: </IonLabel>
+              <IonLabel style={{ fontWeight: "bolder" }}>
+                <h1 className="ion-padding-start">{lobbyChanging.title}</h1>{" "}
+              </IonLabel>
               <IonButtons slot="end">
                 <IonButton
                   shape="round"

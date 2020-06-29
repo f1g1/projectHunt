@@ -56,6 +56,7 @@ export default function TeamsContainer(props) {
               return (
                 <Fragment key={team.name}>
                   <IonItem
+                    className="roundedInput"
                     detail={
                       !(
                         props.currentTeamDetails &&
@@ -90,6 +91,7 @@ export default function TeamsContainer(props) {
                       <TeamPanel
                         handleKick={props.handleKick}
                         team={team}
+                        teams={props.teams}
                         max={props.lobby.maxPlayers}
                         game={props.lobby}
                         leaveTeam={props.leaveTeam}

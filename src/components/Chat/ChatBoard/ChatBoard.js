@@ -22,7 +22,6 @@ export default function ChatBoard(props) {
   const [currentUserId, setCurrentUserId] = useState(
     UserService.getCurrentPlayer().name
   );
-  const [openNr, setOpenNr] = useState(0);
   const ref = useRef();
 
   useEffect(() => {

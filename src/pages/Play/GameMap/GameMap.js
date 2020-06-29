@@ -211,9 +211,9 @@ export default function GameMap(props) {
       x.players.includes(UserService.getCurrentPlayer().name)
     )[0];
     PlayService.shareLocation(props.geolocation, team.name, props.game);
-    setMessageToast(
-      "You shared your location, your location will show on the map"
-    );
+    // setMessageToast(
+    //   "You shared your location, your location will show on the map"
+    // );
   };
   const handleArea = () => {
     let initialBounds = [
@@ -457,22 +457,10 @@ export default function GameMap(props) {
                 </IonButton>
               ) : (
                 <div>
-                  <IonButton
-                    shape="round"
-                    shape="round"
-                    shape="round"
-                    onClick={saveArea}
-                    color="success"
-                  >
+                  <IonButton shape="round" onClick={saveArea} color="success">
                     Save!
                   </IonButton>
-                  <IonButton
-                    shape="round"
-                    shape="round"
-                    shape="round"
-                    color="danger"
-                    onclick={cancelArea}
-                  >
+                  <IonButton shape="round" color="danger" onclick={cancelArea}>
                     X
                   </IonButton>
                 </div>
@@ -491,14 +479,12 @@ export default function GameMap(props) {
                 <div>
                   <IonButton
                     shape="round"
-                    shape="round"
                     onClick={saveBreadcrumbs}
                     color="success"
                   >
                     Save!
                   </IonButton>
                   <IonButton
-                    shape="round"
                     shape="round"
                     color="danger"
                     onclick={cancleBreadcrumbs}

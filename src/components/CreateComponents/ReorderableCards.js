@@ -28,7 +28,12 @@ export default function ReorderableCards(props) {
     <>
       <IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
         {state.cloneSteps.map((x) => (
-          <InnerCard step={x} delete={deleteCard} edit={props.edit}>
+          <InnerCard
+            key={x.index}
+            step={x}
+            delete={deleteCard}
+            edit={props.edit}
+          >
             <div className="arrow">
               <IonReorder slot="start" />
             </div>

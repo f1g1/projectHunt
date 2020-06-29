@@ -136,7 +136,12 @@ export default function GameInformations(props) {
                 </IonItem>
                 <IonItem>
                   <IonLabel position="floating">Description:</IonLabel>
-                  <IonTextarea></IonTextarea>
+                  <IonTextarea
+                    lines="5"
+                    onIonChange={(e) => setDescription(e.target.value)}
+                    value={state.description}
+                    maxlength="500"
+                  ></IonTextarea>
                 </IonItem>
                 <IonItem lines="none">
                   <IonLabel>Entry Code*:</IonLabel>
@@ -164,20 +169,29 @@ export default function GameInformations(props) {
           <IonCard>
             <IonCardContent>
               <IonCardTitle>Miscellaneous</IonCardTitle>
-              <IonButton
-                shape="round"
-                onClick={() => refInput.current.click()}
-                fill={state.image || image ? "solid" : "outline"}
+              <div
+                style={{
+                  flexDirection: "column",
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
               >
-                Game Photo
-              </IonButton>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <img
-                  src={image ? image : state.image}
-                  style={{ maxHeight: "350px", width: "auto" }}
-                  className="ion-padding-vertical"
-                ></img>
+                <IonButton
+                  shape="round"
+                  onClick={() => refInput.current.click()}
+                >
+                  Game Photo
+                </IonButton>
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <img
+                    src={image ? image : state.image}
+                    style={{ maxHeight: "350px", width: "auto" }}
+                    className="ion-padding-vertical"
+                  ></img>
+                </div>
               </div>
+
               <input
                 ref={refInput}
                 accept="image/*"

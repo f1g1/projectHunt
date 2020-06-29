@@ -1,5 +1,5 @@
-.fullContainer{
-    min-height: 100% !important;
+.fullContainer {
+  min-height: 100% !important;
 }
 
 .scroll {
@@ -7,16 +7,24 @@
   height: 100%;
 }
 .teamItem {
-    --background: red;
-    --background-activated: blue;
+  --background: red;
+  --background-activated: blue;
 }
 
 .item.item-trns {
-	border-color: rgba(0, 0, 0, 0);
-	background-color: rgba(0, 0, 0, 0);
-	color: white; 
+  border-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
 }
-.standardMarign{
+.standardMarign {
   margin-top: 50px !important ;
   padding-top: 50px;
+}
+.roundedInput {
+  --border-color: var(--ion-color-medium-shade);
+  --border-radius: 13px;
+  --border-width: 1px;
+  --box-shadow: 2px gray;
+  --highlight-height: 0;
+  --background: #f8f9fa;
 }

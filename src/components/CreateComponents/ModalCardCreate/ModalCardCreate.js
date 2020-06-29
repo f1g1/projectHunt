@@ -130,12 +130,7 @@ export default function ModalCardCreate(props) {
         {RenderSegment()}
       </IonContent>
       <IonFooter>
-        <IonButton
-          shape="round"
-          onClick={saveNewStep}
-          color="success"
-          expand="full"
-        >
+        <IonButton shape="round" onClick={saveNewStep} expand="full">
           Save!
         </IonButton>
       </IonFooter>

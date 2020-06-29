@@ -6,6 +6,7 @@ import {
   IonContent,
   IonFooter,
   IonHeader,
+  IonLoading,
   IonModal,
   IonPage,
   IonRow,
@@ -17,24 +18,32 @@ import React, { useContext, useEffect, useState } from "react";
 
 import CardList from "../../components/CreateComponents/Cards/CardList";
 import { AppContext as CreateGameContext } from "../../StateCreateGame";
+import CropFreeIcon from "@material-ui/icons/CropFree";
 import GameInformations from "../../components/CreateComponents/Cards/GameInformations";
 import { GameService } from "../../services/GameService";
 import MiscService from "../../services/MiscService";
 import QrModal from "./QrModal";
+import SaveIcon from "@material-ui/icons/Save";
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 const Create = (props) => {
   const { state, dispatch } = useContext(CreateGameContext);
   const [isEdit, setisEdit] = useState(false);
   const [geolocation, setGeolocation] = useState();
   const [errorToast, setErrorToast] = useState();
+  const [loading, setLoading] = useState(false);
+
   const [showQrModal, setShowQrModal] = useState(false);
   let handleReceivedLocation = () => {
     MiscService.getCachedGeolocation()
       .then((x) => {
         x && setGeolocation(x);
       })
-      .catch(() => {
-        console.log("SDASDsda");
+      .catch((x) => {
+        console.log("SDASDsda", x);
         setTimeout(function () {
           setGeolocation({
             latitude: 45.9432,
@@ -59,8 +68,12 @@ const Create = (props) => {
   const saveGame = () => {
     let errors = validateGame(state);
     if (errors.length === 0) {
-      GameService.saveGame(state);
-      props.history.replace("/myGames");
+      GameService.saveGame(state).then(() => {
+        sleep(300).then(() => {
+          setLoading(true);
+          props.history.replace("/myGames");
+        });
+      });
     } else {
       setErrorToast(errors);
     }
@@ -108,7 +121,8 @@ const Create = (props) => {
               onClick={() => saveGame()}
               color="primary"
             >
-              SaveGame
+              <SaveIcon />
+              Save Game
             </IonButton>
             <IonButton
               shape="round"
@@ -116,6 +130,7 @@ const Create = (props) => {
               slot="end"
               onClick={() => setShowQrModal(true)}
             >
+              <CropFreeIcon />
               QRs
             </IonButton>
           </IonButtons>
@@ -140,6 +155,7 @@ const Create = (props) => {
           ></QrModal>
         </IonModal>
       )}
+      <IonLoading isOpen={loading} message={"Please wait..."} duration={5000} />
     </IonPage>
   );
 };

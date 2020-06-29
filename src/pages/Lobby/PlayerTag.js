@@ -62,11 +62,8 @@ export default function PlayerTag(props) {
       return null;
     }
   };
-  const getLabelCurrentTeam = () => {
-    let x = getCurrentTeam();
-
-    console.log(" jegos", x, props.teams, props.playerName);
-    return <IonLabel>{x}</IonLabel>;
+  const getLabelCurrentTeam = (player) => {
+    return <IonLabel>{getCurrentTeam()}</IonLabel>;
   };
   return (
     <>
@@ -107,7 +104,7 @@ export default function PlayerTag(props) {
                   ))}
                 </IonSelect>
               ) : (
-                getLabelCurrentTeam()
+                getLabelCurrentTeam(props.playerName)
               )}
             </IonCol>
 
