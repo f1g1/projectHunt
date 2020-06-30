@@ -36,6 +36,7 @@ function TextInput(props) {
             props.finished || false
           )
             .then(() => {
+              props.handleClose();
               MiscService.getCachedGeolocation().then((x) =>
                 PlayService.shareLocation(x, props.team)
               );
